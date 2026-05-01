@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://nokta-transfer.vercel.app/sitemap.xml
+Sitemap: https://noktatransfer.com/sitemap.xml
