@@ -156,15 +156,36 @@
               rotalarda 60 km sonrası 25 TL/km olarak hesaplanır.
             </p>
           </div>
-          <div class="fare-cards" aria-label="Nokta Transfer fiyat kuralları">
-            <article>
-              <strong>30 TL</strong>
-              <span>İlk 60 km için KM başı</span>
-            </article>
-            <article>
-              <strong>25 TL</strong>
-              <span>60 km sonrası KM başı</span>
-            </article>
+          <div class="fare-calculator" aria-label="Mesafeye göre fiyat tahmini">
+            <div class="fare-meter">
+              <span>Mesafe</span>
+              <strong><b id="fareDistanceValue">24</b> km</strong>
+            </div>
+
+            <div class="fare-range-wrap" style="--fare-progress: 11.56%">
+              <span class="fare-bubble" id="fareDistanceBubble">24 km</span>
+              <input
+                id="fareDistanceRange"
+                type="range"
+                min="1"
+                max="200"
+                value="24"
+                step="1"
+                aria-label="Kilometre seç"
+              />
+            </div>
+
+            <div class="fare-scale" aria-hidden="true">
+              <span>1 km</span>
+              <span>60 km</span>
+              <span>200 km</span>
+            </div>
+
+            <div class="fare-result">
+              <span>Ortalama tahmini ücret</span>
+              <strong id="farePriceValue">720 TL</strong>
+              <p id="fareRateLabel">30 TL/km sabit tarife</p>
+            </div>
           </div>
         </div>
       </section>

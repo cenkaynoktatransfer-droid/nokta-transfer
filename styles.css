@@ -860,34 +860,152 @@ h1 {
   font-weight: 700;
 }
 
-.fare-cards {
+.fare-calculator {
+  position: relative;
   display: grid;
-  gap: 16px;
-}
-
-.fare-cards article {
-  min-height: 118px;
-  display: grid;
-  align-content: center;
-  gap: 8px;
-  padding: 24px 26px;
-  border-radius: var(--radius);
-  background: rgba(255, 255, 255, 0.055);
+  gap: 22px;
+  padding: 30px;
+  border-radius: 28px;
+  background:
+    radial-gradient(circle at 18% 0%, rgba(255, 196, 0, 0.22), transparent 0 34%),
+    linear-gradient(180deg, rgba(24, 25, 28, 0.94), rgba(12, 13, 15, 0.96));
   border: 1px solid rgba(255, 255, 255, 0.09);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  box-shadow: 0 28px 80px rgba(0, 0, 0, 0.36), 0 0 46px rgba(255, 196, 0, 0.08);
 }
 
-.fare-cards strong {
-  color: var(--yellow);
-  font-size: 42px;
+.fare-meter,
+.fare-result {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 18px;
+}
+
+.fare-meter span,
+.fare-result span {
+  color: #8f96a5;
+  font-size: 12px;
+  font-weight: 950;
+  letter-spacing: 1.1px;
+  text-transform: uppercase;
+}
+
+.fare-meter strong {
+  color: #fff;
+  font-size: 34px;
   line-height: 1;
   font-weight: 950;
 }
 
-.fare-cards span {
-  color: #aeb3bf;
-  font-size: 14px;
+.fare-meter b {
+  color: var(--yellow);
+}
+
+.fare-range-wrap {
+  position: relative;
+  padding: 31px 0 8px;
+  --fare-progress: 0%;
+}
+
+.fare-bubble {
+  position: absolute;
+  left: clamp(35px, var(--fare-progress), calc(100% - 35px));
+  top: 0;
+  min-width: 70px;
+  min-height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  color: #141414;
+  background: linear-gradient(135deg, #ffe066, #ffc400);
+  box-shadow: 0 0 26px rgba(255, 196, 0, 0.55), 0 0 54px rgba(255, 196, 0, 0.22);
+  font-size: 13px;
+  font-weight: 950;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.fare-bubble::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -6px;
+  width: 12px;
+  height: 12px;
+  background: #ffc400;
+  transform: translateX(-50%) rotate(45deg);
+}
+
+.fare-range-wrap input {
+  width: 100%;
+  height: 18px;
+  margin: 0;
+  appearance: none;
+  border-radius: 999px;
+  background:
+    linear-gradient(90deg, #ffc400 0 var(--fare-progress), rgba(255, 255, 255, 0.12) var(--fare-progress) 100%);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08), 0 0 30px rgba(255, 196, 0, 0.13);
+  cursor: pointer;
+}
+
+.fare-range-wrap input:focus-visible {
+  outline: 3px solid rgba(255, 196, 0, 0.25);
+  outline-offset: 6px;
+}
+
+.fare-range-wrap input::-webkit-slider-thumb {
+  width: 34px;
+  height: 34px;
+  appearance: none;
+  border-radius: 50%;
+  background: radial-gradient(circle at 34% 32%, #fff4b0 0 20%, #ffc400 21% 100%);
+  border: 5px solid #171717;
+  box-shadow: 0 0 0 4px rgba(255, 196, 0, 0.26), 0 0 42px rgba(255, 196, 0, 0.72);
+}
+
+.fare-range-wrap input::-moz-range-thumb {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #ffc400;
+  border: 5px solid #171717;
+  box-shadow: 0 0 0 4px rgba(255, 196, 0, 0.26), 0 0 42px rgba(255, 196, 0, 0.72);
+}
+
+.fare-scale {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: -14px;
+  color: #777f91;
+  font-size: 11px;
   font-weight: 850;
+}
+
+.fare-result {
+  align-items: center;
+  padding: 22px;
+  border-radius: 20px;
+  background: rgba(0, 0, 0, 0.34);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.fare-result strong {
+  color: #fff;
+  font-size: 38px;
+  line-height: 1;
+  font-weight: 950;
+}
+
+.fare-result p {
+  flex-basis: 100%;
+  margin: 6px 0 0;
+  color: #d6bc52;
+  font-size: 12px;
+  font-weight: 850;
+  line-height: 1.4;
 }
 
 .quote-card {
@@ -1224,12 +1342,23 @@ h1 {
     font-size: 16px;
   }
 
-  .fare-cards article {
-    min-height: 104px;
-    padding: 20px;
+  .fare-calculator {
+    padding: 22px 18px;
+    border-radius: 22px;
   }
 
-  .fare-cards strong {
-    font-size: 36px;
+  .fare-meter,
+  .fare-result {
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .fare-meter strong,
+  .fare-result strong {
+    font-size: 32px;
+  }
+
+  .fare-range-wrap {
+    padding-top: 34px;
   }
 }

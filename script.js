@@ -33,6 +33,11 @@ const routeMapElement = document.querySelector("#routeMap");
 const routeSubmit = document.querySelector("#routeSubmit");
 const resetRoute = document.querySelector("#resetRoute");
 const locationButton = document.querySelector("#locationButton");
+const fareDistanceRange = document.querySelector("#fareDistanceRange");
+const fareDistanceValue = document.querySelector("#fareDistanceValue");
+const fareDistanceBubble = document.querySelector("#fareDistanceBubble");
+const farePriceValue = document.querySelector("#farePriceValue");
+const fareRateLabel = document.querySelector("#fareRateLabel");
 
 const routePhone = "905060436591";
 const shortRouteLimitKm = 60;
@@ -153,6 +158,29 @@ function updateRouteDisplay() {
   }
 
   updateWhatsAppLink();
+}
+
+function updateFareEstimate() {
+  if (!fareDistanceRange) return;
+
+  const distance = Number(fareDistanceRange.value);
+  const min = Number(fareDistanceRange.min) || 1;
+  const max = Number(fareDistanceRange.max) || 200;
+  const progress = ((distance - min) / (max - min)) * 100;
+  const remainingDistance = Math.max(distance - shortRouteLimitKm, 0);
+  const wrapper = fareDistanceRange.closest(".fare-range-wrap");
+
+  wrapper?.style.setProperty("--fare-progress", `${progress}%`);
+
+  if (fareDistanceValue) fareDistanceValue.textContent = distance.toLocaleString("tr-TR");
+  if (fareDistanceBubble) fareDistanceBubble.textContent = `${distance.toLocaleString("tr-TR")} km`;
+  if (farePriceValue) farePriceValue.textContent = formatCurrency(calculatePrice(distance));
+  if (fareRateLabel) {
+    fareRateLabel.textContent =
+      distance > shortRouteLimitKm
+        ? `İlk 60 km 30 TL/km + kalan ${remainingDistance.toLocaleString("tr-TR")} km 25 TL/km`
+        : "30 TL/km sabit tarife";
+  }
 }
 
 function initializeRouteMap() {
@@ -529,5 +557,8 @@ routeSubmit?.addEventListener("click", (event) => {
   }
 });
 
+fareDistanceRange?.addEventListener("input", updateFareEstimate);
+
 initializeRouteMap();
 updateRouteDisplay();
+updateFareEstimate();
