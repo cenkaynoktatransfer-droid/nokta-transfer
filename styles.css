@@ -824,6 +824,7 @@ h1 {
   min-height: 214px;
   padding: 28px;
   border-radius: var(--radius);
+  transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease, background 180ms ease;
 }
 
 .area-card h3 {
@@ -1073,6 +1074,19 @@ h1 {
   min-height: 255px;
   padding: 24px 22px;
   border-radius: 13px;
+  transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease, background 180ms ease;
+}
+
+.area-card:hover,
+.comment-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(255, 196, 0, 0.78);
+  background: linear-gradient(180deg, rgba(255, 196, 0, 0.09), rgba(255, 255, 255, 0.025));
+  box-shadow:
+    0 0 0 1px rgba(255, 196, 0, 0.26),
+    0 0 34px rgba(255, 196, 0, 0.24),
+    0 28px 90px rgba(0, 0, 0, 0.34),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
 }
 
 .stars {
