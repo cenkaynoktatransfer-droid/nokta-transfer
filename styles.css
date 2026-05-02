@@ -124,7 +124,7 @@ a {
     linear-gradient(90deg, rgba(4, 6, 10, 0.9), rgba(4, 6, 10, 0.62) 44%, rgba(4, 6, 10, 0.32)),
     url("./assets/izmir-saat-kulesi-hero.png") center center / cover no-repeat;
   filter: saturate(1.02) contrast(1.06);
-  transform: scale(1.03);
+  transform: scale(1);
 }
 
 .hero-bg::after {
