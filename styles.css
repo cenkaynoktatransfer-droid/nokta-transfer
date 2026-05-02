@@ -120,10 +120,20 @@ a {
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(90deg, rgba(4, 6, 10, 0.9), rgba(4, 6, 10, 0.58) 48%, rgba(4, 6, 10, 0.26)),
-    url("https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=1800&q=80") center / cover;
-  filter: saturate(0.92);
+    radial-gradient(circle at 72% 18%, rgba(255, 196, 0, 0.18), transparent 0 28%),
+    linear-gradient(90deg, rgba(4, 6, 10, 0.94), rgba(4, 6, 10, 0.68) 46%, rgba(4, 6, 10, 0.32)),
+    url("https://images.unsplash.com/photo-1651524055017-cef6327c11f4?auto=format&fit=crop&w=1800&q=80") center / cover;
+  filter: saturate(0.98) contrast(1.06);
   transform: scale(1.03);
+}
+
+.hero-bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(5, 5, 5, 0.16), rgba(5, 5, 5, 0.42)),
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.018) 0 1px, transparent 1px 42px);
 }
 
 .route-section {
