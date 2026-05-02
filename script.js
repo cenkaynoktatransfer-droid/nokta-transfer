@@ -110,15 +110,11 @@ function updateWhatsAppLink() {
 
   const pickup = getPlaceText(routeState.pickup) || pickupInput?.value.trim() || "";
   const dropoff = getPlaceText(routeState.dropoff) || dropoffInput?.value.trim() || "";
-  const price = calculatePrice(routeState.distanceKm);
   const lines = [
     "Merhaba Nokta Transfer, araç çağırmak istiyorum.",
     pickup ? `Alınacak yer: ${pickup}` : "",
     dropoff ? `Gidilecek yer: ${dropoff}` : "",
-    routeState.distanceKm ? `Mesafe: ${formatNumber(routeState.distanceKm)} km` : "",
-    routeState.durationMinutes ? `Tahmini süre: ${Math.round(routeState.durationMinutes)} dk` : "",
-    price ? `Tahmini ücret: ${formatCurrency(price)}` : "",
-    price ? "Fiyat hesabı: İlk 60 km 30 TL/km, sonrası 25 TL/km." : ""
+    routeState.distanceKm ? `Mesafe: ${formatNumber(routeState.distanceKm)} km` : ""
   ]
     .filter(Boolean)
     .join("\n");
