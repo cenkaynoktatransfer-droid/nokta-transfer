@@ -93,6 +93,58 @@
         </div>
       </section>
 
+      <section class="route-section section" id="rota">
+        <div class="route-bg" aria-hidden="true"></div>
+        <div class="wrap route-shell">
+          <div class="route-card reveal">
+            <div class="route-head">
+              <div>
+                <h2>Rota Belirleyin</h2>
+                <p>Hızlı ve şeffaf ulaşım</p>
+              </div>
+              <span class="route-icon" aria-hidden="true">⇄</span>
+            </div>
+
+            <label class="route-field">
+              <span class="dot start-dot"></span>
+              <input id="pickupInput" type="text" placeholder="Nereden alalım?" autocomplete="street-address" />
+            </label>
+
+            <label class="route-field">
+              <span class="dot end-dot"></span>
+              <input id="dropoffInput" type="text" placeholder="Nereye gidiyoruz?" autocomplete="street-address" />
+            </label>
+
+            <div class="route-tools">
+              <button class="mini-action" id="locationButton" type="button">⌖ Mevcut Konumum</button>
+              <button class="reset-action" id="resetRoute" type="button">↻ Sıfırla</button>
+            </div>
+
+            <div class="map-card" aria-label="İzmir harita önizlemesi">
+              <div class="map-lines" aria-hidden="true"></div>
+              <strong>İZMİR</strong>
+              <span>Leaflet</span>
+            </div>
+
+            <div class="route-stats">
+              <label class="stat-box">
+                <span>⌁ MESAFE</span>
+                <input id="distanceInput" type="number" min="0" step="0.1" placeholder="-" inputmode="decimal" />
+              </label>
+              <div class="stat-box">
+                <span>⊙ ÜCRET</span>
+                <strong id="priceOutput">0 TL</strong>
+              </div>
+            </div>
+
+            <a class="route-submit" id="routeSubmit" href="https://wa.me/905060436591" target="_blank" rel="noopener">
+              Şimdi Araç Çağır
+            </a>
+            <p class="route-note">Daha net fiyat ve rota bilgisi için bize ulaşın.</p>
+          </div>
+        </div>
+      </section>
+
       <section class="section trust">
         <div class="wrap">
           <div class="glass-card reveal">
