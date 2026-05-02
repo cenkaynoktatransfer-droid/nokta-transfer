@@ -24,6 +24,7 @@
     <meta name="twitter:description" content="İzmir 7/24 transfer ve taksi hizmeti." />
     <meta name="twitter:image" content="./assets/nokta-transfer-logo.jpeg" />
     <meta name="theme-color" content="#050505" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <link rel="stylesheet" href="./styles.css" />
     <script type="application/ld+json">
       {
@@ -105,35 +106,40 @@
               <span class="route-icon" aria-hidden="true">⇄</span>
             </div>
 
-            <label class="route-field">
-              <span class="dot start-dot"></span>
-              <input id="pickupInput" type="text" placeholder="Nereden alalım?" autocomplete="street-address" />
-            </label>
+            <div class="route-search">
+              <label class="route-field">
+                <span class="dot start-dot"></span>
+                <input id="pickupInput" type="text" placeholder="Nereden alalım?" autocomplete="off" />
+              </label>
+              <div class="route-suggestions" id="pickupSuggestions" role="listbox" hidden></div>
+            </div>
 
-            <label class="route-field">
-              <span class="dot end-dot"></span>
-              <input id="dropoffInput" type="text" placeholder="Nereye gidiyoruz?" autocomplete="street-address" />
-            </label>
+            <div class="route-search">
+              <label class="route-field">
+                <span class="dot end-dot"></span>
+                <input id="dropoffInput" type="text" placeholder="Nereye gidiyoruz?" autocomplete="off" />
+              </label>
+              <div class="route-suggestions" id="dropoffSuggestions" role="listbox" hidden></div>
+            </div>
 
             <div class="route-tools">
               <button class="mini-action" id="locationButton" type="button">⌖ Mevcut Konumum</button>
               <button class="reset-action" id="resetRoute" type="button">↻ Sıfırla</button>
             </div>
 
-            <div class="map-card" aria-label="İzmir harita önizlemesi">
-              <div class="map-lines" aria-hidden="true"></div>
-              <strong>İZMİR</strong>
-              <span>Leaflet</span>
-            </div>
+            <div class="map-card" id="routeMap" aria-label="Rota haritası"></div>
+            <p class="route-status" id="routeStatus">Türkiye genelinde şehir, sokak ve cadde arayın.</p>
 
             <div class="route-stats">
-              <label class="stat-box">
+              <div class="stat-box">
                 <span>⌁ MESAFE</span>
-                <input id="distanceInput" type="number" min="0" step="0.1" placeholder="-" inputmode="decimal" />
-              </label>
+                <strong id="distanceOutput">-</strong>
+                <small id="durationOutput">Rota seçilmedi</small>
+              </div>
               <div class="stat-box">
                 <span>⊙ ÜCRET</span>
                 <strong id="priceOutput">0 TL</strong>
+                <small id="rateOutput">İlk 60 km 30 TL/km</small>
               </div>
             </div>
 
@@ -289,6 +295,7 @@
       </a>
     </div>
 
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="./script.js"></script>
   </body>
 </html>
