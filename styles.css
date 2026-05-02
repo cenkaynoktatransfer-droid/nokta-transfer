@@ -786,7 +786,8 @@ h1 {
 }
 
 #bolgeler .narrow h2 span,
-.comments .narrow h2 span {
+.comments .narrow h2 span,
+.faq .narrow h2 span {
   color: var(--yellow);
 }
 
@@ -841,9 +842,9 @@ h1 {
   margin-bottom: 18px;
   padding: 0 14px;
   border-radius: 999px;
-  color: var(--green);
-  background: rgba(37, 211, 102, 0.1);
-  border: 1px solid rgba(37, 211, 102, 0.18);
+  color: var(--yellow);
+  background: rgba(255, 196, 0, 0.1);
+  border: 1px solid rgba(255, 196, 0, 0.22);
   font-size: 12px;
   font-weight: 950;
   letter-spacing: 1.2px;
@@ -858,7 +859,7 @@ h1 {
 }
 
 .fare-copy h2 span {
-  color: var(--green);
+  color: var(--yellow);
 }
 
 .fare-copy p {
