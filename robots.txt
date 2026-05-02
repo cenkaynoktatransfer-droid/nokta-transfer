@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://noktatransfer.com.tr/sitemap.xml
+Sitemap: https://www.noktatransfer.com.tr/sitemap.xml
