@@ -116,6 +116,16 @@ a {
   padding: 86px 0;
 }
 
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, rgba(4, 6, 10, 0.9), rgba(4, 6, 10, 0.58) 48%, rgba(4, 6, 10, 0.26)),
+    url("https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=1800&q=80") center / cover;
+  filter: saturate(0.92);
+  transform: scale(1.03);
+}
+
 .route-section {
   position: relative;
   overflow: hidden;
@@ -469,13 +479,39 @@ a {
 }
 
 .hero {
-  min-height: 610px;
+  position: relative;
+  min-height: calc(100vh - 70px);
+  overflow: hidden;
   display: grid;
   place-items: center;
-  padding: 48px 0 108px;
+  padding: 76px 0 80px;
+  background: #07090d;
 }
 
-.hero-inner,
+.hero-inner {
+  position: relative;
+  z-index: 1;
+  width: min(1340px, calc(100% - 44px));
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(420px, 510px);
+  align-items: center;
+  gap: clamp(38px, 6vw, 86px);
+}
+
+.hero-copy {
+  max-width: 650px;
+  text-align: left;
+}
+
+.hero-route {
+  width: min(510px, 100%);
+  justify-self: end;
+}
+
+.hero-route .route-card {
+  width: 100%;
+}
+
 .narrow {
   text-align: center;
 }
@@ -512,8 +548,8 @@ h1 {
 }
 
 .hero p {
-  width: min(710px, 100%);
-  margin: 0 auto;
+  width: min(610px, 100%);
+  margin: 0;
   color: #c8c8d0;
   font-size: 22px;
   line-height: 1.28;
@@ -522,7 +558,7 @@ h1 {
 
 .hero-buttons {
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 18px;
   margin-top: 38px;
 }
@@ -575,7 +611,8 @@ h1 {
 
 .checks {
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
+  flex-wrap: wrap;
   gap: 30px;
   margin-top: 36px;
   color: #a9a9b2;
@@ -880,11 +917,34 @@ h1 {
   }
 
   .hero {
-    min-height: 570px;
+    min-height: auto;
+    padding: 58px 0 76px;
+  }
+
+  .hero-inner {
+    width: min(936px, calc(100% - 32px));
+    grid-template-columns: 1fr;
+    justify-items: center;
+    gap: 34px;
+  }
+
+  .hero-copy {
+    max-width: 720px;
+    text-align: center;
   }
 
   .hero p {
+    margin: 0 auto;
     font-size: 19px;
+  }
+
+  .hero-buttons,
+  .checks {
+    justify-content: center;
+  }
+
+  .hero-route {
+    justify-self: center;
   }
 
   .area-grid,
@@ -922,8 +982,8 @@ h1 {
   }
 
   .hero {
-    min-height: 600px;
-    padding-top: 38px;
+    min-height: auto;
+    padding: 42px 0 66px;
   }
 
   h1 {
