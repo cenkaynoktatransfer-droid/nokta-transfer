@@ -1,3 +1,5 @@
 video-frames/
 preview.png
 dist/
+.chrome-check/
+.edge-check/
