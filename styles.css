@@ -19,6 +19,10 @@ html {
   scroll-behavior: smooth;
 }
 
+section[id] {
+  scroll-margin-top: 92px;
+}
+
 body {
   margin: 0;
   color: var(--text);
@@ -104,8 +108,9 @@ a {
   align-items: center;
   justify-content: center;
   flex: 0 0 auto;
-  pointer-events: none;
   user-select: none;
+  border-radius: 50%;
+  transition: transform 180ms ease, filter 180ms ease, box-shadow 180ms ease;
 }
 
 .menu-taxi img {
@@ -115,6 +120,11 @@ a {
   opacity: 0.98;
   filter: brightness(0) saturate(100%) invert(78%) sepia(88%) saturate(1050%) hue-rotate(357deg) brightness(104%) contrast(103%) drop-shadow(0 0 12px rgba(255, 196, 0, 0.48));
   -webkit-user-drag: none;
+}
+
+.menu-taxi:hover {
+  transform: translateY(-2px) scale(1.06);
+  box-shadow: 0 0 28px rgba(255, 196, 0, 0.2);
 }
 
 .nav-phone {
@@ -734,6 +744,7 @@ h1 {
 .glass-card,
 .quote-card,
 .fleet-card,
+.district-panel,
 .comment-card,
 .area-card,
 .faq-list details {
@@ -808,6 +819,7 @@ h1 {
 }
 
 #bolgeler .narrow h2 span,
+.district-guide h2 span,
 .comments .narrow h2 span,
 .fleet .narrow h2 span,
 .faq .narrow h2 span {
@@ -836,11 +848,203 @@ h1 {
 }
 
 .area-card p,
+.district-head p,
 .comment-card p,
 .faq-list p {
   color: #b3b3bb;
   line-height: 1.7;
   font-weight: 650;
+}
+
+.district-guide {
+  position: relative;
+  overflow: hidden;
+  padding-top: 74px;
+  background:
+    radial-gradient(circle at 18% 6%, rgba(255, 196, 0, 0.11), transparent 0 30%),
+    radial-gradient(circle at 88% 26%, rgba(255, 255, 255, 0.06), transparent 0 28%),
+    linear-gradient(180deg, #050506, #080808 48%, #050506);
+  border-top: 1px solid rgba(255, 196, 0, 0.14);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.district-guide::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.018) 0 1px, transparent 1px 50px),
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.014) 0 1px, transparent 1px 70px);
+  opacity: 0.72;
+}
+
+.district-guide > * {
+  position: relative;
+  z-index: 1;
+}
+
+.district-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 34px;
+}
+
+.district-head h2 {
+  max-width: 760px;
+  margin: 0 0 16px;
+  color: #fff;
+  font-size: clamp(36px, 5.4vw, 70px);
+  line-height: 0.95;
+  font-weight: 950;
+}
+
+.district-head p {
+  max-width: 760px;
+  font-size: 18px;
+}
+
+.district-cta {
+  min-height: 52px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  padding: 0 24px;
+  border-radius: 999px;
+  color: #111;
+  background: linear-gradient(135deg, #ffe066, #ffc400 52%, #ffab15);
+  box-shadow: 0 0 34px rgba(255, 196, 0, 0.28);
+  font-size: 13px;
+  font-weight: 950;
+}
+
+.district-layout {
+  display: grid;
+  grid-template-columns: 1.05fr 1fr 1fr;
+  gap: 22px;
+  margin-top: 42px;
+}
+
+.district-panel {
+  min-height: 286px;
+  padding: 28px;
+  border-radius: 24px;
+  background:
+    linear-gradient(180deg, rgba(22, 23, 26, 0.86), rgba(9, 10, 12, 0.92)),
+    repeating-linear-gradient(35deg, rgba(255, 255, 255, 0.02) 0 1px, transparent 1px 9px);
+  transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease, background 180ms ease;
+}
+
+.district-feature {
+  grid-row: span 2;
+  background:
+    radial-gradient(circle at 20% 10%, rgba(255, 196, 0, 0.14), transparent 0 36%),
+    linear-gradient(180deg, rgba(24, 24, 20, 0.9), rgba(9, 10, 12, 0.92));
+}
+
+.district-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 25px;
+  margin-bottom: 16px;
+  padding: 0 10px;
+  border-radius: 999px;
+  color: var(--yellow);
+  background: rgba(255, 196, 0, 0.08);
+  border: 1px solid rgba(255, 196, 0, 0.18);
+  font-size: 10px;
+  font-weight: 950;
+  letter-spacing: 1.3px;
+}
+
+.district-label::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--yellow);
+  box-shadow: 0 0 14px rgba(255, 196, 0, 0.75);
+}
+
+.district-panel h3 {
+  margin: 0 0 22px;
+  color: #fff;
+  font-size: 24px;
+  line-height: 1.05;
+  font-weight: 950;
+}
+
+.district-list,
+.popular-routes {
+  display: grid;
+  gap: 10px;
+}
+
+.district-list {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.district-list a,
+.popular-routes a {
+  min-height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 0 14px;
+  border-radius: 13px;
+  color: #cfd0d6;
+  background: rgba(255, 255, 255, 0.035);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  font-size: 13px;
+  font-weight: 900;
+  transition: transform 180ms ease, color 180ms ease, border-color 180ms ease, box-shadow 180ms ease, background 180ms ease;
+}
+
+.district-list a::after,
+.popular-routes a::after {
+  content: "›";
+  color: var(--yellow);
+  font-size: 19px;
+  line-height: 1;
+}
+
+.popular-routes a {
+  min-height: 52px;
+  padding: 0 18px;
+  font-size: 14px;
+}
+
+.district-panel:hover,
+.district-list a:hover,
+.popular-routes a:hover {
+  border-color: rgba(255, 196, 0, 0.72);
+  box-shadow:
+    0 0 0 1px rgba(255, 196, 0, 0.2),
+    0 0 30px rgba(255, 196, 0, 0.18),
+    0 24px 70px rgba(0, 0, 0, 0.28);
+}
+
+.district-panel:hover {
+  transform: translateY(-6px);
+  background:
+    radial-gradient(circle at 50% 0%, rgba(255, 196, 0, 0.12), transparent 0 38%),
+    linear-gradient(180deg, rgba(25, 24, 18, 0.94), rgba(9, 10, 12, 0.94));
+}
+
+.district-list a:hover,
+.popular-routes a:hover {
+  transform: translateX(4px);
+  color: #111;
+  background: linear-gradient(135deg, #ffe066, #ffc400);
+}
+
+.district-list a:hover::after,
+.popular-routes a:hover::after {
+  color: #111;
 }
 
 .price {
@@ -1554,6 +1758,19 @@ h1 {
     justify-self: center;
   }
 
+  .district-head {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .district-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .district-feature {
+    grid-row: auto;
+  }
+
   .area-grid,
   .fleet-grid,
   .comment-grid {
@@ -1605,6 +1822,10 @@ h1 {
     padding: 64px 0;
   }
 
+  section[id] {
+    scroll-margin-top: 132px;
+  }
+
   .hero {
     min-height: auto;
     padding: 42px 0 66px;
@@ -1632,6 +1853,27 @@ h1 {
   .checks {
     display: grid;
     gap: 12px;
+  }
+
+  .district-head h2 {
+    font-size: 39px;
+  }
+
+  .district-head p {
+    font-size: 16px;
+  }
+
+  .district-panel {
+    padding: 22px 18px;
+    border-radius: 20px;
+  }
+
+  .district-list {
+    grid-template-columns: 1fr;
+  }
+
+  .district-cta {
+    width: 100%;
   }
 
   .glass-card,
