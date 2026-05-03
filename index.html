@@ -1,28 +1,30 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="tr">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Nokta Transfer | İzmir 7/24 Transfer ve Taksi</title>
+    <title>Nokta Transfer | İzmir Transfer ve Havalimanı Ulaşım</title>
     <meta
       name="description"
-      content="Nokta Transfer ile İzmir'de 7/24 sabit fiyatlı, şoförlü lüks, havalimanı, şehir içi ve şehir dışı transfer hizmeti alın."
+      content="Nokta Transfer ile İzmir transfer, Adnan Menderes havalimanı transfer, şehir içi ve şehir dışı VIP ulaşım hizmeti. 7/24 net fiyat ve konforlu araç."
     />
-    <meta name="keywords" content="Nokta Transfer, İzmir transfer, İzmir taksi, İzmir korsan taksi, havalimanı transfer" />
+    <meta name="keywords" content="Nokta Transfer, İzmir transfer, İzmir havalimanı transfer, Adnan Menderes transfer, İzmir VIP transfer, şehir içi transfer" />
     <meta name="robots" content="index, follow" />
     <meta name="google-site-verification" content="8JhMSGWUzM4-ZQO4eWGDDoP2H8L8Ni2cGRH_Tad32oI" />
     <link rel="canonical" href="https://www.noktatransfer.com.tr/" />
+    <link rel="preload" as="image" href="./assets/izmir-saat-kulesi-hero.webp" type="image/webp" />
     <link rel="icon" href="./assets/nokta-transfer-logo.jpeg" type="image/jpeg" />
     <link rel="apple-touch-icon" href="./assets/nokta-transfer-logo.jpeg" />
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="Nokta Transfer | İzmir 7/24 Transfer" />
-    <meta property="og:description" content="İzmir'de 7/24 ekonomik, konforlu ve güvenilir transfer hizmeti." />
-    <meta property="og:image" content="./assets/nokta-transfer-logo.jpeg" />
+    <meta property="og:title" content="Nokta Transfer | İzmir Transfer ve Havalimanı Ulaşım" />
+    <meta property="og:description" content="İzmir'de 7/24 net fiyatlı, konforlu ve güvenilir transfer hizmeti." />
+    <meta property="og:image" content="https://www.noktatransfer.com.tr/assets/nokta-transfer-logo.jpeg" />
+    <meta property="og:url" content="https://www.noktatransfer.com.tr/" />
     <meta property="og:locale" content="tr_TR" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Nokta Transfer" />
-    <meta name="twitter:description" content="İzmir 7/24 transfer ve taksi hizmeti." />
-    <meta name="twitter:image" content="./assets/nokta-transfer-logo.jpeg" />
+    <meta name="twitter:description" content="İzmir 7/24 transfer ve havalimanı ulaşım hizmeti." />
+    <meta name="twitter:image" content="https://www.noktatransfer.com.tr/assets/nokta-transfer-logo.jpeg" />
     <meta name="theme-color" content="#050505" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <link rel="stylesheet" href="./styles.css" />
@@ -30,10 +32,14 @@
       {
         "@context": "https://schema.org",
         "@type": "LocalBusiness",
+        "@id": "https://www.noktatransfer.com.tr/#business",
         "name": "Nokta Transfer",
         "image": "https://www.noktatransfer.com.tr/assets/nokta-transfer-logo.jpeg",
         "telephone": "+905060436591",
-        "areaServed": "İzmir",
+        "areaServed": {
+          "@type": "City",
+          "name": "İzmir"
+        },
         "address": {
           "@type": "PostalAddress",
           "addressLocality": "İzmir",
@@ -42,7 +48,66 @@
         "url": "https://www.noktatransfer.com.tr/",
         "priceRange": "₺₺",
         "openingHours": "Mo-Su 00:00-23:59",
-        "description": "İzmir'de 7/24 özel transfer ve taksi hizmeti."
+        "description": "İzmir'de 7/24 özel transfer, havalimanı transferi, VIP araç ve şehir içi ulaşım hizmeti.",
+        "hasOfferCatalog": {
+          "@type": "OfferCatalog",
+          "name": "Nokta Transfer Hizmetleri",
+          "itemListElement": [
+            {
+              "@type": "Offer",
+              "itemOffered": {
+                "@type": "Service",
+                "name": "İzmir Havalimanı Transfer"
+              }
+            },
+            {
+              "@type": "Offer",
+              "itemOffered": {
+                "@type": "Service",
+                "name": "İzmir Şehir İçi Transfer"
+              }
+            },
+            {
+              "@type": "Offer",
+              "itemOffered": {
+                "@type": "Service",
+                "name": "VIP Transfer"
+              }
+            }
+          ]
+        }
+      }
+    </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "İzmir transfer aracı ne kadar sürede gelir?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Konuma göre değişmekle birlikte İzmir merkez ilçelerde ortalama 5-15 dakika içinde araç yönlendirilir."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Adnan Menderes Havalimanı transfer hizmeti var mı?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Evet. Adnan Menderes Havalimanı için karşılama, bırakma ve şehir merkezi bağlantılı transfer hizmeti 7/24 sunulur."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Transfer fiyatı yolculuk öncesi belli olur mu?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Evet. Rota bilgisi alındıktan sonra yolculuk öncesi net fiyat paylaşılır."
+            }
+          }
+        ]
       }
     </script>
   </head>
@@ -261,91 +326,6 @@
         </div>
       </section>
 
-      <section class="section district-guide" id="ilceler" hidden>
-        <div class="wrap district-head reveal">
-          <div>
-            <span class="section-kicker">İZMİR İLÇE TRANSFER REHBERİ</span>
-            <h2>Nokta Transfer <span>Nerelerde?</span></h2>
-            <p>
-              İlçe ve rota taleplerini tek ekranda topladık.
-              İzmir’in tüm ilçeleri için şehir içi, havalimanı ve sahil transfer ihtiyaçlarınızı tek noktadan karşılıyoruz.
-            </p>
-          </div>
-          <a class="district-cta" href="https://wa.me/905060436591?text=Nokta%20Transfer%20il%C3%A7e%20transfer%20bilgisi%20almak%20istiyorum." target="_blank" rel="noopener">
-            İlçe İçin Fiyat Sor
-          </a>
-        </div>
-
-        <div class="wrap district-layout">
-          <article class="district-panel district-feature reveal">
-            <span class="district-label">ÖNE ÇIKAN HATLAR</span>
-            <h3>En Çok Çağrılan Transfer Rotaları</h3>
-            <div class="popular-routes">
-              <a href="https://wa.me/905060436591?text=%C3%87e%C5%9Fme%20transfer%20i%C3%A7in%20ara%C3%A7%20istiyorum." target="_blank" rel="noopener">Çeşme Transfer</a>
-              <a href="https://wa.me/905060436591?text=Bornova%20transfer%20i%C3%A7in%20ara%C3%A7%20istiyorum." target="_blank" rel="noopener">Bornova Transfer</a>
-              <a href="https://wa.me/905060436591?text=Kar%C5%9F%C4%B1yaka%20transfer%20i%C3%A7in%20ara%C3%A7%20istiyorum." target="_blank" rel="noopener">Karşıyaka Transfer</a>
-              <a href="https://wa.me/905060436591?text=Buca%20transfer%20i%C3%A7in%20ara%C3%A7%20istiyorum." target="_blank" rel="noopener">Buca Transfer</a>
-              <a href="https://wa.me/905060436591?text=Adnan%20Menderes%20Havaliman%C4%B1%20transferi%20istiyorum." target="_blank" rel="noopener">Adnan Menderes Havalimanı</a>
-              <a href="https://wa.me/905060436591?text=Havaliman%C4%B1%20-%20%C3%87e%C5%9Fme%20transferi%20istiyorum." target="_blank" rel="noopener">Havalimanı - Çeşme</a>
-              <a href="https://wa.me/905060436591?text=Havaliman%C4%B1%20-%20Ala%C3%A7at%C4%B1%20transferi%20istiyorum." target="_blank" rel="noopener">Havalimanı - Alaçatı</a>
-              <a href="https://wa.me/905060436591?text=Bornova%20-%20Havaliman%C4%B1%20transferi%20istiyorum." target="_blank" rel="noopener">Bornova - Havalimanı</a>
-              <a href="https://wa.me/905060436591?text=Mordo%C4%9Fan%20transfer%20i%C3%A7in%20ara%C3%A7%20istiyorum." target="_blank" rel="noopener">Mordoğan Transfer</a>
-              <a href="https://wa.me/905060436591?text=%C3%9Crkmez%20G%C3%BCm%C3%BCld%C3%BCr%20transfer%20i%C3%A7in%20ara%C3%A7%20istiyorum." target="_blank" rel="noopener">Ürkmez - Gümüldür</a>
-            </div>
-          </article>
-
-          <article class="district-panel reveal delay-1">
-            <span class="district-label">METROPOL</span>
-            <h3>Merkez İlçeler</h3>
-            <div class="district-list">
-              <a href="https://wa.me/905060436591?text=Bal%C3%A7ova%20transfer%20i%C3%A7in%20ara%C3%A7%20istiyorum." target="_blank" rel="noopener">Balçova</a>
-              <a href="https://wa.me/905060436591?text=Bayrakl%C4%B1%20transfer%20i%C3%A7in%20ara%C3%A7%20istiyorum." target="_blank" rel="noopener">Bayraklı</a>
-              <a href="https://wa.me/905060436591?text=Bornova%20transfer%20i%C3%A7in%20ara%C3%A7%20istiyorum." target="_blank" rel="noopener">Bornova</a>
-              <a href="https://wa.me/905060436591?text=Buca%20transfer%20i%C3%A7in%20ara%C3%A7%20istiyorum." target="_blank" rel="noopener">Buca</a>
-              <a href="https://wa.me/905060436591?text=%C3%87i%C4%9Fli%20transfer%20i%C3%A7in%20ara%C3%A7%20istiyorum." target="_blank" rel="noopener">Çiğli</a>
-              <a href="https://wa.me/905060436591?text=Gaziemir%20transfer%20i%C3%A7in%20ara%C3%A7%20istiyorum." target="_blank" rel="noopener">Gaziemir</a>
-              <a href="https://wa.me/905060436591?text=G%C3%BCzelbah%C3%A7e%20transfer%20i%C3%A7in%20ara%C3%A7%20istiyorum." target="_blank" rel="noopener">Güzelbahçe</a>
-              <a href="https://wa.me/905060436591?text=Karaba%C4%9Flar%20transfer%20i%C3%A7in%20ara%C3%A7%20istiyorum." target="_blank" rel="noopener">Karabağlar</a>
-              <a href="https://wa.me/905060436591?text=Kar%C5%9F%C4%B1yaka%20transfer%20i%C3%A7in%20ara%C3%A7%20istiyorum." target="_blank" rel="noopener">Karşıyaka</a>
-              <a href="https://wa.me/905060436591?text=Konak%20transfer%20i%C3%A7in%20ara%C3%A7%20istiyorum." target="_blank" rel="noopener">Konak</a>
-              <a href="https://wa.me/905060436591?text=Narl%C4%B1dere%20transfer%20i%C3%A7in%20ara%C3%A7%20istiyorum." target="_blank" rel="noopener">Narlıdere</a>
-            </div>
-          </article>
-
-          <article class="district-panel reveal delay-2">
-            <span class="district-label">SAHİL VE KUZEY</span>
-            <h3>Sahil Hattı</h3>
-            <div class="district-list">
-              <a href="https://wa.me/905060436591?text=Alia%C4%9Fa%20transfer%20i%C3%A7in%20ara%C3%A7%20istiyorum." target="_blank" rel="noopener">Aliağa</a>
-              <a href="https://wa.me/905060436591?text=Bergama%20transfer%20i%C3%A7in%20ara%C3%A7%20istiyorum." target="_blank" rel="noopener">Bergama</a>
-              <a href="https://wa.me/905060436591?text=%C3%87e%C5%9Fme%20transfer%20i%C3%A7in%20ara%C3%A7%20istiyorum." target="_blank" rel="noopener">Çeşme</a>
-              <a href="https://wa.me/905060436591?text=Dikili%20transfer%20i%C3%A7in%20ara%C3%A7%20istiyorum." target="_blank" rel="noopener">Dikili</a>
-              <a href="https://wa.me/905060436591?text=Fo%C3%A7a%20transfer%20i%C3%A7in%20ara%C3%A7%20istiyorum." target="_blank" rel="noopener">Foça</a>
-              <a href="https://wa.me/905060436591?text=Karaburun%20transfer%20i%C3%A7in%20ara%C3%A7%20istiyorum." target="_blank" rel="noopener">Karaburun</a>
-              <a href="https://wa.me/905060436591?text=K%C4%B1n%C4%B1k%20transfer%20i%C3%A7in%20ara%C3%A7%20istiyorum." target="_blank" rel="noopener">Kınık</a>
-              <a href="https://wa.me/905060436591?text=Menemen%20transfer%20i%C3%A7in%20ara%C3%A7%20istiyorum." target="_blank" rel="noopener">Menemen</a>
-              <a href="https://wa.me/905060436591?text=Seferihisar%20transfer%20i%C3%A7in%20ara%C3%A7%20istiyorum." target="_blank" rel="noopener">Seferihisar</a>
-              <a href="https://wa.me/905060436591?text=Urla%20transfer%20i%C3%A7in%20ara%C3%A7%20istiyorum." target="_blank" rel="noopener">Urla</a>
-            </div>
-          </article>
-
-          <article class="district-panel reveal">
-            <span class="district-label">İÇ VE GÜNEY HATLAR</span>
-            <h3>Şehir Dışı Bağlantıları</h3>
-            <div class="district-list">
-              <a href="https://wa.me/905060436591?text=Bay%C4%B1nd%C4%B1r%20transfer%20i%C3%A7in%20ara%C3%A7%20istiyorum." target="_blank" rel="noopener">Bayındır</a>
-              <a href="https://wa.me/905060436591?text=Beyda%C4%9F%20transfer%20i%C3%A7in%20ara%C3%A7%20istiyorum." target="_blank" rel="noopener">Beydağ</a>
-              <a href="https://wa.me/905060436591?text=Kemalpa%C5%9Fa%20transfer%20i%C3%A7in%20ara%C3%A7%20istiyorum." target="_blank" rel="noopener">Kemalpaşa</a>
-              <a href="https://wa.me/905060436591?text=Kiraz%20transfer%20i%C3%A7in%20ara%C3%A7%20istiyorum." target="_blank" rel="noopener">Kiraz</a>
-              <a href="https://wa.me/905060436591?text=Menderes%20transfer%20i%C3%A7in%20ara%C3%A7%20istiyorum." target="_blank" rel="noopener">Menderes</a>
-              <a href="https://wa.me/905060436591?text=%C3%96demi%C5%9F%20transfer%20i%C3%A7in%20ara%C3%A7%20istiyorum." target="_blank" rel="noopener">Ödemiş</a>
-              <a href="https://wa.me/905060436591?text=Sel%C3%A7uk%20transfer%20i%C3%A7in%20ara%C3%A7%20istiyorum." target="_blank" rel="noopener">Selçuk</a>
-              <a href="https://wa.me/905060436591?text=Tire%20transfer%20i%C3%A7in%20ara%C3%A7%20istiyorum." target="_blank" rel="noopener">Tire</a>
-              <a href="https://wa.me/905060436591?text=Torbal%C4%B1%20transfer%20i%C3%A7in%20ara%C3%A7%20istiyorum." target="_blank" rel="noopener">Torbalı</a>
-            </div>
-          </article>
-        </div>
-      </section>
 
       <section class="section comments">
         <div class="wrap narrow reveal">

@@ -571,6 +571,7 @@ const districtDetailScope = document.querySelector("#districtDetailScope");
 const districtDetailRoute = document.querySelector("#districtDetailRoute");
 const districtDetailVehicle = document.querySelector("#districtDetailVehicle");
 const districtDetailCard = document.querySelector(".district-detail-card");
+const districtDetailPage = document.querySelector("#districtDetailPage");
 
 const districtZoneLabels = {
   merkez: "MERKEZ HAT",
@@ -598,6 +599,19 @@ function createDistrict(name, zone, note, route, scope = "Şehir içi ve havalim
     vehicle,
     text: `${name} bölgesi için ${zoneText} sağlanır. Nokta Transfer, yolculuk öncesi net bilgi veren, 7/24 ulaşılabilir ve konforlu araç seçeneği sunan özel transfer çözümüdür.`
   };
+}
+
+function slugifyDistrictName(name) {
+  return name
+    .toLocaleLowerCase("tr-TR")
+    .replace(/ç/g, "c")
+    .replace(/ğ/g, "g")
+    .replace(/ı/g, "i")
+    .replace(/ö/g, "o")
+    .replace(/ş/g, "s")
+    .replace(/ü/g, "u")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
 }
 
 const districtDetails = {
@@ -650,6 +664,10 @@ function updateDistrictDetail(id) {
   if (districtDetailScope) districtDetailScope.textContent = detail.scope;
   if (districtDetailRoute) districtDetailRoute.textContent = detail.route;
   if (districtDetailVehicle) districtDetailVehicle.textContent = detail.vehicle;
+  if (districtDetailPage) {
+    districtDetailPage.href = `./${slugifyDistrictName(detail.name)}-transfer/`;
+    districtDetailPage.textContent = `${detail.name} Transfer Sayfasını Aç`;
+  }
 
   districtButtons.forEach((button) => {
     button.classList.toggle("is-active", button.dataset.district === id);
