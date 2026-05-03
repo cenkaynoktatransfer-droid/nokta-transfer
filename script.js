@@ -558,3 +558,113 @@ fareDistanceRange?.addEventListener("input", updateFareEstimate);
 initializeRouteMap();
 updateRouteDisplay();
 updateFareEstimate();
+
+const districtButtons = document.querySelectorAll("[data-district]");
+const districtVisual = document.querySelector("#districtVisual");
+const districtVisualKicker = document.querySelector("#districtVisualKicker");
+const districtVisualTitle = document.querySelector("#districtVisualTitle");
+const districtVisualNote = document.querySelector("#districtVisualNote");
+const districtDetailKicker = document.querySelector("#districtDetailKicker");
+const districtDetailTitle = document.querySelector("#districtDetailTitle");
+const districtDetailText = document.querySelector("#districtDetailText");
+const districtDetailScope = document.querySelector("#districtDetailScope");
+const districtDetailRoute = document.querySelector("#districtDetailRoute");
+const districtDetailVehicle = document.querySelector("#districtDetailVehicle");
+const districtDetailCard = document.querySelector(".district-detail-card");
+
+const districtZoneLabels = {
+  merkez: "MERKEZ HAT",
+  sahil: "SAHİL HATTI",
+  kuzey: "KUZEY HATTI",
+  guney: "İÇ VE GÜNEY HAT"
+};
+
+function createDistrict(name, zone, note, route, scope = "Şehir içi ve havalimanı", vehicle = "Sedan / VIP") {
+  const zoneLabel = districtZoneLabels[zone] || "İZMİR HATTI";
+  const zoneText = {
+    merkez: "merkez cadde, iş alanı, otel ve hastane bağlantılarında hızlı araç yönlendirmesi",
+    sahil: "sahil, yazlık bölge, marina ve otel rotalarında planlı transfer desteği",
+    kuzey: "kuzey aksı, organize sanayi, liman ve şehir dışı bağlantılarında konforlu ulaşım",
+    guney: "iç ilçe, kırsal rota, terminal ve havalimanı bağlantılarında düzenli transfer"
+  }[zone] || "İzmir içi ve şehir dışı transfer";
+
+  return {
+    name,
+    zone,
+    kicker: zoneLabel,
+    note,
+    route,
+    scope,
+    vehicle,
+    text: `${name} bölgesi için ${zoneText} sağlanır. Nokta Transfer, yolculuk öncesi net bilgi veren, 7/24 ulaşılabilir ve konforlu araç seçeneği sunan özel transfer çözümüdür.`
+  };
+}
+
+const districtDetails = {
+  konak: createDistrict("Konak", "merkez", "Saat Kulesi, Alsancak, Kordon", "Konak - Adnan Menderes"),
+  balcova: createDistrict("Balçova", "merkez", "Teleferik, İnciraltı, AVM hattı", "Balçova - Havalimanı"),
+  bayrakli: createDistrict("Bayraklı", "merkez", "Adliye, plaza ve sahil hattı", "Bayraklı - Alsancak"),
+  bornova: createDistrict("Bornova", "merkez", "Ege Üniversitesi, Forum, merkez", "Bornova - Adnan Menderes"),
+  buca: createDistrict("Buca", "merkez", "Kozağaç, Şirinyer, üniversite çevresi", "Buca - Havalimanı"),
+  cigli: createDistrict("Çiğli", "kuzey", "OSB, Mavişehir ve kuzey çevre yolu", "Çiğli - Karşıyaka"),
+  gaziemir: createDistrict("Gaziemir", "merkez", "Adnan Menderes, fuar ve çevre yolu", "Gaziemir - Havalimanı"),
+  guzelbahce: createDistrict("Güzelbahçe", "sahil", "Sahil yolu, marina ve Urla bağlantısı", "Güzelbahçe - Urla"),
+  karabaglar: createDistrict("Karabağlar", "merkez", "Bozyaka, Yeşilyurt ve şehir merkezi", "Karabağlar - Konak"),
+  karsiyaka: createDistrict("Karşıyaka", "merkez", "Bostanlı, Mavişehir ve sahil hattı", "Karşıyaka - Bornova"),
+  narlidere: createDistrict("Narlıdere", "sahil", "Sahil, oteller ve Balçova bağlantısı", "Narlıdere - Havalimanı"),
+  aliaga: createDistrict("Aliağa", "kuzey", "Liman, rafineri ve sanayi hattı", "Aliağa - İzmir Merkez", "Şehir dışı ve sanayi hattı", "Sedan / VIP / Van"),
+  bergama: createDistrict("Bergama", "kuzey", "Tarihi merkez ve kuzey aksı", "Bergama - Havalimanı", "Uzun mesafe transfer", "Sedan / VIP"),
+  cesme: createDistrict("Çeşme", "sahil", "Alaçatı, marina ve otel bölgeleri", "Çeşme - Adnan Menderes", "Sahil ve otel transferi", "Sedan / VIP / Van"),
+  dikili: createDistrict("Dikili", "sahil", "Sahil, liman ve yazlık bölgeler", "Dikili - İzmir Merkez", "Uzun mesafe sahil transferi", "Sedan / VIP"),
+  foca: createDistrict("Foça", "sahil", "Eski Foça, Yeni Foça ve sahil rotası", "Foça - Havalimanı", "Sahil ve yazlık transferi", "Sedan / VIP"),
+  karaburun: createDistrict("Karaburun", "sahil", "Yarımada, sahil ve yazlık hatları", "Karaburun - İzmir Merkez", "Yarımada transferi", "Sedan / VIP"),
+  kinik: createDistrict("Kınık", "kuzey", "Kuzey ilçe ve Bergama bağlantısı", "Kınık - İzmir Merkez", "Uzun mesafe transfer", "Sedan / VIP"),
+  menemen: createDistrict("Menemen", "kuzey", "Ulukent, şehir merkezi ve çevre yolu", "Menemen - Karşıyaka"),
+  mordogan: createDistrict("Mordoğan", "sahil", "Karaburun yolu, yazlık ve koylar", "Mordoğan - Havalimanı", "Yarımada sahil transferi", "Sedan / VIP"),
+  seferihisar: createDistrict("Seferihisar", "sahil", "Sığacık, marina ve sahil rotaları", "Seferihisar - Havalimanı", "Sahil ve otel transferi", "Sedan / VIP"),
+  urla: createDistrict("Urla", "sahil", "İskele, bağ yolu ve sahil hattı", "Urla - İzmir Merkez", "Sahil ve şehir içi transfer", "Sedan / VIP"),
+  urkmez: createDistrict("Ürkmez", "sahil", "Seferihisar hattı, sahil ve yazlıklar", "Ürkmez - İzmir Merkez", "Sahil transferi", "Sedan / VIP"),
+  gumuldur: createDistrict("Gümüldür", "sahil", "Menderes sahili ve yazlık bölgeler", "Gümüldür - Havalimanı", "Sahil ve havalimanı transferi", "Sedan / VIP"),
+  bayindir: createDistrict("Bayındır", "guney", "İç ilçe, terminal ve merkez rotası", "Bayındır - İzmir Merkez", "İç ilçe transferi", "Sedan / VIP"),
+  beydag: createDistrict("Beydağ", "guney", "Ödemiş hattı ve güney aksı", "Beydağ - Havalimanı", "Uzun mesafe transfer", "Sedan / VIP"),
+  kemalpasa: createDistrict("Kemalpaşa", "guney", "Sanayi, OSB ve şehir dışı bağlantı", "Kemalpaşa - Bornova", "Sanayi ve şehir içi transfer", "Sedan / VIP"),
+  kiraz: createDistrict("Kiraz", "guney", "Güney ilçe ve Ödemiş bağlantısı", "Kiraz - İzmir Merkez", "Uzun mesafe transfer", "Sedan / VIP"),
+  menderes: createDistrict("Menderes", "guney", "Havalimanı, Gümüldür ve sahil bağlantısı", "Menderes - Adnan Menderes"),
+  odemis: createDistrict("Ödemiş", "guney", "Birgi, merkez ve güney rotası", "Ödemiş - Havalimanı", "Uzun mesafe transfer", "Sedan / VIP"),
+  selcuk: createDistrict("Selçuk", "guney", "Efes, Şirince ve otel bağlantıları", "Selçuk - Havalimanı", "Turistik rota transferi", "Sedan / VIP / Van"),
+  tire: createDistrict("Tire", "guney", "İç ilçe, terminal ve merkez hattı", "Tire - İzmir Merkez", "Uzun mesafe transfer", "Sedan / VIP"),
+  torbali: createDistrict("Torbalı", "guney", "Pancar, Ayrancılar ve sanayi hattı", "Torbalı - Havalimanı")
+};
+
+function updateDistrictDetail(id) {
+  const detail = districtDetails[id];
+  if (!detail || !districtVisual) return;
+
+  districtVisual.dataset.zone = detail.zone;
+  if (districtVisualKicker) districtVisualKicker.textContent = detail.kicker;
+  if (districtVisualTitle) districtVisualTitle.textContent = detail.name;
+  if (districtVisualNote) districtVisualNote.textContent = detail.note;
+  if (districtDetailKicker) districtDetailKicker.textContent = detail.kicker;
+  if (districtDetailTitle) districtDetailTitle.textContent = `${detail.name} Transfer`;
+  if (districtDetailText) districtDetailText.textContent = detail.text;
+  if (districtDetailScope) districtDetailScope.textContent = detail.scope;
+  if (districtDetailRoute) districtDetailRoute.textContent = detail.route;
+  if (districtDetailVehicle) districtDetailVehicle.textContent = detail.vehicle;
+
+  districtButtons.forEach((button) => {
+    button.classList.toggle("is-active", button.dataset.district === id);
+  });
+}
+
+districtButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    updateDistrictDetail(button.dataset.district);
+    if (window.innerWidth <= 880) {
+      districtDetailCard?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  });
+});
+
+if (districtButtons.length) {
+  updateDistrictDetail("konak");
+}

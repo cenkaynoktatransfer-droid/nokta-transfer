@@ -122,7 +122,8 @@ a {
   -webkit-user-drag: none;
 }
 
-.menu-taxi:hover {
+.menu-taxi:hover,
+.menu-taxi.is-current {
   transform: translateY(-2px) scale(1.06);
   box-shadow: 0 0 28px rgba(255, 196, 0, 0.2);
 }
@@ -988,7 +989,8 @@ h1 {
 }
 
 .district-list a,
-.popular-routes a {
+.popular-routes a,
+.district-buttons button {
   min-height: 40px;
   display: flex;
   align-items: center;
@@ -999,20 +1001,25 @@ h1 {
   color: #cfd0d6;
   background: rgba(255, 255, 255, 0.035);
   border: 1px solid rgba(255, 255, 255, 0.06);
+  cursor: pointer;
+  font: inherit;
   font-size: 13px;
   font-weight: 900;
+  text-align: left;
   transition: transform 180ms ease, color 180ms ease, border-color 180ms ease, box-shadow 180ms ease, background 180ms ease;
 }
 
 .district-list a::after,
-.popular-routes a::after {
+.popular-routes a::after,
+.district-buttons button::after {
   content: "›";
   color: var(--yellow);
   font-size: 19px;
   line-height: 1;
 }
 
-.popular-routes a {
+.popular-routes a,
+.popular-routes button {
   min-height: 52px;
   padding: 0 18px;
   font-size: 14px;
@@ -1020,7 +1027,9 @@ h1 {
 
 .district-panel:hover,
 .district-list a:hover,
-.popular-routes a:hover {
+.popular-routes a:hover,
+.district-buttons button:hover,
+.district-buttons button.is-active {
   border-color: rgba(255, 196, 0, 0.72);
   box-shadow:
     0 0 0 1px rgba(255, 196, 0, 0.2),
@@ -1036,15 +1045,238 @@ h1 {
 }
 
 .district-list a:hover,
-.popular-routes a:hover {
+.popular-routes a:hover,
+.district-buttons button:hover,
+.district-buttons button.is-active {
   transform: translateX(4px);
   color: #111;
   background: linear-gradient(135deg, #ffe066, #ffc400);
 }
 
 .district-list a:hover::after,
-.popular-routes a:hover::after {
+.popular-routes a:hover::after,
+.district-buttons button:hover::after,
+.district-buttons button.is-active::after {
   color: #111;
+}
+
+.district-page {
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at 20% 8%, rgba(255, 196, 0, 0.12), transparent 0 30rem),
+    radial-gradient(circle at 78% 12%, rgba(255, 255, 255, 0.055), transparent 0 28rem),
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.014) 0 1px, transparent 1px 48px),
+    #050505;
+}
+
+.district-page-hero {
+  position: relative;
+  overflow: hidden;
+  padding: 78px 0 34px;
+  border-bottom: 1px solid rgba(255, 196, 0, 0.16);
+}
+
+.district-page-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, rgba(5, 5, 5, 0.92), rgba(5, 5, 5, 0.66) 48%, rgba(5, 5, 5, 0.92)),
+    url("./assets/izmir-saat-kulesi-hero.png") center 45% / cover no-repeat;
+  opacity: 0.46;
+  transform: scale(1.03);
+}
+
+.district-page-shell {
+  position: relative;
+  z-index: 1;
+  width: min(1180px, calc(100% - 32px));
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(380px, 520px);
+  align-items: center;
+  gap: 34px;
+}
+
+.district-page-copy h1 {
+  max-width: 660px;
+  margin: 0 0 20px;
+  color: #fff;
+  font-size: clamp(42px, 6vw, 86px);
+  line-height: 0.93;
+  font-weight: 950;
+}
+
+.district-page-copy h1 span {
+  color: var(--yellow);
+}
+
+.district-page-copy p {
+  max-width: 650px;
+  margin: 0;
+  color: #d6d7dc;
+  font-size: 19px;
+  line-height: 1.65;
+  font-weight: 720;
+}
+
+.district-page-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 30px;
+}
+
+.district-page-actions a {
+  min-height: 48px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 20px;
+  border-radius: 999px;
+  color: #111;
+  background: linear-gradient(135deg, #ffe066, #ffc400);
+  box-shadow: 0 0 26px rgba(255, 196, 0, 0.22);
+  font-size: 13px;
+  font-weight: 950;
+}
+
+.district-page-actions a:first-child {
+  color: #f3f3f3;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: none;
+}
+
+.district-detail-card {
+  min-height: 560px;
+  padding: 24px;
+  border-radius: 30px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background:
+    linear-gradient(180deg, rgba(24, 25, 29, 0.9), rgba(9, 10, 12, 0.94)),
+    repeating-linear-gradient(35deg, rgba(255, 255, 255, 0.022) 0 1px, transparent 1px 10px);
+  box-shadow:
+    0 30px 90px rgba(0, 0, 0, 0.42),
+    0 0 34px rgba(255, 196, 0, 0.08);
+}
+
+.district-visual {
+  min-height: 246px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-bottom: 24px;
+  padding: 24px;
+  border-radius: 24px;
+  overflow: hidden;
+  background:
+    linear-gradient(180deg, rgba(2, 2, 3, 0.05), rgba(3, 3, 5, 0.78)),
+    url("./assets/izmir-saat-kulesi-hero.png") center / cover no-repeat;
+  border: 1px solid rgba(255, 255, 255, 0.11);
+  box-shadow: inset 0 -70px 90px rgba(0, 0, 0, 0.58);
+}
+
+.district-visual[data-zone="sahil"] {
+  background:
+    linear-gradient(180deg, rgba(3, 5, 8, 0.08), rgba(4, 8, 12, 0.78)),
+    radial-gradient(circle at 78% 18%, rgba(255, 196, 0, 0.28), transparent 0 28%),
+    linear-gradient(135deg, #132038, #0c4354 48%, #7a5420);
+}
+
+.district-visual[data-zone="guney"] {
+  background:
+    linear-gradient(180deg, rgba(4, 4, 3, 0.08), rgba(6, 5, 3, 0.78)),
+    radial-gradient(circle at 22% 20%, rgba(255, 196, 0, 0.24), transparent 0 30%),
+    linear-gradient(135deg, #17120d, #3d3421 48%, #82713b);
+}
+
+.district-visual[data-zone="kuzey"] {
+  background:
+    linear-gradient(180deg, rgba(3, 4, 5, 0.08), rgba(4, 4, 5, 0.78)),
+    radial-gradient(circle at 74% 20%, rgba(255, 196, 0, 0.22), transparent 0 28%),
+    linear-gradient(135deg, #0d1322, #26334b 48%, #6c5b27);
+}
+
+.district-visual span {
+  width: max-content;
+  max-width: 100%;
+  padding: 7px 11px;
+  border-radius: 999px;
+  color: #111;
+  background: linear-gradient(135deg, #ffe066, #ffc400);
+  font-size: 10px;
+  font-weight: 950;
+  letter-spacing: 1.2px;
+}
+
+.district-visual strong {
+  color: #fff;
+  font-size: clamp(36px, 5vw, 66px);
+  line-height: 0.9;
+  font-weight: 950;
+  text-shadow: 0 10px 34px rgba(0, 0, 0, 0.65);
+}
+
+.district-visual small {
+  color: #ececf1;
+  font-size: 15px;
+  font-weight: 850;
+}
+
+.district-detail-card h2 {
+  margin: 0 0 12px;
+  color: #fff;
+  font-size: 34px;
+  line-height: 1;
+  font-weight: 950;
+}
+
+.district-detail-card p {
+  margin: 0 0 22px;
+  color: #c7c8d0;
+  font-size: 16px;
+  line-height: 1.68;
+  font-weight: 700;
+}
+
+.district-detail-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.district-detail-grid div {
+  min-height: 92px;
+  padding: 16px;
+  border-radius: 18px;
+  background: rgba(0, 0, 0, 0.34);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.district-detail-grid span {
+  display: block;
+  margin-bottom: 9px;
+  color: #8f929d;
+  font-size: 10px;
+  font-weight: 950;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.district-detail-grid strong {
+  color: #fff;
+  font-size: 15px;
+  line-height: 1.35;
+  font-weight: 900;
+}
+
+.district-guide-page {
+  padding-top: 56px;
+}
+
+.district-directory {
+  width: min(1180px, calc(100% - 32px));
 }
 
 .price {
@@ -1771,6 +2003,22 @@ h1 {
     grid-row: auto;
   }
 
+  .district-page-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .district-page-copy {
+    text-align: center;
+  }
+
+  .district-page-copy p {
+    margin: 0 auto;
+  }
+
+  .district-page-actions {
+    justify-content: center;
+  }
+
   .area-grid,
   .fleet-grid,
   .comment-grid {
@@ -1874,6 +2122,34 @@ h1 {
 
   .district-cta {
     width: 100%;
+  }
+
+  .district-page-hero {
+    padding: 46px 0 22px;
+  }
+
+  .district-page-copy h1 {
+    font-size: 43px;
+  }
+
+  .district-page-copy p {
+    font-size: 16px;
+  }
+
+  .district-detail-card {
+    min-height: auto;
+    padding: 18px;
+    border-radius: 24px;
+  }
+
+  .district-visual {
+    min-height: 210px;
+    padding: 20px;
+    border-radius: 20px;
+  }
+
+  .district-detail-grid {
+    grid-template-columns: 1fr;
   }
 
   .glass-card,

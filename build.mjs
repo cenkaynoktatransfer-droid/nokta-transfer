@@ -2,6 +2,7 @@ import { cp, mkdir, rm } from "node:fs/promises";
 
 const files = [
   "index.html",
+  "ilceler.html",
   "styles.css",
   "script.js",
   "robots.txt",
