@@ -194,9 +194,10 @@
             </div>
 
             <label class="toll-panel" id="tollPanel" hidden>
-              <span>Güncel otoyol ücreti</span>
-              <input id="tollInput" type="number" min="0" step="1" inputmode="numeric" placeholder="Örn. 180" />
-              <small>Otoban seçilirse bu ücret toplam tahmine eklenir.</small>
+              <span>Otoyol ücreti</span>
+              <p id="tollStatus">Rota seçilince otoyol ücreti otomatik aranır.</p>
+              <input id="tollInput" type="number" min="0" step="1" inputmode="numeric" placeholder="Yedek ücret" hidden />
+              <small id="tollHint">Otomatik bulunursa toplam fiyata kendisi eklenir.</small>
             </label>
 
             <div class="map-card" id="routeMap" aria-label="Rota haritası"></div>
@@ -268,7 +269,7 @@
 
             <label class="fare-toll-field" id="fareTollPanel" hidden>
               <span>Otoyol ücreti</span>
-              <input id="fareTollInput" type="number" min="0" step="1" inputmode="numeric" placeholder="Örn. 180" />
+              <small>Otoyol ücreti rotaya göre değişir. Adresli rota panelinde otomatik hesaplanır.</small>
             </label>
 
             <div class="fare-result">
@@ -310,6 +311,85 @@
               kadar değerlendirerek hizmet standartlarımızı sürekli güncelliyoruz.
             </p>
           </div>
+        </div>
+      </section>
+
+      <section class="section operation">
+        <div class="wrap operation-grid">
+          <div class="operation-copy reveal">
+            <span class="section-kicker">NASIL ÇALIŞIR</span>
+            <h2>3 adımda <span>net transfer</span></h2>
+            <p>
+              Uzun telefon görüşmeleri, belirsiz fiyatlar ve son dakika araç arama stresi olmadan;
+              rotayı seçin, tahmini ücreti görün, aracı çağırın.
+            </p>
+          </div>
+          <div class="operation-steps">
+            <article class="operation-card reveal">
+              <b>01</b>
+              <h3>Rota Seç</h3>
+              <p>Alınacak ve gidilecek adresi yazın; mesafe, süre ve ücret tahmini otomatik hesaplansın.</p>
+            </article>
+            <article class="operation-card reveal delay-1">
+              <b>02</b>
+              <h3>Yolu Belirle</h3>
+              <p>Normal yol veya otoban tercihini seçin. Otoyol ücreti bulunursa toplam tahmine eklenir.</p>
+            </article>
+            <article class="operation-card reveal delay-2">
+              <b>03</b>
+              <h3>Aracı Çağır</h3>
+              <p>WhatsApp ya da telefonla tek dokunuşta ulaşın; araç bilgisi ve rota netleşsin.</p>
+            </article>
+          </div>
+        </div>
+        <div class="wrap service-chips reveal">
+          <span>Adnan Menderes karşılama</span>
+          <span>Geniş bagaj alanı</span>
+          <span>Şehir içi kısa rota</span>
+          <span>Çeşme ve sahil hattı</span>
+          <span>Gece güvenli ulaşım</span>
+        </div>
+      </section>
+
+      <section class="section popular-lines">
+        <div class="wrap narrow reveal">
+          <span class="section-kicker">POPÜLER TRANSFER HATLARI</span>
+          <h2>İzmir'in en çok <span>aranan rotaları</span></h2>
+          <p>
+            Havalimanı, sahil hattı ve merkez ilçelerde sık kullanılan güzergahları tek ekranda topladık.
+          </p>
+        </div>
+        <div class="wrap popular-grid">
+          <a class="popular-card reveal" href="./cesme-transfer/">
+            <span>Adnan Menderes çıkışlı</span>
+            <strong>Çeşme Transfer</strong>
+            <small>Alaçatı, marina, otel ve yazlık bölgeler</small>
+          </a>
+          <a class="popular-card reveal delay-1" href="./urla-transfer/">
+            <span>Sahil hattı</span>
+            <strong>Urla Transfer</strong>
+            <small>İskele, bağ yolu, Güzelbahçe bağlantısı</small>
+          </a>
+          <a class="popular-card reveal delay-2" href="./karsiyaka-transfer/">
+            <span>Merkez rota</span>
+            <strong>Karşıyaka Transfer</strong>
+            <small>Bostanlı, Mavişehir, Bornova ve Konak bağlantısı</small>
+          </a>
+          <a class="popular-card reveal" href="./bornova-transfer/">
+            <span>Üniversite ve iş hattı</span>
+            <strong>Bornova Transfer</strong>
+            <small>Ege Üniversitesi, Forum, havalimanı ve merkez</small>
+          </a>
+          <a class="popular-card reveal delay-1" href="./selcuk-transfer/">
+            <span>Turistik rota</span>
+            <strong>Selçuk Transfer</strong>
+            <small>Efes, Şirince, otel ve havalimanı ulaşımı</small>
+          </a>
+          <a class="popular-card reveal delay-2" href="./foca-transfer/">
+            <span>Kuzey sahil</span>
+            <strong>Foça Transfer</strong>
+            <small>Eski Foça, Yeni Foça ve sahil güzergahları</small>
+          </a>
         </div>
       </section>
 

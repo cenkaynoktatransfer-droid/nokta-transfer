@@ -40,7 +40,9 @@ const farePriceValue = document.querySelector("#farePriceValue");
 const fareRateLabel = document.querySelector("#fareRateLabel");
 const routeModeButtons = document.querySelectorAll("[data-route-mode]");
 const tollPanel = document.querySelector("#tollPanel");
+const tollStatus = document.querySelector("#tollStatus");
 const tollInput = document.querySelector("#tollInput");
+const tollHint = document.querySelector("#tollHint");
 const tollAmountOutput = document.querySelector("#tollAmountOutput");
 const fareModeButtons = document.querySelectorAll("[data-fare-mode]");
 const fareTollPanel = document.querySelector("#fareTollPanel");
@@ -61,7 +63,9 @@ const routeState = {
   durationMinutes: 0,
   requestId: 0,
   roadMode: "normal",
-  tollFee: 0
+  tollFee: 0,
+  tollSource: "",
+  tollRequestId: 0
 };
 
 const fareState = {
@@ -90,6 +94,7 @@ const routeControls = {
 
 let routeMap = null;
 let routeLine = null;
+let tollAbortController = null;
 
 function formatNumber(value, maximumFractionDigits = 1) {
   return value.toLocaleString("tr-TR", {
@@ -133,6 +138,88 @@ function getPricingLabel(distanceKm, tollFee = 0) {
   }
 
   return `0-6 km ${formatCurrency(minimumFare)} + 100 km sonrası ${longRouteRate} TL/km${tollText}`;
+}
+
+function resetTollEstimate() {
+  routeState.tollFee = 0;
+  routeState.tollSource = "";
+  routeState.tollRequestId += 1;
+  if (tollAbortController) tollAbortController.abort();
+  if (tollInput) {
+    tollInput.value = "";
+    tollInput.hidden = true;
+  }
+  if (tollStatus) tollStatus.textContent = "Rota seçilince otoyol ücreti otomatik aranır.";
+  if (tollHint) tollHint.textContent = "Otomatik bulunursa toplam fiyata kendisi eklenir.";
+}
+
+function showManualTollFallback(message) {
+  routeState.tollSource = "manual";
+  if (tollInput) tollInput.hidden = false;
+  if (tollStatus) tollStatus.textContent = message;
+  if (tollHint) tollHint.textContent = "Otomatik ücret bulunamazsa güncel otoyol ücretini yedek olarak buraya yazabilirsiniz.";
+}
+
+async function fetchAutomaticTollEstimate() {
+  if (routeState.roadMode !== "highway" || !routeState.pickup || !routeState.dropoff) return;
+
+  const currentTollRequestId = ++routeState.tollRequestId;
+  routeState.tollFee = 0;
+  routeState.tollSource = "auto-pending";
+  if (tollInput) {
+    tollInput.value = "";
+    tollInput.hidden = true;
+  }
+  if (tollPanel) tollPanel.hidden = false;
+  if (tollStatus) tollStatus.textContent = "Otoban ücreti otomatik aranıyor...";
+  if (tollHint) tollHint.textContent = "Google Routes ücret dönerse toplam fiyata otomatik eklenir.";
+  updateRouteDisplay();
+
+  if (tollAbortController) tollAbortController.abort();
+  tollAbortController = new AbortController();
+
+  try {
+    const response = await fetch("/api/toll-estimate", {
+      method: "POST",
+      signal: tollAbortController.signal,
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({
+        origin: {
+          lat: routeState.pickup.lat,
+          lng: routeState.pickup.lng
+        },
+        destination: {
+          lat: routeState.dropoff.lat,
+          lng: routeState.dropoff.lng
+        }
+      })
+    });
+
+    const data = await response.json();
+    if (currentTollRequestId !== routeState.tollRequestId) return;
+
+    if (data.ok && data.tollFee > 0) {
+      routeState.tollFee = normalizeMoneyInput(data.tollFee);
+      routeState.tollSource = "auto";
+      if (tollStatus) tollStatus.textContent = `Otoyol ücreti otomatik bulundu: ${formatCurrency(routeState.tollFee)}`;
+      if (tollHint) tollHint.textContent = "Bu tutar toplam tahmine otomatik eklendi.";
+      if (tollInput) tollInput.hidden = true;
+      updateRouteDisplay();
+      return;
+    }
+
+    const fallbackMessage =
+      data.reason === "missing_api_key"
+        ? "Otomatik otoyol ücreti için Google Routes API anahtarı eklenmeli."
+        : "Bu rota için otomatik otoyol ücreti bulunamadı.";
+    showManualTollFallback(fallbackMessage);
+    updateRouteDisplay();
+  } catch (error) {
+    if (error.name === "AbortError") return;
+    if (currentTollRequestId !== routeState.tollRequestId) return;
+    showManualTollFallback("Otoyol ücreti servisine ulaşılamadı.");
+    updateRouteDisplay();
+  }
 }
 
 function setRouteStatus(message, tone = "") {
@@ -305,6 +392,7 @@ function fitRouteMap() {
 function clearRouteLine() {
   routeState.distanceKm = 0;
   routeState.durationMinutes = 0;
+  resetTollEstimate();
 
   if (routeLine) {
     routeLine.remove();
@@ -484,6 +572,7 @@ async function calculateRoute() {
     updateRouteDisplay();
     drawRoute(route.geometry);
     setRouteStatus("Rota hazır. Fiyat otomatik hesaplandı.", "ready");
+    if (routeState.roadMode === "highway") fetchAutomaticTollEstimate();
   } catch (error) {
     if (currentRequestId !== routeState.requestId) return;
     clearRouteLine();
@@ -543,11 +632,10 @@ resetRoute?.addEventListener("click", () => {
   routeState.dropoff = null;
   routeState.requestId += 1;
   routeState.roadMode = "normal";
-  routeState.tollFee = 0;
+  resetTollEstimate();
 
   if (pickupInput) pickupInput.value = "";
   if (dropoffInput) dropoffInput.value = "";
-  if (tollInput) tollInput.value = "";
   if (tollPanel) tollPanel.hidden = true;
   routeModeButtons.forEach((button) => {
     button.classList.toggle("is-active", button.dataset.routeMode === "normal");
@@ -568,13 +656,25 @@ routeModeButtons.forEach((button) => {
     routeModeButtons.forEach((item) => {
       item.classList.toggle("is-active", item === button);
     });
-    if (tollPanel) tollPanel.hidden = routeState.roadMode !== "highway";
+    if (routeState.roadMode === "highway") {
+      if (tollPanel) tollPanel.hidden = false;
+      if (routeState.pickup && routeState.dropoff && routeState.distanceKm) {
+        fetchAutomaticTollEstimate();
+      } else {
+        resetTollEstimate();
+        if (tollStatus) tollStatus.textContent = "Rota seçilince otoyol ücreti otomatik aranır.";
+      }
+    } else {
+      if (tollPanel) tollPanel.hidden = true;
+      resetTollEstimate();
+    }
     updateRouteDisplay();
   });
 });
 
 tollInput?.addEventListener("input", () => {
   routeState.tollFee = normalizeMoneyInput(tollInput.value);
+  routeState.tollSource = "manual";
   updateRouteDisplay();
 });
 
