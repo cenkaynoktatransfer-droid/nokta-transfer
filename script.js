@@ -47,6 +47,7 @@ const tollAmountOutput = document.querySelector("#tollAmountOutput");
 const fareModeButtons = document.querySelectorAll("[data-fare-mode]");
 const fareTollPanel = document.querySelector("#fareTollPanel");
 const fareTollInput = document.querySelector("#fareTollInput");
+const bookingForm = document.querySelector("#bookingForm");
 
 const routePhone = "905060436591";
 const minimumFareDistanceKm = 6;
@@ -240,6 +241,47 @@ function setRouteStatus(message, tone = "") {
 
 function getPlaceText(place) {
   return place?.shortLabel || place?.label || "";
+}
+
+function formatBookingDate(value) {
+  if (!value) return "";
+  const date = new Date(`${value}T00:00:00`);
+  if (Number.isNaN(date.getTime())) return value;
+  return date.toLocaleDateString("tr-TR", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric"
+  });
+}
+
+function getBookingValue(formData, key) {
+  return String(formData.get(key) || "").trim();
+}
+
+function buildBookingMessage(form) {
+  const formData = new FormData(form);
+  const type = getBookingValue(formData, "type");
+  const date = formatBookingDate(getBookingValue(formData, "date"));
+  const time = getBookingValue(formData, "time");
+  const from = getBookingValue(formData, "from");
+  const to = getBookingValue(formData, "to");
+  const passengers = getBookingValue(formData, "passengers");
+  const luggage = getBookingValue(formData, "luggage");
+  const note = getBookingValue(formData, "note");
+
+  return [
+    "Merhaba Nokta Transfer, rezervasyon talebi oluşturmak istiyorum.",
+    type ? `Transfer tipi: ${type}` : "",
+    date || time ? `Tarih/Saat: ${[date, time].filter(Boolean).join(" - ")}` : "",
+    from ? `Alınacak yer: ${from}` : "",
+    to ? `Gidilecek yer: ${to}` : "",
+    passengers ? `Yolcu sayısı: ${passengers}` : "",
+    luggage ? `Bagaj: ${luggage}` : "",
+    note ? `Uçuş no / not: ${note}` : "",
+    "Müsait araç ve güncel ücret bilgisini paylaşır mısınız?"
+  ]
+    .filter(Boolean)
+    .join("\n");
 }
 
 function updateWhatsAppLink() {
@@ -747,6 +789,12 @@ fareModeButtons.forEach((button) => {
 fareTollInput?.addEventListener("input", () => {
   fareState.tollFee = normalizeMoneyInput(fareTollInput.value);
   updateFareEstimate();
+});
+
+bookingForm?.addEventListener("submit", (event) => {
+  event.preventDefault();
+  const message = buildBookingMessage(bookingForm);
+  window.open(`https://wa.me/${routePhone}?text=${encodeURIComponent(message)}`, "_blank", "noopener");
 });
 
 initializeRouteMap();

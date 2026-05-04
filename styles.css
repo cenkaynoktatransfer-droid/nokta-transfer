@@ -1024,6 +1024,230 @@ h1 {
   font-weight: 900;
 }
 
+.booking-priority {
+  padding-top: 54px;
+  background:
+    radial-gradient(circle at 18% 18%, rgba(255, 196, 0, 0.09), transparent 0 28%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.018), transparent);
+}
+
+.booking-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.96fr) minmax(340px, 0.74fr);
+  gap: 28px;
+  align-items: start;
+}
+
+.booking-copy h2,
+.transfer-advantages h2 {
+  max-width: 760px;
+  margin: 0 0 18px;
+  color: #fff;
+  font-size: clamp(36px, 4.7vw, 62px);
+  line-height: 0.98;
+  font-weight: 950;
+}
+
+.booking-copy h2 span,
+.transfer-advantages h2 span {
+  color: var(--yellow);
+}
+
+.booking-copy > p,
+.transfer-advantages .narrow p {
+  max-width: 680px;
+  margin: 0;
+  color: #b8bac2;
+  font-size: 17px;
+  line-height: 1.7;
+  font-weight: 720;
+}
+
+.booking-assurance {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 28px;
+}
+
+.booking-assurance article,
+.booking-form,
+.advantage-card,
+.route-bank {
+  border: 1px solid rgba(255, 255, 255, 0.085);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.052), rgba(255, 255, 255, 0.018)),
+    #09090b;
+  box-shadow: 0 22px 70px rgba(0, 0, 0, 0.24);
+}
+
+.booking-assurance article {
+  min-height: 132px;
+  padding: 18px;
+  border-radius: 18px;
+  transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+}
+
+.booking-assurance article:hover,
+.advantage-card:hover,
+.route-bank-list a:hover {
+  transform: translateY(-5px);
+  border-color: rgba(255, 196, 0, 0.68);
+  box-shadow: 0 0 32px rgba(255, 196, 0, 0.14), 0 22px 70px rgba(0, 0, 0, 0.28);
+}
+
+.booking-assurance strong {
+  display: block;
+  margin-bottom: 9px;
+  color: var(--yellow);
+  font-size: 16px;
+  font-weight: 950;
+}
+
+.booking-assurance span {
+  display: block;
+  color: #c6c8cf;
+  font-size: 13px;
+  line-height: 1.55;
+  font-weight: 720;
+}
+
+.booking-form {
+  padding: 24px;
+  border-radius: 24px;
+}
+
+.booking-form-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+.booking-form-head span {
+  color: #fff;
+  font-size: 19px;
+  font-weight: 950;
+}
+
+.booking-form-head strong {
+  min-height: 32px;
+  display: inline-flex;
+  align-items: center;
+  padding: 0 12px;
+  border-radius: 999px;
+  color: #111;
+  background: linear-gradient(135deg, #ffe066, #ffc400);
+  font-size: 12px;
+  font-weight: 950;
+}
+
+.booking-form label {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.booking-form label span {
+  color: #aeb3bf;
+  font-size: 12px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.booking-form input,
+.booking-form select {
+  width: 100%;
+  min-height: 48px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 15px;
+  color: #fff;
+  background: rgba(2, 3, 6, 0.72);
+  padding: 0 14px;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 760;
+  outline: none;
+  transition: border-color 160ms ease, box-shadow 160ms ease;
+}
+
+.booking-form input:focus,
+.booking-form select:focus {
+  border-color: rgba(255, 196, 0, 0.72);
+  box-shadow: 0 0 0 4px rgba(255, 196, 0, 0.12);
+}
+
+.booking-form input::placeholder {
+  color: #6f7685;
+}
+
+.booking-two {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.booking-submit {
+  width: 100%;
+  min-height: 52px;
+  border: 0;
+  border-radius: 999px;
+  color: #111;
+  background: linear-gradient(135deg, #ffe066, #ffc400 58%, #ffad14);
+  box-shadow: 0 0 34px rgba(255, 196, 0, 0.2), 0 16px 46px rgba(255, 196, 0, 0.16);
+  font: inherit;
+  font-weight: 950;
+  cursor: pointer;
+  transition: transform 160ms ease, box-shadow 160ms ease;
+}
+
+.booking-submit:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 44px rgba(255, 196, 0, 0.3), 0 20px 54px rgba(255, 196, 0, 0.2);
+}
+
+.transfer-advantages {
+  padding-top: 38px;
+}
+
+.advantage-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 34px;
+}
+
+.advantage-card {
+  min-height: 248px;
+  padding: 22px;
+  border-radius: 22px;
+  transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+}
+
+.advantage-card b {
+  color: var(--yellow);
+  font-size: 12px;
+  font-weight: 950;
+}
+
+.advantage-card h3 {
+  min-height: 54px;
+  margin: 18px 0 12px;
+  color: #fff;
+  font-size: 21px;
+  line-height: 1.12;
+  font-weight: 950;
+}
+
+.advantage-card p {
+  margin: 0;
+  color: #b7bbc5;
+  font-size: 14px;
+  line-height: 1.62;
+  font-weight: 720;
+}
+
 .popular-lines {
   padding-top: 50px;
 }
@@ -1088,6 +1312,67 @@ h1 {
   color: #b9bbc3;
   font-size: 14px;
   line-height: 1.55;
+  font-weight: 760;
+}
+
+.route-bank {
+  margin-top: 22px;
+  padding: 22px;
+  border-radius: 24px;
+}
+
+.route-bank-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  margin-bottom: 16px;
+}
+
+.route-bank-head span {
+  color: var(--yellow);
+  font-size: 12px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.route-bank-head strong {
+  color: #fff;
+  font-size: 18px;
+  font-weight: 950;
+}
+
+.route-bank-list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.route-bank-list a {
+  min-height: 74px;
+  display: grid;
+  align-content: center;
+  gap: 5px;
+  padding: 14px;
+  border-radius: 16px;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.035);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease, background 180ms ease;
+}
+
+.route-bank-list a:hover {
+  background: rgba(255, 196, 0, 0.07);
+}
+
+.route-bank-list span {
+  font-size: 15px;
+  font-weight: 950;
+}
+
+.route-bank-list b {
+  color: #aeb3bf;
+  font-size: 12px;
   font-weight: 760;
 }
 
@@ -2494,6 +2779,29 @@ h1 {
     grid-template-columns: 1fr;
   }
 
+  .booking-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .booking-copy {
+    text-align: center;
+  }
+
+  .booking-copy > p {
+    margin: 0 auto;
+  }
+
+  .booking-assurance,
+  .advantage-grid,
+  .route-bank-list {
+    grid-template-columns: 1fr;
+  }
+
+  .route-bank-head {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
   .popular-grid {
     grid-template-columns: 1fr;
   }
@@ -2576,7 +2884,9 @@ h1 {
 
   .hero-buttons,
   .checks,
-  .mini-grid {
+  .mini-grid,
+  .booking-assurance,
+  .booking-two {
     flex-direction: column;
     grid-template-columns: 1fr;
   }
@@ -2757,5 +3067,25 @@ h1 {
 
   .fare-range-wrap {
     padding-top: 34px;
+  }
+
+  .booking-form,
+  .route-bank,
+  .advantage-card {
+    border-radius: 20px;
+  }
+
+  .booking-form {
+    padding: 20px;
+  }
+
+  .booking-form-head {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .booking-copy h2,
+  .transfer-advantages h2 {
+    font-size: 36px;
   }
 }

@@ -73,6 +73,20 @@
                 "@type": "Service",
                 "name": "VIP Transfer"
               }
+            },
+            {
+              "@type": "Offer",
+              "itemOffered": {
+                "@type": "Service",
+                "name": "Şehirlerarası Transfer"
+              }
+            },
+            {
+              "@type": "Offer",
+              "itemOffered": {
+                "@type": "Service",
+                "name": "Kurumsal Transfer"
+              }
             }
           ]
         }
@@ -105,6 +119,22 @@
             "acceptedAnswer": {
               "@type": "Answer",
               "text": "Evet. Rota bilgisi alındıktan sonra yolculuk öncesi net fiyat paylaşılır."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Uçuş gecikirse havalimanı transferinde bekleme olur mu?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Uçuş numarası paylaşıldığında iniş saati kontrol edilir ve karşılama planı buna göre güncellenir."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Kurumsal veya şehirlerarası transfer alabilir miyim?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Evet. İzmir merkezli kurumsal, otel, fuar, otogar ve şehirlerarası transfer talepleri için araç planlaması yapılır."
             }
           }
         ]
@@ -351,6 +381,116 @@
         </div>
       </section>
 
+      <section class="section booking-priority" id="rezervasyon">
+        <div class="wrap booking-grid">
+          <div class="booking-copy reveal">
+            <span class="section-kicker">HIZLI REZERVASYON</span>
+            <h2>Transfer talebini <span>tek mesajla</span> netleştir</h2>
+            <p>
+              Alınacak yer, varış noktası, yolcu sayısı, bagaj ve uçuş bilgisi tek mesajda gelsin;
+              ekip doğru araç tipini ve rota bilgisini hızlıca hazırlasın.
+            </p>
+            <div class="booking-assurance">
+              <article>
+                <strong>Uçuş takipli</strong>
+                <span>İniş saati değişirse plan güncellenir.</span>
+              </article>
+              <article>
+                <strong>Araç başı net ücret</strong>
+                <span>Yolcu sayısı değil rota ve araç planı esas alınır.</span>
+              </article>
+              <article>
+                <strong>Kapıdan kapıya</strong>
+                <span>Ev, otel, marina, terminal ve fuar noktalarına ulaşım.</span>
+              </article>
+            </div>
+          </div>
+
+          <form class="booking-form reveal delay-1" id="bookingForm">
+            <div class="booking-form-head">
+              <span>WhatsApp rezervasyon özeti</span>
+              <strong>30 saniye</strong>
+            </div>
+            <label>
+              <span>Transfer tipi</span>
+              <select name="type" required>
+                <option value="Adnan Menderes Havalimanı karşılama">Adnan Menderes karşılama</option>
+                <option value="Havalimanına bırakma">Havalimanına bırakma</option>
+                <option value="Şehir içi transfer">Şehir içi transfer</option>
+                <option value="Şehirlerarası transfer">Şehirlerarası transfer</option>
+                <option value="Kurumsal / VIP transfer">Kurumsal / VIP transfer</option>
+              </select>
+            </label>
+            <div class="booking-two">
+              <label>
+                <span>Tarih</span>
+                <input name="date" type="date" />
+              </label>
+              <label>
+                <span>Saat</span>
+                <input name="time" type="time" />
+              </label>
+            </div>
+            <label>
+              <span>Alınacak yer</span>
+              <input name="from" type="text" placeholder="Örn: Adnan Menderes Havalimanı" />
+            </label>
+            <label>
+              <span>Gidilecek yer</span>
+              <input name="to" type="text" placeholder="Örn: Alaçatı otel bölgesi" />
+            </label>
+            <div class="booking-two">
+              <label>
+                <span>Yolcu</span>
+                <input name="passengers" type="number" min="1" max="16" placeholder="2" />
+              </label>
+              <label>
+                <span>Bagaj</span>
+                <input name="luggage" type="number" min="0" max="12" placeholder="2" />
+              </label>
+            </div>
+            <label>
+              <span>Uçuş no / not</span>
+              <input name="note" type="text" placeholder="Örn: TK2320, bebek koltuğu, ekstra bagaj" />
+            </label>
+            <button class="booking-submit" type="submit">WhatsApp'a Hazırla</button>
+          </form>
+        </div>
+      </section>
+
+      <section class="section transfer-advantages">
+        <div class="wrap narrow reveal">
+          <span class="section-kicker">TRANSFER STANDARDI</span>
+          <h2>Yolculuktan önce <span>her detay belli</span></h2>
+          <p>
+            İzmir transfer arayan yolcuların en çok ihtiyaç duyduğu şey hız, fiyat netliği ve güvenli karşılama.
+            Nokta Transfer bu üç noktayı tek akışta toplar.
+          </p>
+        </div>
+        <div class="wrap advantage-grid">
+          <article class="advantage-card reveal">
+            <b>01</b>
+            <h3>Adnan Menderes Havalimanı</h3>
+            <p>Uçuş numarasıyla iniş takibi, terminal çıkışı yönlendirmesi ve bagaj sürecine göre araç planı.</p>
+          </article>
+          <article class="advantage-card reveal delay-1">
+            <b>02</b>
+            <h3>Otel, fuar ve marina</h3>
+            <p>Çeşme, Alaçatı, Urla, Foça, Selçuk ve merkez otel bölgeleri için kapıdan kapıya transfer.</p>
+          </article>
+          <article class="advantage-card reveal delay-2">
+            <b>03</b>
+            <h3>Şehirlerarası rota</h3>
+            <p>İstanbul, Bursa, Aydın, Denizli ve Ege hattında otoban tercihiyle ücret kalemi açık gösterilir.</p>
+          </article>
+          <article class="advantage-card reveal">
+            <b>04</b>
+            <h3>Kurumsal ulaşım</h3>
+            <p>Toplantı, fuar, ekip taşıma ve VIP misafir planlarında saatli araç yönlendirme desteği.</p>
+          </article>
+        </div>
+      </section>
+
       <section class="section popular-lines">
         <div class="wrap narrow reveal">
           <span class="section-kicker">POPÜLER TRANSFER HATLARI</span>
@@ -390,6 +530,20 @@
             <strong>Foça Transfer</strong>
             <small>Eski Foça, Yeni Foça ve sahil güzergahları</small>
           </a>
+        </div>
+        <div class="wrap route-bank reveal">
+          <div class="route-bank-head">
+            <span>Havalimanı odaklı hızlı hatlar</span>
+            <strong>İzmir transfer aramalarında öne çıkan rotalar</strong>
+          </div>
+          <div class="route-bank-list" aria-label="Popüler transfer rota listesi">
+            <a href="./cesme-transfer/"><span>ADB - Çeşme / Alaçatı</span><b>Otel, marina, yazlık</b></a>
+            <a href="./urla-transfer/"><span>ADB - Urla</span><b>İskele, bağ yolu, sahil</b></a>
+            <a href="./selcuk-transfer/"><span>ADB - Selçuk / Efes</span><b>Turistik gezi ve otel</b></a>
+            <a href="./foca-transfer/"><span>ADB - Foça</span><b>Eski Foça, Yeni Foça</b></a>
+            <a href="./karsiyaka-transfer/"><span>ADB - Karşıyaka</span><b>Bostanlı, Mavişehir</b></a>
+            <a href="./gaziemir-transfer/"><span>ADB - Gaziemir</span><b>Fuar, otel, merkez</b></a>
+          </div>
         </div>
       </section>
 
@@ -583,6 +737,14 @@
           <details>
             <summary>Havalimanı transferi var mı?</summary>
             <p>Adnan Menderes Havalimanı için karşılama ve bırakma transferi 7/24 yapılır.</p>
+          </details>
+          <details>
+            <summary>Uçuş gecikirse araç bekler mi?</summary>
+            <p>Uçuş numarası paylaşıldığında iniş saati kontrol edilir. Gecikme olduğunda araç planı buna göre güncellenir.</p>
+          </details>
+          <details>
+            <summary>Kurumsal ve şehirlerarası transfer yapılır mı?</summary>
+            <p>Evet. Fuar, otel, toplantı, VIP misafir ve şehirlerarası rota taleplerinde uygun araç planı yapılır.</p>
           </details>
         </div>
       </section>
