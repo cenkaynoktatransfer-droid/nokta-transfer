@@ -201,9 +201,17 @@ async function fetchAutomaticTollEstimate() {
     if (data.ok && data.tollFee > 0) {
       routeState.tollFee = normalizeMoneyInput(data.tollFee);
       routeState.tollSource = "auto";
-      const sourceLabel = data.isEstimate ? "Otoyol ücret tahmini eklendi" : "Otoyol ücreti otomatik bulundu";
+      const sourceLabel =
+        data.source === "kgm-live"
+          ? "KGM güncel otoyol ücreti"
+          : data.source === "monthly-tariff"
+            ? "Aylık güncel otoyol ücreti"
+            : "Otoyol ücreti otomatik bulundu";
       if (tollStatus) tollStatus.textContent = `${sourceLabel}: ${formatCurrency(routeState.tollFee)}`;
-      if (tollHint) tollHint.textContent = data.label || "Bu tutar toplam tahmine otomatik eklendi.";
+      if (tollHint) {
+        const reviewText = data.nextReviewAt ? ` Bir sonraki kontrol: ${data.nextReviewAt}.` : "";
+        tollHint.textContent = `${data.label || "Bu tutar toplam ücrete otomatik eklendi."}${reviewText}`;
+      }
       if (tollInput) tollInput.hidden = true;
       updateRouteDisplay();
       return;
@@ -286,8 +294,8 @@ function updateRouteDisplay() {
   if (tollAmountOutput) {
     tollAmountOutput.hidden = routeState.roadMode !== "highway";
     tollAmountOutput.textContent = activeTollFee
-      ? `Otoban ücreti: ${formatCurrency(activeTollFee)} toplam tahmine eklendi.`
-      : "Otoban seçildi. Güncel otoyol ücretini yazarsanız toplam tahmine eklenir.";
+      ? `Otoban ücreti: ${formatCurrency(activeTollFee)} toplam ücrete eklendi.`
+      : "Otoban seçildi. Güncel otoyol ücretini yazarsanız toplam ücrete eklenir.";
   }
 
   updateWhatsAppLink();

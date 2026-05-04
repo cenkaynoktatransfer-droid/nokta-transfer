@@ -1,0 +1,45 @@
+{
+  "updatedAt": "2026-05-01",
+  "nextReviewAt": "2026-06-01",
+  "vehicleClass": "1",
+  "currency": "TRY",
+  "sourceNote": "Her ayin 1. gunu KGM ve ilgili otoyol isletmecisi tarifeleriyle kontrol edilir.",
+  "routes": [
+    {
+      "id": "izmir-istanbul-osmangazi",
+      "label": "Izmir - Istanbul / Osmangazi hatti guncel otoyol ucreti",
+      "fee": 1965,
+      "boxes": [
+        { "minLat": 37.75, "maxLat": 39.35, "minLng": 26.0, "maxLng": 28.4 },
+        { "minLat": 40.35, "maxLat": 41.45, "minLng": 28.45, "maxLng": 30.75 }
+      ]
+    },
+    {
+      "id": "izmir-bursa-osmangazi",
+      "label": "Izmir - Bursa / Osmangazi hatti guncel otoyol ucreti",
+      "fee": 1200,
+      "boxes": [
+        { "minLat": 37.75, "maxLat": 39.35, "minLng": 26.0, "maxLng": 28.4 },
+        { "minLat": 39.8, "maxLat": 40.55, "minLng": 28.45, "maxLng": 30.0 }
+      ]
+    },
+    {
+      "id": "izmir-aydin-denizli",
+      "label": "Izmir - Aydin - Denizli hatti guncel otoyol ucreti",
+      "fee": 365,
+      "boxes": [
+        { "minLat": 38.15, "maxLat": 38.75, "minLng": 26.55, "maxLng": 27.65 },
+        { "minLat": 37.45, "maxLat": 38.35, "minLng": 28.55, "maxLng": 29.75 }
+      ]
+    },
+    {
+      "id": "menemen-aliaga-candarli",
+      "label": "Menemen - Aliaga - Candarli hatti guncel otoyol ucreti",
+      "fee": 225,
+      "boxes": [
+        { "minLat": 38.15, "maxLat": 38.75, "minLng": 26.55, "maxLng": 27.65 },
+        { "minLat": 38.65, "maxLat": 39.25, "minLng": 26.65, "maxLng": 27.25 }
+      ]
+    }
+  ]
+}

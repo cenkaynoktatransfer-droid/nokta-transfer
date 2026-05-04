@@ -1,3 +1,11 @@
+import { readFileSync } from "node:fs";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const tollRates = JSON.parse(readFileSync(join(__dirname, "..", "data", "toll-rates.json"), "utf8"));
+const kgmBaseUrl = "https://vatandas.kgm.gov.tr";
+
 function sendJson(response, statusCode, body) {
   response.statusCode = statusCode;
   response.setHeader("content-type", "application/json; charset=utf-8");
@@ -58,62 +66,96 @@ function hasPair(origin, destination, firstBox, secondBox) {
   return (isInBox(origin, firstBox) && isInBox(destination, secondBox)) || (isInBox(origin, secondBox) && isInBox(destination, firstBox));
 }
 
-function roundToNearestFive(value) {
-  return Math.round(value / 5) * 5;
+function normalizeDecimal(value) {
+  return Number(String(value || "").replace(".", "").replace(",", "."));
 }
 
-function estimateFallbackToll(origin, destination, distanceKm) {
+function extractCookies(headers) {
+  const getSetCookie = typeof headers.getSetCookie === "function" ? headers.getSetCookie.bind(headers) : null;
+  const cookies = getSetCookie ? getSetCookie() : [headers.get("set-cookie")].filter(Boolean);
+  return cookies
+    .flatMap((cookie) => String(cookie).split(/,(?=\s*[^;,\s]+=)/))
+    .map((cookie) => cookie.split(";")[0].trim())
+    .filter(Boolean)
+    .join("; ");
+}
+
+function getMonthlyTariffToll(origin, destination) {
+  const route = tollRates.routes.find((item) => hasPair(origin, destination, item.boxes[0], item.boxes[1]));
+
+  if (!route?.fee) return null;
+
+  return {
+    fee: route.fee,
+    label: route.label,
+    updatedAt: tollRates.updatedAt,
+    nextReviewAt: tollRates.nextReviewAt,
+    sourceNote: tollRates.sourceNote
+  };
+}
+
+function getOfficialKgmRoute(origin, destination) {
   const izmirMetro = { minLat: 38.15, maxLat: 38.75, minLng: 26.55, maxLng: 27.65 };
-  const izmirRegion = { minLat: 37.75, maxLat: 39.35, minLng: 26.0, maxLng: 28.4 };
   const cesme = { minLat: 38.15, maxLat: 38.55, minLng: 26.15, maxLng: 26.75 };
   const aydin = { minLat: 37.45, maxLat: 38.25, minLng: 27.45, maxLng: 28.45 };
-  const denizli = { minLat: 37.45, maxLat: 38.35, minLng: 28.55, maxLng: 29.75 };
-  const candarli = { minLat: 38.65, maxLat: 39.25, minLng: 26.65, maxLng: 27.25 };
-  const bursa = { minLat: 39.8, maxLat: 40.55, minLng: 28.45, maxLng: 30.0 };
-  const marmaraCrossing = { minLat: 40.35, maxLat: 41.45, minLng: 28.45, maxLng: 30.75 };
 
-  const knownRoutes = [
-    {
-      boxes: [izmirRegion, marmaraCrossing],
-      fee: 1965,
-      label: "Izmir-Istanbul/Osmangazi hatti 2026 otoyol tahmini"
-    },
-    {
-      boxes: [izmirRegion, bursa],
-      fee: 1200,
-      label: "Izmir-Bursa hatti 2026 otoyol tahmini"
-    },
+  const routes = [
     {
       boxes: [izmirMetro, cesme],
-      fee: 55,
-      label: "Izmir-Cesme otoyolu 2026 tahmini"
+      highwayId: "60",
+      entrance: "URLA",
+      exit: "ÇEŞME",
+      label: "KGM canli ucret sorgusu: Izmir - Cesme otoyolu"
     },
     {
       boxes: [izmirMetro, aydin],
-      fee: 75,
-      label: "Izmir-Aydin otoyolu 2026 tahmini"
-    },
-    {
-      boxes: [izmirMetro, denizli],
-      fee: 365,
-      label: "Izmir-Aydin-Denizli hatti 2026 tahmini"
-    },
-    {
-      boxes: [izmirMetro, candarli],
-      fee: 225,
-      label: "Menemen-Aliaga-Candarli hatti 2026 tahmini"
+      highwayId: "50",
+      entrance: "IŞIKKENT",
+      exit: "AYDIN BATI",
+      label: "KGM canli ucret sorgusu: Izmir - Aydin otoyolu"
     }
   ];
 
-  const knownRoute = knownRoutes.find((route) => hasPair(origin, destination, route.boxes[0], route.boxes[1]));
-  if (knownRoute) return knownRoute;
+  return routes.find((route) => hasPair(origin, destination, route.boxes[0], route.boxes[1])) || null;
+}
 
-  if (distanceKm < 80) return null;
+async function fetchOfficialKgmToll(route) {
+  const pageResponse = await fetch(kgmBaseUrl, { headers: { "user-agent": "NoktaTransfer/1.0" } });
+  const pageHtml = await pageResponse.text();
+  const token = pageHtml.match(/name="__RequestVerificationToken"\s+type="hidden"\s+value="([^"]+)"/)?.[1];
+  const cookie = extractCookies(pageResponse.headers);
 
-  const distanceFee = distanceKm >= 250 ? distanceKm * 3.2 : distanceKm * 1.7;
+  if (!token || !cookie) return null;
+
+  const body = new URLSearchParams({
+    HighwayId: route.highwayId,
+    EntranceTollId: route.entrance,
+    ExitTollId: route.exit,
+    SinifId: tollRates.vehicleClass || "1",
+    __RequestVerificationToken: token
+  });
+
+  const tollResponse = await fetch(kgmBaseUrl, {
+    method: "POST",
+    headers: {
+      "content-type": "application/x-www-form-urlencoded",
+      cookie,
+      "user-agent": "NoktaTransfer/1.0"
+    },
+    body
+  });
+
+  const html = await tollResponse.text();
+  const feeMatch = html.match(/([0-9]+(?:[.,][0-9]+)?)\s*TL/i);
+  const distanceMatch = html.match(/mesafe\s+([0-9]+(?:[.,][0-9]+)?)\s*km/i);
+  const fee = normalizeDecimal(feeMatch?.[1]);
+
+  if (!Number.isFinite(fee) || fee <= 0) return null;
+
   return {
-    fee: Math.min(roundToNearestFive(distanceFee), 1800),
-    label: "Mesafe bazli otoyol tahmini"
+    fee,
+    label: route.label,
+    sourceDistanceKm: Number.isFinite(normalizeDecimal(distanceMatch?.[1])) ? normalizeDecimal(distanceMatch?.[1]) : null
   };
 }
 
@@ -205,15 +247,34 @@ export default async function handler(request, response) {
     const distanceKm = route?.distanceMeters ? route.distanceMeters / 1000 : null;
 
     if (!tollFee) {
-      const fallback = distanceKm ? estimateFallbackToll(origin, destination, distanceKm) : null;
-      if (fallback?.fee) {
+      const officialKgmRoute = getOfficialKgmRoute(origin, destination);
+      const officialKgmToll = officialKgmRoute ? await fetchOfficialKgmToll(officialKgmRoute).catch(() => null) : null;
+
+      if (officialKgmToll?.fee) {
         sendJson(response, 200, {
           ok: true,
-          tollFee: Math.round(fallback.fee),
+          tollFee: Math.round(officialKgmToll.fee),
           currency: "TRY",
-          source: "fallback-estimate",
-          isEstimate: true,
-          label: fallback.label,
+          source: "kgm-live",
+          label: officialKgmToll.label,
+          sourceDistanceKm: officialKgmToll.sourceDistanceKm,
+          distanceKm,
+          duration: route?.duration || null
+        });
+        return;
+      }
+
+      const monthlyTariff = getMonthlyTariffToll(origin, destination);
+      if (monthlyTariff?.fee) {
+        sendJson(response, 200, {
+          ok: true,
+          tollFee: Math.round(monthlyTariff.fee),
+          currency: "TRY",
+          source: "monthly-tariff",
+          label: monthlyTariff.label,
+          tariffUpdatedAt: monthlyTariff.updatedAt,
+          nextReviewAt: monthlyTariff.nextReviewAt,
+          sourceNote: monthlyTariff.sourceNote,
           distanceKm,
           duration: route?.duration || null
         });
