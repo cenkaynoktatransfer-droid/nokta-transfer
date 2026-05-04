@@ -97,6 +97,39 @@ let routeMap = null;
 let routeLine = null;
 let tollAbortController = null;
 
+function initializeGoogleAdsTag() {
+  const adsConfig = window.NOKTA_TRANSFER_ADS;
+  if (!adsConfig?.googleAdsId) return;
+
+  const script = document.createElement("script");
+  script.async = true;
+  script.src = `https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(adsConfig.googleAdsId)}`;
+  document.head.appendChild(script);
+
+  window.dataLayer = window.dataLayer || [];
+  window.gtag = function gtag() {
+    window.dataLayer.push(arguments);
+  };
+  window.gtag("js", new Date());
+  window.gtag("config", adsConfig.googleAdsId);
+}
+
+function sendAdsConversion(type) {
+  const adsConfig = window.NOKTA_TRANSFER_ADS;
+  const labels = {
+    call: adsConfig?.callLabel,
+    whatsapp: adsConfig?.whatsappLabel,
+    booking: adsConfig?.bookingLabel
+  };
+  const label = labels[type];
+
+  if (!window.gtag || !adsConfig?.googleAdsId || !label) return;
+
+  window.gtag("event", "conversion", {
+    send_to: `${adsConfig.googleAdsId}/${label}`
+  });
+}
+
 function formatNumber(value, maximumFractionDigits = 1) {
   return value.toLocaleString("tr-TR", {
     maximumFractionDigits,
@@ -793,10 +826,21 @@ fareTollInput?.addEventListener("input", () => {
 
 bookingForm?.addEventListener("submit", (event) => {
   event.preventDefault();
+  sendAdsConversion("booking");
+  sendAdsConversion("whatsapp");
   const message = buildBookingMessage(bookingForm);
   window.open(`https://wa.me/${routePhone}?text=${encodeURIComponent(message)}`, "_blank", "noopener");
 });
 
+document.querySelectorAll('a[href^="tel:"]').forEach((link) => {
+  link.addEventListener("click", () => sendAdsConversion("call"));
+});
+
+document.querySelectorAll('a[href*="wa.me"]').forEach((link) => {
+  link.addEventListener("click", () => sendAdsConversion("whatsapp"));
+});
+
+initializeGoogleAdsTag();
 initializeRouteMap();
 updateRouteDisplay();
 updateFareEstimate();
