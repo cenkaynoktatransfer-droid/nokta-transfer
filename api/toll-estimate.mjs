@@ -37,6 +37,19 @@ function moneyToTry(price) {
   return units + nanos / 1_000_000_000;
 }
 
+function getGoogleErrorReason(error) {
+  const message = String(error?.message || "").toLowerCase();
+  const status = String(error?.status || "").toLowerCase();
+
+  if (message.includes("billing") || status.includes("billing")) return "billing_not_active";
+  if (message.includes("not been used") || message.includes("disabled")) return "routes_api_not_enabled";
+  if (message.includes("api key not valid") || message.includes("invalid api key")) return "invalid_api_key";
+  if (message.includes("referer") || message.includes("referrer") || message.includes("ip address")) return "api_key_restricted";
+  if (message.includes("permission") || status.includes("permission")) return "api_key_permission_denied";
+
+  return "routes_api_error";
+}
+
 export default async function handler(request, response) {
   response.setHeader("access-control-allow-methods", "POST, OPTIONS");
   response.setHeader("access-control-allow-headers", "content-type");
@@ -108,10 +121,13 @@ export default async function handler(request, response) {
 
     const data = await googleResponse.json().catch(() => ({}));
     if (!googleResponse.ok) {
+      const error = data.error || {};
       sendJson(response, 200, {
         ok: false,
-        reason: "routes_api_error",
-        status: googleResponse.status
+        reason: getGoogleErrorReason(error),
+        status: googleResponse.status,
+        googleStatus: error.status || null,
+        googleMessage: error.message || "Google Routes API isteği reddedildi."
       });
       return;
     }
