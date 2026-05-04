@@ -50,6 +50,73 @@ function getGoogleErrorReason(error) {
   return "routes_api_error";
 }
 
+function isInBox(point, box) {
+  return point.lat >= box.minLat && point.lat <= box.maxLat && point.lng >= box.minLng && point.lng <= box.maxLng;
+}
+
+function hasPair(origin, destination, firstBox, secondBox) {
+  return (isInBox(origin, firstBox) && isInBox(destination, secondBox)) || (isInBox(origin, secondBox) && isInBox(destination, firstBox));
+}
+
+function roundToNearestFive(value) {
+  return Math.round(value / 5) * 5;
+}
+
+function estimateFallbackToll(origin, destination, distanceKm) {
+  const izmirMetro = { minLat: 38.15, maxLat: 38.75, minLng: 26.55, maxLng: 27.65 };
+  const izmirRegion = { minLat: 37.75, maxLat: 39.35, minLng: 26.0, maxLng: 28.4 };
+  const cesme = { minLat: 38.15, maxLat: 38.55, minLng: 26.15, maxLng: 26.75 };
+  const aydin = { minLat: 37.45, maxLat: 38.25, minLng: 27.45, maxLng: 28.45 };
+  const denizli = { minLat: 37.45, maxLat: 38.35, minLng: 28.55, maxLng: 29.75 };
+  const candarli = { minLat: 38.65, maxLat: 39.25, minLng: 26.65, maxLng: 27.25 };
+  const bursa = { minLat: 39.8, maxLat: 40.55, minLng: 28.45, maxLng: 30.0 };
+  const marmaraCrossing = { minLat: 40.35, maxLat: 41.45, minLng: 28.45, maxLng: 30.75 };
+
+  const knownRoutes = [
+    {
+      boxes: [izmirRegion, marmaraCrossing],
+      fee: 1965,
+      label: "Izmir-Istanbul/Osmangazi hatti 2026 otoyol tahmini"
+    },
+    {
+      boxes: [izmirRegion, bursa],
+      fee: 1200,
+      label: "Izmir-Bursa hatti 2026 otoyol tahmini"
+    },
+    {
+      boxes: [izmirMetro, cesme],
+      fee: 55,
+      label: "Izmir-Cesme otoyolu 2026 tahmini"
+    },
+    {
+      boxes: [izmirMetro, aydin],
+      fee: 75,
+      label: "Izmir-Aydin otoyolu 2026 tahmini"
+    },
+    {
+      boxes: [izmirMetro, denizli],
+      fee: 365,
+      label: "Izmir-Aydin-Denizli hatti 2026 tahmini"
+    },
+    {
+      boxes: [izmirMetro, candarli],
+      fee: 225,
+      label: "Menemen-Aliaga-Candarli hatti 2026 tahmini"
+    }
+  ];
+
+  const knownRoute = knownRoutes.find((route) => hasPair(origin, destination, route.boxes[0], route.boxes[1]));
+  if (knownRoute) return knownRoute;
+
+  if (distanceKm < 80) return null;
+
+  const distanceFee = distanceKm >= 250 ? distanceKm * 3.2 : distanceKm * 1.7;
+  return {
+    fee: Math.min(roundToNearestFive(distanceFee), 1800),
+    label: "Mesafe bazli otoyol tahmini"
+  };
+}
+
 export default async function handler(request, response) {
   response.setHeader("access-control-allow-methods", "POST, OPTIONS");
   response.setHeader("access-control-allow-headers", "content-type");
@@ -135,12 +202,28 @@ export default async function handler(request, response) {
     const route = data.routes?.[0];
     const prices = route?.travelAdvisory?.tollInfo?.estimatedPrice || [];
     const tollFee = prices.reduce((total, price) => total + moneyToTry(price), 0);
+    const distanceKm = route?.distanceMeters ? route.distanceMeters / 1000 : null;
 
     if (!tollFee) {
+      const fallback = distanceKm ? estimateFallbackToll(origin, destination, distanceKm) : null;
+      if (fallback?.fee) {
+        sendJson(response, 200, {
+          ok: true,
+          tollFee: Math.round(fallback.fee),
+          currency: "TRY",
+          source: "fallback-estimate",
+          isEstimate: true,
+          label: fallback.label,
+          distanceKm,
+          duration: route?.duration || null
+        });
+        return;
+      }
+
       sendJson(response, 200, {
         ok: false,
         reason: "no_toll_price",
-        distanceKm: route?.distanceMeters ? route.distanceMeters / 1000 : null
+        distanceKm
       });
       return;
     }
@@ -150,7 +233,7 @@ export default async function handler(request, response) {
       tollFee: Math.round(tollFee),
       currency: "TRY",
       source: "google-routes",
-      distanceKm: route.distanceMeters ? route.distanceMeters / 1000 : null,
+      distanceKm,
       duration: route.duration || null
     });
   } catch (error) {

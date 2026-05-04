@@ -201,8 +201,9 @@ async function fetchAutomaticTollEstimate() {
     if (data.ok && data.tollFee > 0) {
       routeState.tollFee = normalizeMoneyInput(data.tollFee);
       routeState.tollSource = "auto";
-      if (tollStatus) tollStatus.textContent = `Otoyol ücreti otomatik bulundu: ${formatCurrency(routeState.tollFee)}`;
-      if (tollHint) tollHint.textContent = "Bu tutar toplam tahmine otomatik eklendi.";
+      const sourceLabel = data.isEstimate ? "Otoyol ücret tahmini eklendi" : "Otoyol ücreti otomatik bulundu";
+      if (tollStatus) tollStatus.textContent = `${sourceLabel}: ${formatCurrency(routeState.tollFee)}`;
+      if (tollHint) tollHint.textContent = data.label || "Bu tutar toplam tahmine otomatik eklendi.";
       if (tollInput) tollInput.hidden = true;
       updateRouteDisplay();
       return;
