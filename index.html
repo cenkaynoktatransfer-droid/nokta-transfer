@@ -188,6 +188,17 @@
               <button class="reset-action" id="resetRoute" type="button">↻ Sıfırla</button>
             </div>
 
+            <div class="road-choice" aria-label="Yol tercihi">
+              <button class="is-active" type="button" data-route-mode="normal">Normal Yol</button>
+              <button type="button" data-route-mode="highway">Otoban</button>
+            </div>
+
+            <label class="toll-panel" id="tollPanel" hidden>
+              <span>Güncel otoyol ücreti</span>
+              <input id="tollInput" type="number" min="0" step="1" inputmode="numeric" placeholder="Örn. 180" />
+              <small>Otoban seçilirse bu ücret toplam tahmine eklenir.</small>
+            </label>
+
             <div class="map-card" id="routeMap" aria-label="Rota haritası"></div>
             <p class="route-status" id="routeStatus">Türkiye genelinde şehir, sokak ve cadde arayın.</p>
 
@@ -200,9 +211,10 @@
               <div class="stat-box">
                 <span>⊙ ÜCRET</span>
                 <strong id="priceOutput">0 TL</strong>
-                <small id="rateOutput">İlk 60 km 30 TL/km</small>
+                <small id="rateOutput">0-6 km sabit 200 TL</small>
               </div>
             </div>
+            <p class="toll-summary" id="tollAmountOutput" hidden>Otoban ücreti toplam fiyata eklenir.</p>
 
             <a class="route-submit" id="routeSubmit" href="https://wa.me/905060436591" target="_blank" rel="noopener">
               Şimdi Araç Çağır
@@ -220,7 +232,7 @@
             <h2>Şeffaf Fiyat <span>Tahmini</span></h2>
             <p>
               İzmir'in neresine giderseniz gidin, ne ödeyeceğinizi önceden görün.
-              KM başı sabit 30 TL tarifesiyle sürprizlere son.
+              0-6 km arası sabit 200 TL, sonrası 30 TL/km; 100 km'den itibaren 25 TL/km hesaplanır.
             </p>
           </div>
           <div class="fare-calculator" aria-label="Mesafeye göre fiyat tahmini">
@@ -244,14 +256,25 @@
 
             <div class="fare-scale" aria-hidden="true">
               <span>1 km</span>
-              <span>60 km</span>
+              <span>6 km</span>
+              <span>100 km</span>
               <span>200 km</span>
             </div>
 
+            <div class="fare-road-choice" aria-label="Fiyat tahmini yol tercihi">
+              <button class="is-active" type="button" data-fare-mode="normal">Normal Yol</button>
+              <button type="button" data-fare-mode="highway">Otoban</button>
+            </div>
+
+            <label class="fare-toll-field" id="fareTollPanel" hidden>
+              <span>Otoyol ücreti</span>
+              <input id="fareTollInput" type="number" min="0" step="1" inputmode="numeric" placeholder="Örn. 180" />
+            </label>
+
             <div class="fare-result">
               <span>Ortalama tahmini ücret</span>
-              <strong id="farePriceValue">720 TL</strong>
-              <p id="fareRateLabel">30 TL/km sabit tarife</p>
+              <strong id="farePriceValue">740 TL</strong>
+              <p id="fareRateLabel">0-6 km sabit 200 TL + sonrası 30 TL/km</p>
             </div>
           </div>
         </div>

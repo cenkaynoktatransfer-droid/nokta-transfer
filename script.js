@@ -38,10 +38,19 @@ const fareDistanceValue = document.querySelector("#fareDistanceValue");
 const fareDistanceBubble = document.querySelector("#fareDistanceBubble");
 const farePriceValue = document.querySelector("#farePriceValue");
 const fareRateLabel = document.querySelector("#fareRateLabel");
+const routeModeButtons = document.querySelectorAll("[data-route-mode]");
+const tollPanel = document.querySelector("#tollPanel");
+const tollInput = document.querySelector("#tollInput");
+const tollAmountOutput = document.querySelector("#tollAmountOutput");
+const fareModeButtons = document.querySelectorAll("[data-fare-mode]");
+const fareTollPanel = document.querySelector("#fareTollPanel");
+const fareTollInput = document.querySelector("#fareTollInput");
 
 const routePhone = "905060436591";
-const shortRouteLimitKm = 60;
-const shortRouteRate = 30;
+const minimumFareDistanceKm = 6;
+const minimumFare = 200;
+const longRouteLimitKm = 100;
+const standardRouteRate = 30;
 const longRouteRate = 25;
 const izmirCenter = [38.4237, 27.1428];
 
@@ -50,7 +59,14 @@ const routeState = {
   dropoff: null,
   distanceKm: 0,
   durationMinutes: 0,
-  requestId: 0
+  requestId: 0,
+  roadMode: "normal",
+  tollFee: 0
+};
+
+const fareState = {
+  roadMode: "normal",
+  tollFee: 0
 };
 
 const routeControls = {
@@ -86,12 +102,37 @@ function formatCurrency(value) {
   return `${Math.round(value).toLocaleString("tr-TR")} TL`;
 }
 
-function calculatePrice(distanceKm) {
-  if (!Number.isFinite(distanceKm) || distanceKm <= 0) return 0;
+function normalizeMoneyInput(value) {
+  const number = Number(value);
+  return Number.isFinite(number) && number > 0 ? number : 0;
+}
 
-  const firstPart = Math.min(distanceKm, shortRouteLimitKm) * shortRouteRate;
-  const remainingPart = Math.max(distanceKm - shortRouteLimitKm, 0) * longRouteRate;
-  return firstPart + remainingPart;
+function calculateBasePrice(distanceKm) {
+  if (!Number.isFinite(distanceKm) || distanceKm <= 0) return 0;
+  if (distanceKm <= minimumFareDistanceKm) return minimumFare;
+
+  const standardDistance = Math.max(Math.min(distanceKm, longRouteLimitKm) - minimumFareDistanceKm, 0);
+  const longDistance = Math.max(distanceKm - longRouteLimitKm, 0);
+  return minimumFare + standardDistance * standardRouteRate + longDistance * longRouteRate;
+}
+
+function calculatePrice(distanceKm, tollFee = 0) {
+  const basePrice = calculateBasePrice(distanceKm);
+  return basePrice ? basePrice + normalizeMoneyInput(tollFee) : 0;
+}
+
+function getPricingLabel(distanceKm, tollFee = 0) {
+  const tollText = normalizeMoneyInput(tollFee) ? ` + ${formatCurrency(tollFee)} otoban` : "";
+
+  if (!distanceKm || distanceKm <= minimumFareDistanceKm) {
+    return `0-6 km sabit ${formatCurrency(minimumFare)}${tollText}`;
+  }
+
+  if (distanceKm <= longRouteLimitKm) {
+    return `0-6 km ${formatCurrency(minimumFare)} + sonrası ${standardRouteRate} TL/km${tollText}`;
+  }
+
+  return `0-6 km ${formatCurrency(minimumFare)} + 100 km sonrası ${longRouteRate} TL/km${tollText}`;
 }
 
 function setRouteStatus(message, tone = "") {
@@ -110,11 +151,14 @@ function updateWhatsAppLink() {
 
   const pickup = getPlaceText(routeState.pickup) || pickupInput?.value.trim() || "";
   const dropoff = getPlaceText(routeState.dropoff) || dropoffInput?.value.trim() || "";
+  const activeTollFee = routeState.roadMode === "highway" ? routeState.tollFee : 0;
   const lines = [
     "Merhaba Nokta Transfer, araç çağırmak istiyorum.",
     pickup ? `Alınacak yer: ${pickup}` : "",
     dropoff ? `Gidilecek yer: ${dropoff}` : "",
-    routeState.distanceKm ? `Mesafe: ${formatNumber(routeState.distanceKm)} km` : ""
+    routeState.distanceKm ? `Mesafe: ${formatNumber(routeState.distanceKm)} km` : "",
+    routeState.roadMode === "highway" ? "Yol tercihi: Otoban" : "",
+    activeTollFee ? `Belirtilen otoyol ücreti: ${formatCurrency(activeTollFee)}` : ""
   ]
     .filter(Boolean)
     .join("\n");
@@ -124,7 +168,8 @@ function updateWhatsAppLink() {
 }
 
 function updateRouteDisplay() {
-  const price = calculatePrice(routeState.distanceKm);
+  const activeTollFee = routeState.roadMode === "highway" ? routeState.tollFee : 0;
+  const price = calculatePrice(routeState.distanceKm, activeTollFee);
 
   if (distanceOutput) {
     distanceOutput.textContent = routeState.distanceKm ? `${formatNumber(routeState.distanceKm)} km` : "-";
@@ -147,10 +192,14 @@ function updateRouteDisplay() {
   }
 
   if (rateOutput) {
-    rateOutput.textContent =
-      routeState.distanceKm > shortRouteLimitKm
-        ? "İlk 60 km 30 TL/km + sonrası 25 TL/km"
-        : "30 TL/km";
+    rateOutput.textContent = getPricingLabel(routeState.distanceKm, activeTollFee);
+  }
+
+  if (tollAmountOutput) {
+    tollAmountOutput.hidden = routeState.roadMode !== "highway";
+    tollAmountOutput.textContent = activeTollFee
+      ? `Otoban ücreti: ${formatCurrency(activeTollFee)} toplam tahmine eklendi.`
+      : "Otoban seçildi. Güncel otoyol ücretini yazarsanız toplam tahmine eklenir.";
   }
 
   updateWhatsAppLink();
@@ -163,19 +212,16 @@ function updateFareEstimate() {
   const min = Number(fareDistanceRange.min) || 1;
   const max = Number(fareDistanceRange.max) || 200;
   const progress = ((distance - min) / (max - min)) * 100;
-  const remainingDistance = Math.max(distance - shortRouteLimitKm, 0);
+  const activeTollFee = fareState.roadMode === "highway" ? fareState.tollFee : 0;
   const wrapper = fareDistanceRange.closest(".fare-range-wrap");
 
   wrapper?.style.setProperty("--fare-progress", `${progress}%`);
 
   if (fareDistanceValue) fareDistanceValue.textContent = distance.toLocaleString("tr-TR");
   if (fareDistanceBubble) fareDistanceBubble.textContent = `${distance.toLocaleString("tr-TR")} km`;
-  if (farePriceValue) farePriceValue.textContent = formatCurrency(calculatePrice(distance));
+  if (farePriceValue) farePriceValue.textContent = formatCurrency(calculatePrice(distance, activeTollFee));
   if (fareRateLabel) {
-    fareRateLabel.textContent =
-      distance > shortRouteLimitKm
-        ? `İlk 60 km 30 TL/km + kalan ${remainingDistance.toLocaleString("tr-TR")} km 25 TL/km`
-        : "30 TL/km sabit tarife";
+    fareRateLabel.textContent = getPricingLabel(distance, activeTollFee);
   }
 }
 
@@ -496,9 +542,16 @@ resetRoute?.addEventListener("click", () => {
   routeState.pickup = null;
   routeState.dropoff = null;
   routeState.requestId += 1;
+  routeState.roadMode = "normal";
+  routeState.tollFee = 0;
 
   if (pickupInput) pickupInput.value = "";
   if (dropoffInput) dropoffInput.value = "";
+  if (tollInput) tollInput.value = "";
+  if (tollPanel) tollPanel.hidden = true;
+  routeModeButtons.forEach((button) => {
+    button.classList.toggle("is-active", button.dataset.routeMode === "normal");
+  });
 
   clearSuggestions("pickup");
   clearSuggestions("dropoff");
@@ -507,6 +560,22 @@ resetRoute?.addEventListener("click", () => {
   syncMarker("dropoff");
   fitRouteMap();
   setRouteStatus("Türkiye genelinde şehir, sokak ve cadde arayın.");
+});
+
+routeModeButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    routeState.roadMode = button.dataset.routeMode || "normal";
+    routeModeButtons.forEach((item) => {
+      item.classList.toggle("is-active", item === button);
+    });
+    if (tollPanel) tollPanel.hidden = routeState.roadMode !== "highway";
+    updateRouteDisplay();
+  });
+});
+
+tollInput?.addEventListener("input", () => {
+  routeState.tollFee = normalizeMoneyInput(tollInput.value);
+  updateRouteDisplay();
 });
 
 locationButton?.addEventListener("click", () => {
@@ -554,6 +623,22 @@ routeSubmit?.addEventListener("click", (event) => {
 });
 
 fareDistanceRange?.addEventListener("input", updateFareEstimate);
+
+fareModeButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    fareState.roadMode = button.dataset.fareMode || "normal";
+    fareModeButtons.forEach((item) => {
+      item.classList.toggle("is-active", item === button);
+    });
+    if (fareTollPanel) fareTollPanel.hidden = fareState.roadMode !== "highway";
+    updateFareEstimate();
+  });
+});
+
+fareTollInput?.addEventListener("input", () => {
+  fareState.tollFee = normalizeMoneyInput(fareTollInput.value);
+  updateFareEstimate();
+});
 
 initializeRouteMap();
 updateRouteDisplay();

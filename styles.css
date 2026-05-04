@@ -357,6 +357,91 @@ a {
   margin: 18px 0 26px;
 }
 
+.road-choice,
+.fare-road-choice {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.road-choice {
+  margin: 0 0 12px;
+}
+
+.road-choice button,
+.fare-road-choice button {
+  min-height: 38px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 999px;
+  color: #d4d6de;
+  background: rgba(0, 0, 0, 0.34);
+  cursor: pointer;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 950;
+  transition: transform 180ms ease, border-color 180ms ease, color 180ms ease, background 180ms ease, box-shadow 180ms ease;
+}
+
+.road-choice button:hover,
+.road-choice button.is-active,
+.fare-road-choice button:hover,
+.fare-road-choice button.is-active {
+  transform: translateY(-1px);
+  color: #111;
+  border-color: rgba(255, 196, 0, 0.72);
+  background: linear-gradient(135deg, #ffe066, #ffc400);
+  box-shadow: 0 0 22px rgba(255, 196, 0, 0.18);
+}
+
+.toll-panel,
+.fare-toll-field {
+  display: grid;
+  gap: 8px;
+  padding: 12px;
+  border-radius: 16px;
+  background: rgba(255, 196, 0, 0.075);
+  border: 1px solid rgba(255, 196, 0, 0.2);
+}
+
+.toll-panel[hidden],
+.fare-toll-field[hidden] {
+  display: none;
+}
+
+.toll-panel {
+  margin-bottom: 14px;
+}
+
+.toll-panel span,
+.fare-toll-field span {
+  color: var(--yellow);
+  font-size: 10px;
+  font-weight: 950;
+  letter-spacing: 0.9px;
+  text-transform: uppercase;
+}
+
+.toll-panel input,
+.fare-toll-field input {
+  min-height: 38px;
+  width: 100%;
+  padding: 0 12px;
+  border-radius: 12px;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.42);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  outline: none;
+  font: inherit;
+  font-weight: 900;
+}
+
+.toll-panel small {
+  color: #9da3b2;
+  font-size: 11px;
+  line-height: 1.35;
+  font-weight: 750;
+}
+
 .mini-action,
 .reset-action {
   min-height: 34px;
@@ -510,6 +595,19 @@ a {
   color: #121212;
   background: linear-gradient(135deg, #fff1a6, #ffc400 52%, #ff9f16);
   box-shadow: 0 0 34px rgba(255, 196, 0, 0.46), 0 0 70px rgba(255, 196, 0, 0.18);
+}
+
+.toll-summary {
+  margin: 12px 0 0;
+  color: #c9cad0;
+  text-align: center;
+  font-size: 11px;
+  line-height: 1.45;
+  font-weight: 800;
+}
+
+.toll-summary[hidden] {
+  display: none;
 }
 
 .route-note {
