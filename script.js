@@ -100,6 +100,7 @@ let tollAbortController = null;
 function initializeGoogleAdsTag() {
   const adsConfig = window.NOKTA_TRANSFER_ADS;
   if (!adsConfig?.googleAdsId) return;
+  if (window.__noktaAdsTagReady && window.gtag) return;
 
   const script = document.createElement("script");
   script.async = true;
