@@ -1,4 +1,4 @@
-import { cp, mkdir, rm, writeFile } from "node:fs/promises";
+import { cp, mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import { districtPages, siteUrl } from "./seo-data.mjs";
 
 const files = [
@@ -14,8 +14,53 @@ const files = [
 await rm("dist", { recursive: true, force: true });
 await mkdir("dist", { recursive: true });
 
+const googleAdsId = process.env.GOOGLE_ADS_ID || "AW-18102129467";
+const googleAdsLabels = {
+  call: process.env.GOOGLE_ADS_CALL_LABEL || "",
+  whatsapp: process.env.GOOGLE_ADS_WHATSAPP_LABEL || "",
+  booking: process.env.GOOGLE_ADS_BOOKING_LABEL || ""
+};
+
+function jsString(value) {
+  return JSON.stringify(String(value));
+}
+
+function googleAdsHeadSnippet() {
+  return `    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=${escapeHtml(googleAdsId)}"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag("js", new Date());
+      gtag("config", ${jsString(googleAdsId)});
+      window.__noktaAdsTagReady = true;
+      window.NOKTA_TRANSFER_ADS = {
+        googleAdsId: ${jsString(googleAdsId)},
+        callLabel: ${jsString(googleAdsLabels.call)},
+        whatsappLabel: ${jsString(googleAdsLabels.whatsapp)},
+        bookingLabel: ${jsString(googleAdsLabels.booking)},
+        currency: "TRY"
+      };
+    </script>`;
+}
+
+function injectGoogleAdsConfig(html) {
+  return html
+    .replace(/gtag\/js\?id=AW-[0-9]+/g, `gtag/js?id=${googleAdsId}`)
+    .replace(/gtag\("config",\s*"AW-[0-9]+"\);/g, `gtag("config", ${jsString(googleAdsId)});`)
+    .replace(/googleAdsId:\s*"AW-[0-9]+"/g, `googleAdsId: ${jsString(googleAdsId)}`)
+    .replace(/callLabel:\s*"[^"]*"/g, `callLabel: ${jsString(googleAdsLabels.call)}`)
+    .replace(/whatsappLabel:\s*"[^"]*"/g, `whatsappLabel: ${jsString(googleAdsLabels.whatsapp)}`)
+    .replace(/bookingLabel:\s*"[^"]*"/g, `bookingLabel: ${jsString(googleAdsLabels.booking)}`);
+}
+
 for (const file of files) {
-  await cp(file, `dist/${file}`, { recursive: true });
+  if (file.endsWith(".html")) {
+    const html = await readFile(file, "utf8");
+    await writeFile(`dist/${file}`, injectGoogleAdsConfig(html), "utf8");
+  } else {
+    await cp(file, `dist/${file}`, { recursive: true });
+  }
 }
 
 function escapeHtml(value) {
@@ -61,6 +106,7 @@ function pageTemplate(page) {
     <meta name="twitter:image" content="${siteUrl}/assets/nokta-transfer-logo.jpeg" />
     <meta name="theme-color" content="#050505" />
     <link rel="stylesheet" href="../styles.css" />
+${googleAdsHeadSnippet()}
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -186,6 +232,7 @@ function pageTemplate(page) {
         <span class="wa-icon" aria-hidden="true"></span>
       </a>
     </div>
+    <script src="../script.js"></script>
   </body>
 </html>`;
 }

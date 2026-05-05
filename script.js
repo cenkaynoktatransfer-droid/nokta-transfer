@@ -117,18 +117,42 @@ function initializeGoogleAdsTag() {
 
 function sendAdsConversion(type) {
   const adsConfig = window.NOKTA_TRANSFER_ADS;
-  const labels = {
-    call: adsConfig?.callLabel,
-    whatsapp: adsConfig?.whatsappLabel,
-    booking: adsConfig?.bookingLabel
+  const conversionTypes = {
+    call: {
+      eventName: "phone_call_click",
+      eventLabel: "Telefon arama tiklamasi",
+      label: adsConfig?.callLabel
+    },
+    whatsapp: {
+      eventName: "whatsapp_click",
+      eventLabel: "WhatsApp tiklamasi",
+      label: adsConfig?.whatsappLabel
+    },
+    booking: {
+      eventName: "generate_lead",
+      eventLabel: "Arac cagirma ve rezervasyon",
+      label: adsConfig?.bookingLabel
+    }
   };
-  const label = labels[type];
+  const conversion = conversionTypes[type];
 
-  if (!window.gtag || !adsConfig?.googleAdsId || !label) return;
+  if (!window.gtag || !adsConfig?.googleAdsId || !conversion) return false;
+
+  window.gtag("event", conversion.eventName, {
+    event_category: "lead",
+    event_label: conversion.eventLabel,
+    transport_type: "beacon"
+  });
+
+  if (!conversion.label) return false;
 
   window.gtag("event", "conversion", {
-    send_to: `${adsConfig.googleAdsId}/${label}`
+    send_to: `${adsConfig.googleAdsId}/${conversion.label}`,
+    currency: adsConfig.currency || "TRY",
+    value: 1
   });
+
+  return true;
 }
 
 function formatNumber(value, maximumFractionDigits = 1) {
@@ -804,7 +828,10 @@ routeSubmit?.addEventListener("click", (event) => {
   if (!routeState.distanceKm) {
     event.preventDefault();
     setRouteStatus("Mesafe ve fiyat için iki adresi listeden seçin.", "warning");
+    return;
   }
+
+  sendAdsConversion("booking");
 });
 
 fareDistanceRange?.addEventListener("input", updateFareEstimate);
@@ -828,7 +855,6 @@ fareTollInput?.addEventListener("input", () => {
 bookingForm?.addEventListener("submit", (event) => {
   event.preventDefault();
   sendAdsConversion("booking");
-  sendAdsConversion("whatsapp");
   const message = buildBookingMessage(bookingForm);
   window.open(`https://wa.me/${routePhone}?text=${encodeURIComponent(message)}`, "_blank", "noopener");
 });
@@ -838,6 +864,7 @@ document.querySelectorAll('a[href^="tel:"]').forEach((link) => {
 });
 
 document.querySelectorAll('a[href*="wa.me"]').forEach((link) => {
+  if (link === routeSubmit) return;
   link.addEventListener("click", () => sendAdsConversion("whatsapp"));
 });
 
