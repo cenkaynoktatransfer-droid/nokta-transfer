@@ -39,6 +39,52 @@ a {
   text-decoration: none;
 }
 
+.conversion-page {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  background:
+    radial-gradient(circle at 50% 20%, rgba(255, 196, 0, 0.2), transparent 34%),
+    #050505;
+}
+
+.conversion-shell {
+  width: min(92vw, 420px);
+  padding: 36px;
+  border: 1px solid rgba(255, 196, 0, 0.28);
+  border-radius: 16px;
+  background: rgba(18, 18, 20, 0.9);
+  text-align: center;
+  box-shadow: 0 24px 80px rgba(255, 196, 0, 0.16);
+}
+
+.conversion-shell img {
+  width: 84px;
+  height: 84px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 0 28px rgba(255, 196, 0, 0.35);
+}
+
+.conversion-shell p {
+  margin: 20px 0;
+  color: #f7f7f7;
+  font-weight: 800;
+}
+
+.conversion-shell a {
+  display: inline-flex;
+  min-height: 48px;
+  align-items: center;
+  justify-content: center;
+  padding: 0 24px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #ffe26f, #ffb300);
+  color: #070707;
+  font-weight: 900;
+  box-shadow: 0 0 24px rgba(255, 196, 0, 0.3);
+}
+
 .wrap {
   width: min(936px, calc(100% - 32px));
   margin: 0 auto;

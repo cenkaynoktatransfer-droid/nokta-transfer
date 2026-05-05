@@ -57,6 +57,20 @@ const standardRouteRate = 30;
 const longRouteRate = 25;
 const izmirCenter = [38.4237, 27.1428];
 
+function getRootRelativeUrl(fileName) {
+  const segments = window.location.pathname.split("/").filter(Boolean);
+  const lastSegment = segments[segments.length - 1] || "";
+  const depth = lastSegment.includes(".") ? Math.max(segments.length - 1, 0) : segments.length;
+  return `${"../".repeat(depth)}${fileName}`;
+}
+
+function buildConversionPageUrl(fileName, message, source) {
+  const url = new URL(getRootRelativeUrl(fileName), window.location.href);
+  if (message) url.searchParams.set("text", message);
+  if (source) url.searchParams.set("source", source);
+  return url.href;
+}
+
 const routeState = {
   pickup: null,
   dropoff: null,
@@ -359,7 +373,7 @@ function updateWhatsAppLink() {
     .filter(Boolean)
     .join("\n");
 
-  routeSubmit.href = `https://wa.me/${routePhone}?text=${encodeURIComponent(lines)}`;
+  routeSubmit.href = buildConversionPageUrl("rezervasyon-donusum.html", lines, "route-panel");
   routeSubmit.classList.toggle("is-ready", Boolean(routeState.pickup && routeState.dropoff && routeState.distanceKm));
 }
 
@@ -831,7 +845,6 @@ routeSubmit?.addEventListener("click", (event) => {
     return;
   }
 
-  sendAdsConversion("booking");
 });
 
 fareDistanceRange?.addEventListener("input", updateFareEstimate);
@@ -854,16 +867,15 @@ fareTollInput?.addEventListener("input", () => {
 
 bookingForm?.addEventListener("submit", (event) => {
   event.preventDefault();
-  sendAdsConversion("booking");
   const message = buildBookingMessage(bookingForm);
-  window.open(`https://wa.me/${routePhone}?text=${encodeURIComponent(message)}`, "_blank", "noopener");
+  window.open(buildConversionPageUrl("rezervasyon-donusum.html", message, "booking-form"), "_blank", "noopener");
 });
 
-document.querySelectorAll('a[href^="tel:"]').forEach((link) => {
+document.querySelectorAll('a[href^="tel:"], a[href*="telefon-donusum"]').forEach((link) => {
   link.addEventListener("click", () => sendAdsConversion("call"));
 });
 
-document.querySelectorAll('a[href*="wa.me"]').forEach((link) => {
+document.querySelectorAll('a[href*="wa.me"], a[href*="whatsapp-donusum"]').forEach((link) => {
   if (link === routeSubmit) return;
   link.addEventListener("click", () => sendAdsConversion("whatsapp"));
 });

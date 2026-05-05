@@ -6,6 +6,9 @@ const files = [
   "ilceler.html",
   "styles.css",
   "script.js",
+  "telefon-donusum.html",
+  "whatsapp-donusum.html",
+  "rezervasyon-donusum.html",
   "robots.txt",
   "sitemap.xml",
   "assets"
@@ -167,7 +170,7 @@ ${googleAdsHeadSnippet()}
           <a href="../index.html#fiyat">Fiyatlandırma</a>
           <a href="../index.html#sss">S.S.S.</a>
         </nav>
-        <a class="nav-phone" href="tel:+905060436591">Hemen Ara: 0506 043 65 91</a>
+        <a class="nav-phone" href="../telefon-donusum.html">Hemen Ara: 0506 043 65 91</a>
       </div>
     </header>
 
@@ -178,8 +181,8 @@ ${googleAdsHeadSnippet()}
           <h1>${escapeHtml(page.name)} Transfer</h1>
           <p>${escapeHtml(page.name)} bölgesinden İzmir merkez, Adnan Menderes Havalimanı, otel, terminal ve şehir dışı rotalara 7/24 özel transfer hizmeti.</p>
           <div class="seo-cta">
-            <a href="tel:+905060436591">Telefonla Ara</a>
-            <a href="https://wa.me/905060436591?text=${whatsappText}" target="_blank" rel="noopener">WhatsApp ile Bilgi Al</a>
+            <a href="../telefon-donusum.html">Telefonla Ara</a>
+            <a href="../whatsapp-donusum.html?text=${whatsappText}" target="_blank" rel="noopener">WhatsApp ile Bilgi Al</a>
           </div>
         </div>
       </section>
@@ -227,8 +230,8 @@ ${googleAdsHeadSnippet()}
     </main>
 
     <div class="floating-contact" aria-label="Hızlı iletişim">
-      <a class="float-call" href="tel:+905060436591" aria-label="Telefonla ara">☏</a>
-      <a class="float-whatsapp" href="https://wa.me/905060436591" aria-label="WhatsApp ile yaz">
+      <a class="float-call" href="../telefon-donusum.html" aria-label="Telefonla ara">☏</a>
+      <a class="float-whatsapp" href="../whatsapp-donusum.html" aria-label="WhatsApp ile yaz">
         <span class="wa-icon" aria-hidden="true"></span>
       </a>
     </div>

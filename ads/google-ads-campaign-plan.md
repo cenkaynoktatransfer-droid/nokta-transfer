@@ -31,14 +31,15 @@ Bu plan Google Ads Search kampanyası için hazırlandı. Kampanyanın ana amac�
 - Keyword import: `ads/google-ads-keywords.csv`
 - Negatif keyword import: `ads/google-ads-negative-keywords.csv`
 - Reklam metni önerileri: `ads/google-ads-ad-copy.md`
+- Dönüşüm kurulumu: `ads/google-ads-conversion-setup.md`
+- Eksik öğe grubu paketi: `ads/google-ads-asset-group-fix.md`
 
 ## Dönüşüm Takibi İçin Gerekli Bilgiler
 
-Google Ads panelinden şu değerler alınmalı:
+Site tarafı hazır. Google Ads panelinde URL bazlı 3 dönüşüm oluşturulmalı:
 
-- Google tag id: `AW-XXXXXXXXX`
-- Telefon dönüşüm label
-- WhatsApp dönüşüm label
-- Rezervasyon formu dönüşüm label
+- `rezervasyon-donusum.html`
+- `telefon-donusum.html`
+- `whatsapp-donusum.html`
 
-Bu bilgiler gelince siteye telefon, WhatsApp ve form tıklaması için dönüşüm eventi bağlanacak.
+Detaylı adımlar: `ads/google-ads-conversion-setup.md`

@@ -1,43 +1,59 @@
 # Nokta Transfer Google Ads Donusum Kurulumu
 
-Google Ads hesabi icin en mantikli donusumler:
+Videoda gorunen uyari:
+
+```text
+Donusum izleme ayarlari tamamlanmadi
+```
+
+Site tarafi hazirlandi. Artik uc tane donusum URL'i var:
+
+```text
+https://www.noktatransfer.com.tr/rezervasyon-donusum.html
+https://www.noktatransfer.com.tr/telefon-donusum.html
+https://www.noktatransfer.com.tr/whatsapp-donusum.html
+```
+
+## En Kolay Kurulum
+
+Google Ads > Hedefler > Donusumler > Yeni donusum islemi > Web sitesi.
+
+Uc ayri donusum olusturun:
 
 1. `Arac Cagirma / Rota Lead`
-   - Site uzerindeki `Simdi Arac Cagir` ve rezervasyon formu icin.
-   - Kategori: potansiyel musteri veya form gonderimi.
-   - Sayim: bir.
-   - Deger: sabit deger kullanilacaksa 1 TRY.
-   - Vercel degiskeni: `GOOGLE_ADS_BOOKING_LABEL`
+   - Kategori: Potansiyel musteri
+   - Donusum turu: Sayfa yukleme
+   - URL kurali: URL `rezervasyon-donusum.html` icerir
+   - Sayim: Bir
+   - Birincil islem: Evet
 
 2. `Telefon Aramasi Tiklamasi`
-   - Tum `tel:` linkleri icin.
-   - Kategori: telefon aramasi veya iletisim.
-   - Sayim: bir.
-   - Vercel degiskeni: `GOOGLE_ADS_CALL_LABEL`
+   - Kategori: Telefon aramasi veya iletisim
+   - Donusum turu: Sayfa yukleme
+   - URL kurali: URL `telefon-donusum.html` icerir
+   - Sayim: Bir
+   - Birincil islem: Evet
 
 3. `WhatsApp Tiklamasi`
-   - WhatsApp butonlari ve bilgi alma linkleri icin.
-   - Kategori: iletisim veya potansiyel musteri.
-   - Sayim: bir.
-   - Vercel degiskeni: `GOOGLE_ADS_WHATSAPP_LABEL`
+   - Kategori: Potansiyel musteri veya iletisim
+   - Donusum turu: Sayfa yukleme
+   - URL kurali: URL `whatsapp-donusum.html` icerir
+   - Sayim: Bir
+   - Birincil islem: Evet
 
-Google Ads etiket kimligi:
+Bu yontemde Google Ads label kopyalama gerekmiyor. Kullanici butona bastiginda once donusum sayfasi acilir, Google bunu sayar, sonra otomatik telefon/WhatsApp'a yonlenir.
+
+## Etiket Bilgisi
+
+Aktif Google Ads tag:
 
 ```text
 AW-18102129467
 ```
 
-Google Ads'te her donusum aksiyonu olusturulduktan sonra `send_to` icindeki etiketin slash sonrasini kopyalayin.
+## Ileri Seviye Label Yontemi
 
-Ornek:
-
-```text
-AW-18102129467/AbCdEfGhIjK
-```
-
-Buradaki sadece `AbCdEfGhIjK` kismi Vercel environment variable degeridir.
-
-Vercel Environment Variables:
+Google Ads size `AW-18102129467/XXXXXXX` gibi event snippet verirse slash sonrasi `XXXXXXX` kismini Vercel Environment Variables'a ekleyebilirsiniz:
 
 ```text
 GOOGLE_ADS_ID=AW-18102129467
@@ -46,4 +62,4 @@ GOOGLE_ADS_CALL_LABEL=...
 GOOGLE_ADS_WHATSAPP_LABEL=...
 ```
 
-Degiskenler eklendikten sonra Production redeploy yapilmalidir.
+URL donusumleri kuruluysa label yontemini ayrica acmayin; ayni tiklama iki kez sayilabilir.

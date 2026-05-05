@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WhatsApp | Nokta Transfer</title>
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="icon" href="./assets/nokta-transfer-logo.jpeg" type="image/jpeg" />
+    <link rel="stylesheet" href="./styles.css" />
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-18102129467"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag("js", new Date());
+      gtag("config", "AW-18102129467");
+      window.__noktaAdsTagReady = true;
+      window.NOKTA_TRANSFER_ADS = {
+        googleAdsId: "AW-18102129467",
+        callLabel: "",
+        whatsappLabel: "",
+        bookingLabel: "",
+        currency: "TRY"
+      };
+    </script>
+  </head>
+  <body class="conversion-page">
+    <main class="conversion-shell">
+      <img src="./assets/nokta-transfer-logo.jpeg" alt="" />
+      <p>WhatsApp gorusmesine yonlendiriliyorsunuz.</p>
+      <a id="conversionTarget" href="https://wa.me/905060436591">WhatsApp ile yaz</a>
+    </main>
+    <script>
+      const adsConfig = window.NOKTA_TRANSFER_ADS || {};
+      const params = new URLSearchParams(window.location.search);
+      const message = params.get("text") || "Merhaba Nokta Transfer, bilgi almak istiyorum.";
+      const target = `https://wa.me/905060436591?text=${encodeURIComponent(message)}`;
+      document.querySelector("#conversionTarget").href = target;
+
+      function sendConversion() {
+        if (!window.gtag) return;
+        window.gtag("event", "whatsapp_click", {
+          event_category: "lead",
+          event_label: "WhatsApp tiklamasi",
+          transport_type: "beacon"
+        });
+        if (!adsConfig.whatsappLabel) return;
+        window.gtag("event", "conversion", {
+          send_to: `${adsConfig.googleAdsId}/${adsConfig.whatsappLabel}`,
+          currency: adsConfig.currency || "TRY",
+          value: 1
+        });
+      }
+
+      window.addEventListener("load", () => {
+        sendConversion();
+        window.setTimeout(() => {
+          window.location.href = target;
+        }, 650);
+      });
+    </script>
+  </body>
+</html>
