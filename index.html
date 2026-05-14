@@ -3,67 +3,777 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Bakım Çalışması | Nokta Transfer</title>
-    <style>
-      body {
-        margin: 0;
-        padding: 0;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        height: 100vh;
-        background-color: #050505;
-        color: #ffffff;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        text-align: center;
+    <title>Nokta Transfer | İzmir Transfer ve Havalimanı Ulaşım</title>
+    <meta
+      name="description"
+      content="Nokta Transfer ile İzmir transfer, Adnan Menderes havalimanı transfer, şehir içi ve şehir dışı VIP ulaşım hizmeti. 7/24 net fiyat ve konforlu araç."
+    />
+    <meta name="keywords" content="Nokta Transfer, İzmir transfer, İzmir havalimanı transfer, Adnan Menderes transfer, İzmir VIP transfer, şehir içi transfer" />
+    <meta name="robots" content="index, follow" />
+    <meta name="google-site-verification" content="8JhMSGWUzM4-ZQO4eWGDDoP2H8L8Ni2cGRH_Tad32oI" />
+    <link rel="canonical" href="https://www.noktatransfer.com.tr/" />
+    <link rel="preload" as="image" href="./assets/izmir-saat-kulesi-hero.webp" type="image/webp" />
+    <link rel="icon" href="./assets/nokta-transfer-logo.jpeg" type="image/jpeg" />
+    <link rel="apple-touch-icon" href="./assets/nokta-transfer-logo.jpeg" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Nokta Transfer | İzmir Transfer ve Havalimanı Ulaşım" />
+    <meta property="og:description" content="İzmir'de 7/24 net fiyatlı, konforlu ve güvenilir transfer hizmeti." />
+    <meta property="og:image" content="https://www.noktatransfer.com.tr/assets/nokta-transfer-logo.jpeg" />
+    <meta property="og:url" content="https://www.noktatransfer.com.tr/" />
+    <meta property="og:locale" content="tr_TR" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Nokta Transfer" />
+    <meta name="twitter:description" content="İzmir 7/24 transfer ve havalimanı ulaşım hizmeti." />
+    <meta name="twitter:image" content="https://www.noktatransfer.com.tr/assets/nokta-transfer-logo.jpeg" />
+    <meta name="theme-color" content="#050505" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="./styles.css" />
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-18102129467"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag("js", new Date());
+      gtag("config", "AW-18102129467");
+      window.__noktaAdsTagReady = true;
+      window.NOKTA_TRANSFER_ADS = {
+        googleAdsId: "AW-18102129467",
+        callLabel: "",
+        whatsappLabel: "",
+        bookingLabel: "",
+        currency: "TRY"
+      };
+    </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "LocalBusiness",
+        "@id": "https://www.noktatransfer.com.tr/#business",
+        "name": "Nokta Transfer",
+        "image": "https://www.noktatransfer.com.tr/assets/nokta-transfer-logo.jpeg",
+        "telephone": "+905060436591",
+        "areaServed": {
+          "@type": "City",
+          "name": "İzmir"
+        },
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "İzmir",
+          "addressCountry": "TR"
+        },
+        "url": "https://www.noktatransfer.com.tr/",
+        "priceRange": "₺₺",
+        "openingHours": "Mo-Su 00:00-23:59",
+        "description": "İzmir'de 7/24 özel transfer, havalimanı transferi, VIP araç ve şehir içi ulaşım hizmeti.",
+        "hasOfferCatalog": {
+          "@type": "OfferCatalog",
+          "name": "Nokta Transfer Hizmetleri",
+          "itemListElement": [
+            {
+              "@type": "Offer",
+              "itemOffered": {
+                "@type": "Service",
+                "name": "İzmir Havalimanı Transfer"
+              }
+            },
+            {
+              "@type": "Offer",
+              "itemOffered": {
+                "@type": "Service",
+                "name": "İzmir Şehir İçi Transfer"
+              }
+            },
+            {
+              "@type": "Offer",
+              "itemOffered": {
+                "@type": "Service",
+                "name": "VIP Transfer"
+              }
+            },
+            {
+              "@type": "Offer",
+              "itemOffered": {
+                "@type": "Service",
+                "name": "Şehirlerarası Transfer"
+              }
+            },
+            {
+              "@type": "Offer",
+              "itemOffered": {
+                "@type": "Service",
+                "name": "Kurumsal Transfer"
+              }
+            }
+          ]
+        }
       }
-      .container {
-        max-width: 600px;
-        padding: 20px;
+    </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "İzmir transfer aracı ne kadar sürede gelir?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Konuma göre değişmekle birlikte İzmir merkez ilçelerde ortalama 5-15 dakika içinde araç yönlendirilir."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Adnan Menderes Havalimanı transfer hizmeti var mı?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Evet. Adnan Menderes Havalimanı için karşılama, bırakma ve şehir merkezi bağlantılı transfer hizmeti 7/24 sunulur."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Transfer fiyatı yolculuk öncesi belli olur mu?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Evet. Rota bilgisi alındıktan sonra yolculuk öncesi net fiyat paylaşılır."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Uçuş gecikirse havalimanı transferinde bekleme olur mu?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Uçuş numarası paylaşıldığında iniş saati kontrol edilir ve karşılama planı buna göre güncellenir."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Kurumsal veya şehirlerarası transfer alabilir miyim?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Evet. İzmir merkezli kurumsal, otel, fuar, otogar ve şehirlerarası transfer talepleri için araç planlaması yapılır."
+            }
+          }
+        ]
       }
-      .logo {
-        font-size: 24px;
-        font-weight: bold;
-        margin-bottom: 20px;
-        color: #ffcc00;
-        text-decoration: none;
-      }
-      h1 {
-        font-size: 2.5rem;
-        margin-bottom: 10px;
-      }
-      p {
-        font-size: 1.1rem;
-        color: #cccccc;
-        line-height: 1.6;
-      }
-      .contact-btn {
-        display: inline-block;
-        margin-top: 30px;
-        padding: 12px 25px;
-        background-color: #ffcc00;
-        color: #000;
-        text-decoration: none;
-        font-weight: bold;
-        border-radius: 5px;
-        transition: 0.3s;
-      }
-      .contact-btn:hover {
-        background-color: #e6b800;
-      }
-    </style>
+    </script>
   </head>
   <body>
-    <div class="container">
-      <div class="logo">NOKTA TRANSFER</div>
-      <h1>Sistem Güncelleniyor</h1>
-      <p>
-        Sizlere daha iyi hizmet verebilmek için web sitemizi kısa süreliğine bakıma aldık. 
-        En kısa sürede tekrar yayında olacağız.
-      </p>
-      <p>Acil ulaşım ihtiyaçlarınız için bize telefonla ulaşabilirsiniz:</p>
-      <a href="tel:+905060436591" class="contact-btn">0506 043 65 91'i ARA</a>
+    <header class="header">
+      <div class="wrap nav">
+        <a class="logo" href="#anasayfa" aria-label="Nokta Transfer">
+          <img src="./assets/nokta-transfer-logo.jpeg" alt="" />
+          <span>NOKTA</span> TRANSFER
+        </a>
+        <nav class="menu" aria-label="Ana menü">
+          <a class="active" href="#anasayfa">Anasayfa</a>
+          <a href="#bolgeler">Hizmet Bölgeleri</a>
+          <a class="menu-taxi" href="./ilceler.html" aria-label="İzmir ilçe transfer rehberi">
+            <img src="./assets/taxi-menu-icon.png" alt="" draggable="false" />
+          </a>
+          <a href="#fiyat">Fiyatlandırma</a>
+          <a href="#sss">S.S.S.</a>
+        </nav>
+        <a class="nav-phone" href="./telefon-donusum.html">Hemen Ara: 0506 043 65 91</a>
+      </div>
+    </header>
+
+    <main id="anasayfa">
+      <section class="hero section">
+        <div class="hero-bg" aria-hidden="true"></div>
+        <div class="wrap hero-inner reveal">
+          <div class="hero-copy">
+            <div class="pill">7/24 aktif - 5 dakika içinde araç</div>
+            <h1>NOKTA TRANSFER</h1>
+            <p>
+              Nokta Transfer hizmetimiz, şehrin karmaşık trafiğinde en zorlu
+              saatlerde bile hayatınızı kolaylaştırmak için tasarlanmış profesyonel
+              bir ulaşım ağıdır. Lüks, konforlu ve ekonomik seyahatin tek adresi
+              olarak daima yanınızdayız.
+            </p>
+            <div class="hero-buttons">
+              <a class="btn yellow" href="./telefon-donusum.html">
+                <span>☎</span>
+                HEMEN ARA
+              </a>
+            </div>
+            <div class="checks" aria-label="Öne çıkan özellikler">
+              <span>✓ SABİT FİYAT</span>
+              <span>✓ ŞOFÖRLÜ LÜKS</span>
+              <span>✓ 7/24 KESİNTİSİZ</span>
+            </div>
+          </div>
+
+          <div class="hero-route" id="rota">
+            <div class="route-card">
+            <div class="route-head">
+              <div>
+                <h2>Rota Belirleyin</h2>
+                <p>Hızlı ve şeffaf ulaşım</p>
+              </div>
+              <span class="route-icon" aria-hidden="true">⇄</span>
+            </div>
+
+            <div class="route-search">
+              <label class="route-field">
+                <span class="dot start-dot"></span>
+                <input id="pickupInput" type="text" placeholder="Nereden alalım?" autocomplete="off" />
+              </label>
+              <div class="route-suggestions" id="pickupSuggestions" role="listbox" hidden></div>
+            </div>
+
+            <div class="route-search">
+              <label class="route-field">
+                <span class="dot end-dot"></span>
+                <input id="dropoffInput" type="text" placeholder="Nereye gidiyoruz?" autocomplete="off" />
+              </label>
+              <div class="route-suggestions" id="dropoffSuggestions" role="listbox" hidden></div>
+            </div>
+
+            <div class="route-tools">
+              <button class="mini-action" id="locationButton" type="button">⌖ Mevcut Konumum</button>
+              <button class="reset-action" id="resetRoute" type="button">↻ Sıfırla</button>
+            </div>
+
+            <div class="road-choice" aria-label="Yol tercihi">
+              <button class="is-active" type="button" data-route-mode="normal">Normal Yol</button>
+              <button type="button" data-route-mode="highway">Otoban</button>
+            </div>
+
+            <label class="toll-panel" id="tollPanel" hidden>
+              <span>Otoyol ücreti</span>
+              <p id="tollStatus">Rota seçilince otoyol ücreti otomatik aranır.</p>
+              <input id="tollInput" type="number" min="0" step="1" inputmode="numeric" placeholder="Yedek ücret" hidden />
+              <small id="tollHint">Otomatik bulunursa toplam fiyata kendisi eklenir.</small>
+            </label>
+
+            <div class="map-card" id="routeMap" aria-label="Rota haritası"></div>
+            <p class="route-status" id="routeStatus">Türkiye genelinde şehir, sokak ve cadde arayın.</p>
+
+            <div class="route-stats">
+              <div class="stat-box">
+                <span>⌁ MESAFE</span>
+                <strong id="distanceOutput">-</strong>
+                <small id="durationOutput">Rota seçilmedi</small>
+              </div>
+              <div class="stat-box">
+                <span>⊙ ÜCRET</span>
+                <strong id="priceOutput">0 TL</strong>
+                <small id="rateOutput">0-6 km sabit 200 TL</small>
+              </div>
+            </div>
+            <p class="toll-summary" id="tollAmountOutput" hidden>Otoban ücreti toplam fiyata eklenir.</p>
+
+            <a class="route-submit" id="routeSubmit" href="./rezervasyon-donusum.html" target="_blank" rel="noopener">
+              Şimdi Araç Çağır
+            </a>
+            <p class="route-note">Daha net fiyat ve rota bilgisi için bize ulaşın.</p>
+          </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section price fare-estimate" id="fiyat">
+        <div class="wrap fare-wrap reveal">
+          <div class="fare-copy">
+            <span class="section-kicker">ŞEFFAF FİYAT TAHMİNİ</span>
+            <h2>Şeffaf Fiyat <span>Tahmini</span></h2>
+            <p>
+              İzmir'in neresine giderseniz gidin, ne ödeyeceğinizi önceden görün.
+              0-6 km arası sabit 200 TL, sonrası 30 TL/km; 100 km'den itibaren 25 TL/km hesaplanır.
+            </p>
+          </div>
+          <div class="fare-calculator" aria-label="Mesafeye göre fiyat tahmini">
+            <div class="fare-meter">
+              <span>Mesafe</span>
+              <strong><b id="fareDistanceValue">24</b> km</strong>
+            </div>
+
+            <div class="fare-range-wrap" style="--fare-progress: 11.56%">
+              <span class="fare-bubble" id="fareDistanceBubble">24 km</span>
+              <input
+                id="fareDistanceRange"
+                type="range"
+                min="1"
+                max="200"
+                value="24"
+                step="1"
+                aria-label="Kilometre seç"
+              />
+            </div>
+
+            <div class="fare-scale" aria-hidden="true">
+              <span>1 km</span>
+              <span>6 km</span>
+              <span>100 km</span>
+              <span>200 km</span>
+            </div>
+
+            <div class="fare-road-choice" aria-label="Fiyat tahmini yol tercihi">
+              <button class="is-active" type="button" data-fare-mode="normal">Normal Yol</button>
+              <button type="button" data-fare-mode="highway">Otoban</button>
+            </div>
+
+            <label class="fare-toll-field" id="fareTollPanel" hidden>
+              <span>Otoyol ücreti</span>
+              <small>Otoyol ücreti rotaya göre değişir. Adresli rota panelinde otomatik hesaplanır.</small>
+            </label>
+
+            <div class="fare-result">
+              <span>Ortalama tahmini ücret</span>
+              <strong id="farePriceValue">740 TL</strong>
+              <p id="fareRateLabel">0-6 km sabit 200 TL + sonrası 30 TL/km</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section trust">
+        <div class="wrap">
+          <div class="glass-card reveal">
+            <h2>Şehrin Güvenilir Ulaşım Merkezi</h2>
+            <p>
+              İzmir içinde kısa mesafe, havalimanı transferi, gece yolculukları
+              ve şehir dışı planlarınız için hızlı dönüş sağlayan özel transfer
+              ekibimizle her zaman ulaşılabilir durumdayız.
+            </p>
+            <div class="mini-grid">
+              <article>
+                <strong>5 dk</strong>
+                <span>ortalama dönüş</span>
+              </article>
+              <article>
+                <strong>7/24</strong>
+                <span>aktif destek</span>
+              </article>
+              <article>
+                <strong>%40</strong>
+                <span>daha ekonomik</span>
+              </article>
+            </div>
+            <p>
+              Misafirlerimizi ailemizden birini taşıyormuş hassasiyetiyle
+              ağırlıyoruz. Kadın yolcularımızın gece geç saatlerdeki güvenliğinden
+              yaşlı hastalarımızın konforuna kadar her senaryoyu ince ayrıntısına
+              kadar değerlendirerek hizmet standartlarımızı sürekli güncelliyoruz.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section operation">
+        <div class="wrap operation-grid">
+          <div class="operation-copy reveal">
+            <span class="section-kicker">NASIL ÇALIŞIR</span>
+            <h2>3 adımda <span>net transfer</span></h2>
+            <p>
+              Uzun telefon görüşmeleri, belirsiz fiyatlar ve son dakika araç arama stresi olmadan;
+              rotayı seçin, tahmini ücreti görün, aracı çağırın.
+            </p>
+          </div>
+          <div class="operation-steps">
+            <article class="operation-card reveal">
+              <b>01</b>
+              <h3>Rota Seç</h3>
+              <p>Alınacak ve gidilecek adresi yazın; mesafe, süre ve ücret tahmini otomatik hesaplansın.</p>
+            </article>
+            <article class="operation-card reveal delay-1">
+              <b>02</b>
+              <h3>Yolu Belirle</h3>
+              <p>Normal yol veya otoban tercihini seçin. Otoyol ücreti bulunursa toplam tahmine eklenir.</p>
+            </article>
+            <article class="operation-card reveal delay-2">
+              <b>03</b>
+              <h3>Aracı Çağır</h3>
+              <p>WhatsApp ya da telefonla tek dokunuşta ulaşın; araç bilgisi ve rota netleşsin.</p>
+            </article>
+          </div>
+        </div>
+        <div class="wrap service-chips reveal">
+          <span>Adnan Menderes karşılama</span>
+          <span>Geniş bagaj alanı</span>
+          <span>Şehir içi kısa rota</span>
+          <span>Çeşme ve sahil hattı</span>
+          <span>Gece güvenli ulaşım</span>
+        </div>
+      </section>
+
+      <section class="section booking-priority" id="rezervasyon">
+        <div class="wrap booking-grid">
+          <div class="booking-copy reveal">
+            <span class="section-kicker">HIZLI REZERVASYON</span>
+            <h2>Transfer talebini <span>tek mesajla</span> netleştir</h2>
+            <p>
+              Alınacak yer, varış noktası, yolcu sayısı, bagaj ve uçuş bilgisi tek mesajda gelsin;
+              ekip doğru araç tipini ve rota bilgisini hızlıca hazırlasın.
+            </p>
+            <div class="booking-assurance">
+              <article>
+                <strong>Uçuş takipli</strong>
+                <span>İniş saati değişirse plan güncellenir.</span>
+              </article>
+              <article>
+                <strong>Araç başı net ücret</strong>
+                <span>Yolcu sayısı değil rota ve araç planı esas alınır.</span>
+              </article>
+              <article>
+                <strong>Kapıdan kapıya</strong>
+                <span>Ev, otel, marina, terminal ve fuar noktalarına ulaşım.</span>
+              </article>
+            </div>
+          </div>
+
+          <form class="booking-form reveal delay-1" id="bookingForm">
+            <div class="booking-form-head">
+              <span>WhatsApp rezervasyon özeti</span>
+              <strong>30 saniye</strong>
+            </div>
+            <label>
+              <span>Transfer tipi</span>
+              <select name="type" required>
+                <option value="Adnan Menderes Havalimanı karşılama">Adnan Menderes karşılama</option>
+                <option value="Havalimanına bırakma">Havalimanına bırakma</option>
+                <option value="Şehir içi transfer">Şehir içi transfer</option>
+                <option value="Şehirlerarası transfer">Şehirlerarası transfer</option>
+                <option value="Kurumsal / VIP transfer">Kurumsal / VIP transfer</option>
+              </select>
+            </label>
+            <div class="booking-two">
+              <label>
+                <span>Tarih</span>
+                <input name="date" type="date" />
+              </label>
+              <label>
+                <span>Saat</span>
+                <input name="time" type="time" />
+              </label>
+            </div>
+            <label>
+              <span>Alınacak yer</span>
+              <input name="from" type="text" placeholder="Örn: Adnan Menderes Havalimanı" />
+            </label>
+            <label>
+              <span>Gidilecek yer</span>
+              <input name="to" type="text" placeholder="Örn: Alaçatı otel bölgesi" />
+            </label>
+            <div class="booking-two">
+              <label>
+                <span>Yolcu</span>
+                <input name="passengers" type="number" min="1" max="16" placeholder="2" />
+              </label>
+              <label>
+                <span>Bagaj</span>
+                <input name="luggage" type="number" min="0" max="12" placeholder="2" />
+              </label>
+            </div>
+            <label>
+              <span>Uçuş no / not</span>
+              <input name="note" type="text" placeholder="Örn: TK2320, bebek koltuğu, ekstra bagaj" />
+            </label>
+            <button class="booking-submit" type="submit">WhatsApp'a Hazırla</button>
+          </form>
+        </div>
+      </section>
+
+      <section class="section transfer-advantages">
+        <div class="wrap narrow reveal">
+          <span class="section-kicker">TRANSFER STANDARDI</span>
+          <h2>Yolculuktan önce <span>her detay belli</span></h2>
+          <p>
+            İzmir transfer arayan yolcuların en çok ihtiyaç duyduğu şey hız, fiyat netliği ve güvenli karşılama.
+            Nokta Transfer bu üç noktayı tek akışta toplar.
+          </p>
+        </div>
+        <div class="wrap advantage-grid">
+          <article class="advantage-card reveal">
+            <b>01</b>
+            <h3>Adnan Menderes Havalimanı</h3>
+            <p>Uçuş numarasıyla iniş takibi, terminal çıkışı yönlendirmesi ve bagaj sürecine göre araç planı.</p>
+          </article>
+          <article class="advantage-card reveal delay-1">
+            <b>02</b>
+            <h3>Otel, fuar ve marina</h3>
+            <p>Çeşme, Alaçatı, Urla, Foça, Selçuk ve merkez otel bölgeleri için kapıdan kapıya transfer.</p>
+          </article>
+          <article class="advantage-card reveal delay-2">
+            <b>03</b>
+            <h3>Şehirlerarası rota</h3>
+            <p>İstanbul, Bursa, Aydın, Denizli ve Ege hattında otoban tercihiyle ücret kalemi açık gösterilir.</p>
+          </article>
+          <article class="advantage-card reveal">
+            <b>04</b>
+            <h3>Kurumsal ulaşım</h3>
+            <p>Toplantı, fuar, ekip taşıma ve VIP misafir planlarında saatli araç yönlendirme desteği.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section popular-lines">
+        <div class="wrap narrow reveal">
+          <span class="section-kicker">POPÜLER TRANSFER HATLARI</span>
+          <h2>İzmir'in en çok <span>aranan rotaları</span></h2>
+          <p>
+            Havalimanı, sahil hattı ve merkez ilçelerde sık kullanılan güzergahları tek ekranda topladık.
+          </p>
+        </div>
+        <div class="wrap popular-grid">
+          <a class="popular-card reveal" href="./cesme-transfer/">
+            <span>Adnan Menderes çıkışlı</span>
+            <strong>Çeşme Transfer</strong>
+            <small>Alaçatı, marina, otel ve yazlık bölgeler</small>
+          </a>
+          <a class="popular-card reveal delay-1" href="./urla-transfer/">
+            <span>Sahil hattı</span>
+            <strong>Urla Transfer</strong>
+            <small>İskele, bağ yolu, Güzelbahçe bağlantısı</small>
+          </a>
+          <a class="popular-card reveal delay-2" href="./karsiyaka-transfer/">
+            <span>Merkez rota</span>
+            <strong>Karşıyaka Transfer</strong>
+            <small>Bostanlı, Mavişehir, Bornova ve Konak bağlantısı</small>
+          </a>
+          <a class="popular-card reveal" href="./bornova-transfer/">
+            <span>Üniversite ve iş hattı</span>
+            <strong>Bornova Transfer</strong>
+            <small>Ege Üniversitesi, Forum, havalimanı ve merkez</small>
+          </a>
+          <a class="popular-card reveal delay-1" href="./selcuk-transfer/">
+            <span>Turistik rota</span>
+            <strong>Selçuk Transfer</strong>
+            <small>Efes, Şirince, otel ve havalimanı ulaşımı</small>
+          </a>
+          <a class="popular-card reveal delay-2" href="./foca-transfer/">
+            <span>Kuzey sahil</span>
+            <strong>Foça Transfer</strong>
+            <small>Eski Foça, Yeni Foça ve sahil güzergahları</small>
+          </a>
+        </div>
+        <div class="wrap route-bank reveal">
+          <div class="route-bank-head">
+            <span>Havalimanı odaklı hızlı hatlar</span>
+            <strong>İzmir transfer aramalarında öne çıkan rotalar</strong>
+          </div>
+          <div class="route-bank-list" aria-label="Popüler transfer rota listesi">
+            <a href="./cesme-transfer/"><span>ADB - Çeşme / Alaçatı</span><b>Otel, marina, yazlık</b></a>
+            <a href="./urla-transfer/"><span>ADB - Urla</span><b>İskele, bağ yolu, sahil</b></a>
+            <a href="./selcuk-transfer/"><span>ADB - Selçuk / Efes</span><b>Turistik gezi ve otel</b></a>
+            <a href="./foca-transfer/"><span>ADB - Foça</span><b>Eski Foça, Yeni Foça</b></a>
+            <a href="./karsiyaka-transfer/"><span>ADB - Karşıyaka</span><b>Bostanlı, Mavişehir</b></a>
+            <a href="./gaziemir-transfer/"><span>ADB - Gaziemir</span><b>Fuar, otel, merkez</b></a>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="bolgeler">
+        <div class="wrap narrow reveal">
+          <h2>Kesintisiz <span>Hizmet Ağı</span></h2>
+          <p>
+            Metropol sınırları içerisindeki stratejik durak noktalarımız ve
+            bekleyen araçlarımızla tüm ilçelere dakikalar içinde ulaşım sağlıyoruz.
+          </p>
+        </div>
+        <div class="wrap area-grid">
+          <article class="area-card reveal">
+            <h3>Merkez Noktalar</h3>
+            <p>
+              Aliağa, Balçova, Bayındır, Bayraklı, Bergama, Beydağ, Bornova,
+              Buca, Çeşme, Çiğli, Dikili, Foça, Gaziemir, Güzelbahçe,
+              Karabağlar, Karaburun, Karşıyaka, Kemalpaşa, Kınık, Kiraz,
+              Konak, Menderes, Menemen, Narlıdere, Ödemiş, Seferihisar,
+              Selçuk, Tire, Torbalı ve Urla.
+            </p>
+          </article>
+          <article class="area-card reveal delay-1">
+            <h3>Sahil Hattı</h3>
+            <p>
+              Foça, Aliağa, Dikili, Karaburun, Mordoğan, Ürkmez, Gümüldür,
+              Çeşme, Urla, Güzelbahçe, Narlıdere ve Seferihisar.
+            </p>
+          </article>
+          <article class="area-card reveal delay-2">
+            <h3>Transfer Rotaları</h3>
+            <p>
+              Adnan Menderes Havalimanı, İzmir Otogarı, Alsancak Garı, fuar,
+              otel, liman ve şehir dışı güzergahlar.
+            </p>
+          </article>
+        </div>
+      </section>
+
+
+      <section class="section comments">
+        <div class="wrap narrow reveal">
+          <h2>YOLCU <span>GÖRÜŞLERİ</span></h2>
+        </div>
+        <div class="wrap comment-grid">
+          <article class="comment-card reveal">
+            <div class="stars">★★★★★ <b>"</b></div>
+            <p>
+              "Gece geç saatte Alsancak'tan evime dönerken kullandım. Şoför bey
+              çok nazik, araç ise tertemizdi. Ödediğim rakam çok daha uygun geldi."
+            </p>
+            <strong>— Merve T.</strong>
+          </article>
+          <article class="comment-card reveal delay-1">
+            <div class="stars">★★★★★ <b>"</b></div>
+            <p>
+              "Adnan Menderes'ten indikten sonra WhatsApp üzerinden konum attım.
+              Valizimi aldığımda araç hazırdı, fiyatı da baştan söylediler."
+            </p>
+            <strong>— Alper G.</strong>
+          </article>
+          <article class="comment-card reveal delay-2">
+            <div class="stars">★★★★★ <b>"</b></div>
+            <p>
+              "Oğlumu Ege Üniversitesi yurdundan hep onlara emanet ediyorum.
+              Şehirde böyle düzgün esnaf bulmak zor gerçekten."
+            </p>
+            <strong>— Nermin S.</strong>
+          </article>
+        </div>
+      </section>
+
+      <section class="section fleet" id="araclar">
+        <div class="wrap narrow reveal">
+          <h2>Araç <span>Seçenekleri</span></h2>
+          <p>
+            Tek kişi yolculuktan VIP transferlere kadar ihtiyacınıza uygun,
+            temiz ve konforlu Nokta Transfer araçları.
+          </p>
+        </div>
+
+        <div class="wrap fleet-grid">
+          <article class="fleet-card reveal">
+            <div class="fleet-head">
+              <div>
+                <span>EN POPÜLER</span>
+                <h3>Konfor Sedan</h3>
+              </div>
+              <b>Standart</b>
+            </div>
+            <div class="vehicle-frame vehicle-white">
+              <span class="vehicle-brand">NOKTATRANSFER</span>
+              <img
+                class="fleet-photo comfort-photo"
+                src="./assets/vehicle-comfort-sedan.jpg"
+                alt="Yandan beyaz sedan araç"
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
+            <ul class="fleet-features">
+              <li>4 Yolcu Kapasitesi</li>
+              <li>2 Orta Boy Valiz</li>
+              <li>Klima & Hijyen Paketi</li>
+              <li>Ekonomik Seçenek</li>
+            </ul>
+            <div class="fleet-foot">
+              <span>4-8</span>
+              <span>2-4</span>
+              <strong>DETAYLAR ⓘ</strong>
+            </div>
+          </article>
+
+          <article class="fleet-card reveal delay-1">
+            <div class="fleet-head">
+              <div>
+                <span>BUSINESS</span>
+                <h3>Premium Sedan</h3>
+              </div>
+              <b>+ %25</b>
+            </div>
+            <div class="vehicle-frame vehicle-black">
+              <span class="vehicle-brand">NOKTATRANSFER</span>
+              <img
+                class="fleet-photo premium-photo"
+                src="./assets/vehicle-premium-sedan.jpg"
+                alt="Yandan premium sedan araç"
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
+            <ul class="fleet-features">
+              <li>Lüks Deri Döşeme</li>
+              <li>Geniş Diz Mesafesi</li>
+              <li>Ücretsiz Wi-Fi</li>
+              <li>USB Şarj Terminali</li>
+            </ul>
+            <div class="fleet-foot">
+              <span>4-8</span>
+              <span>2-4</span>
+              <strong>DETAYLAR ⓘ</strong>
+            </div>
+          </article>
+
+          <article class="fleet-card reveal delay-2">
+            <div class="fleet-head">
+              <div>
+                <span>VIP VAN</span>
+                <h3>VIP Black</h3>
+              </div>
+              <b>+ %50</b>
+            </div>
+            <div class="vehicle-frame vehicle-vip">
+              <span class="vehicle-brand">NOKTATRANSFER</span>
+              <img
+                class="fleet-photo vip-photo"
+                src="./assets/vehicle-vip-van.jpg"
+                alt="Yandan siyah VIP araç"
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
+            <ul class="fleet-features vip-features">
+              <li>Grup Taşımacılığı</li>
+              <li>6-8 Kişilik Alan</li>
+              <li>Minibar & İkram</li>
+              <li>Özel Karşılama</li>
+            </ul>
+            <div class="fleet-foot">
+              <span>4-8</span>
+              <span>2-4</span>
+              <strong>DETAYLAR ⓘ</strong>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="section faq" id="sss">
+        <div class="wrap narrow reveal">
+          <h2>Sıkça Sorulan <span>Sorular</span></h2>
+        </div>
+        <div class="wrap faq-list reveal">
+          <details>
+            <summary>İzmir transfer çağırdığımda ne kadar sürede gelir?</summary>
+            <p>Konumunuza göre değişmekle birlikte merkez ilçelerde ortalama 5-15 dakika içinde araç yönlendirilir.</p>
+          </details>
+          <details>
+            <summary>Fiyatı yolculuk öncesi öğrenebilir miyim?</summary>
+            <p>Evet. Konum ve varış noktanızı WhatsApp üzerinden paylaştığınızda net ücret bilgisi verilir.</p>
+          </details>
+          <details>
+            <summary>Havalimanı transferi var mı?</summary>
+            <p>Adnan Menderes Havalimanı için karşılama ve bırakma transferi 7/24 yapılır.</p>
+          </details>
+          <details>
+            <summary>Uçuş gecikirse araç bekler mi?</summary>
+            <p>Uçuş numarası paylaşıldığında iniş saati kontrol edilir. Gecikme olduğunda araç planı buna göre güncellenir.</p>
+          </details>
+          <details>
+            <summary>Kurumsal ve şehirlerarası transfer yapılır mı?</summary>
+            <p>Evet. Fuar, otel, toplantı, VIP misafir ve şehirlerarası rota taleplerinde uygun araç planı yapılır.</p>
+          </details>
+        </div>
+      </section>
+    </main>
+
+    <div class="floating-contact" aria-label="Hızlı iletişim">
+      <a class="float-call" href="./telefon-donusum.html" aria-label="Telefonla ara">☎</a>
+      <a class="float-whatsapp" href="./whatsapp-donusum.html" aria-label="WhatsApp ile yaz">
+        <span class="wa-icon" aria-hidden="true"></span>
+      </a>
     </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="./script.js"></script>
   </body>
 </html>
