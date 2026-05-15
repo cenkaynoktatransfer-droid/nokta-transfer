@@ -48,6 +48,8 @@ const fareModeButtons = document.querySelectorAll("[data-fare-mode]");
 const fareTollPanel = document.querySelector("#fareTollPanel");
 const fareTollInput = document.querySelector("#fareTollInput");
 const bookingForm = document.querySelector("#bookingForm");
+const visitorCounterValue = document.querySelector("#visitorCounterValue");
+const visitorCounterStatus = document.querySelector("#visitorCounterStatus");
 
 const routePhone = "905060436591";
 const minimumFareDistanceKm = 6;
@@ -69,6 +71,57 @@ function buildConversionPageUrl(fileName, message, source) {
   if (message) url.searchParams.set("text", message);
   if (source) url.searchParams.set("source", source);
   return url.href;
+}
+
+function getOrCreateVisitorDeviceId() {
+  const storageKey = "noktaTransferVisitorDeviceId";
+  const newId = window.crypto?.randomUUID
+    ? window.crypto.randomUUID()
+    : `${Date.now()}-${Math.random().toString(36).slice(2)}`;
+
+  try {
+    const existingId = window.localStorage?.getItem(storageKey);
+    if (existingId) return existingId;
+    window.localStorage?.setItem(storageKey, newId);
+  } catch (error) {
+    return newId;
+  }
+
+  return newId;
+}
+
+async function initializeVisitorCounter() {
+  if (!visitorCounterValue) return;
+
+  try {
+    const deviceId = getOrCreateVisitorDeviceId();
+    const response = await fetch("/api/visitor-counter", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        deviceId,
+        path: window.location.pathname
+      })
+    });
+
+    if (!response.ok) throw new Error("Counter request failed");
+
+    const data = await response.json();
+    visitorCounterValue.textContent = Number(data.total || 0).toLocaleString("tr-TR");
+
+    if (visitorCounterStatus) {
+      visitorCounterStatus.textContent = data.isNewDevice
+        ? "Bu cihaz ilk kez sayıldı. Aynı cihaz tekrar sayılmaz."
+        : "Bu cihaz daha önce sayıldığı için toplam sayı tekrar artırılmadı.";
+    }
+  } catch (error) {
+    visitorCounterValue.textContent = "-";
+    if (visitorCounterStatus) {
+      visitorCounterStatus.textContent = "Sayaç şu anda güncellenemiyor.";
+    }
+  }
 }
 
 const routeState = {
@@ -881,6 +934,7 @@ document.querySelectorAll('a[href*="wa.me"], a[href*="whatsapp-donusum"]').forEa
 });
 
 initializeGoogleAdsTag();
+initializeVisitorCounter();
 initializeRouteMap();
 updateRouteDisplay();
 updateFareEstimate();

@@ -19,6 +19,10 @@
       "dest": "/api/toll-estimate.mjs"
     },
     {
+      "src": "/api/visitor-counter",
+      "dest": "/api/visitor-counter.mjs"
+    },
+    {
       "handle": "filesystem"
     },
     {

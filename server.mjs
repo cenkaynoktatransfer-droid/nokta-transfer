@@ -2,6 +2,7 @@ import { createServer } from "node:http";
 import { readFile } from "node:fs/promises";
 import { extname, join, normalize } from "node:path";
 import tollEstimateHandler from "./api/toll-estimate.mjs";
+import visitorCounterHandler from "./api/visitor-counter.mjs";
 
 const root = process.cwd();
 const port = Number(process.env.PORT || 3000);
@@ -22,6 +23,10 @@ createServer(async (request, response) => {
     const url = new URL(request.url || "/", `http://localhost:${port}`);
     if (url.pathname === "/api/toll-estimate") {
       await tollEstimateHandler(request, response);
+      return;
+    }
+    if (url.pathname === "/api/visitor-counter") {
+      await visitorCounterHandler(request, response);
       return;
     }
 
