@@ -2,10 +2,9 @@
 
 Sayaç mantığı:
 
-- Tarayıcı her cihaz için `localStorage` içinde tekil bir cihaz kimliği üretir.
-- Bu kimlik sunucuya gönderilir.
-- Sunucu kimliği SHA-256 ile hashler ve aynı cihazı ikinci kez saymaz.
-- Cihaz tarayıcı verisini silerse veya farklı tarayıcı kullanırsa yeni cihaz gibi sayılabilir.
+- Siteye yapılan her giriş sayaç toplamını artırır.
+- Aynı cihazdan tekrar girilirse de yeni ziyaret olarak sayılır.
+- En altta görünen sayı toplam giriş sayısıdır.
 
 Kalıcı çalışması için Vercel'de Redis/KV bağlantısı gerekir. Desteklenen environment variable isimleri:
 

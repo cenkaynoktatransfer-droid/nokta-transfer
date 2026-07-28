@@ -73,35 +73,16 @@ function buildConversionPageUrl(fileName, message, source) {
   return url.href;
 }
 
-function getOrCreateVisitorDeviceId() {
-  const storageKey = "noktaTransferVisitorDeviceId";
-  const newId = window.crypto?.randomUUID
-    ? window.crypto.randomUUID()
-    : `${Date.now()}-${Math.random().toString(36).slice(2)}`;
-
-  try {
-    const existingId = window.localStorage?.getItem(storageKey);
-    if (existingId) return existingId;
-    window.localStorage?.setItem(storageKey, newId);
-  } catch (error) {
-    return newId;
-  }
-
-  return newId;
-}
-
 async function initializeVisitorCounter() {
   if (!visitorCounterValue) return;
 
   try {
-    const deviceId = getOrCreateVisitorDeviceId();
     const response = await fetch("/api/visitor-counter", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        deviceId,
         path: window.location.pathname
       })
     });
@@ -112,9 +93,7 @@ async function initializeVisitorCounter() {
     visitorCounterValue.textContent = Number(data.total || 0).toLocaleString("tr-TR");
 
     if (visitorCounterStatus) {
-      visitorCounterStatus.textContent = data.isNewDevice
-        ? "Bu cihaz ilk kez sayıldı. Aynı cihaz tekrar sayılmaz."
-        : "Bu cihaz daha önce sayıldığı için toplam sayı tekrar artırılmadı.";
+      visitorCounterStatus.textContent = "Bu giriş toplam ziyaret sayısına eklendi.";
     }
   } catch (error) {
     visitorCounterValue.textContent = "-";
@@ -1066,3 +1045,5 @@ districtButtons.forEach((button) => {
 if (districtButtons.length) {
   updateDistrictDetail("konak");
 }
+
+

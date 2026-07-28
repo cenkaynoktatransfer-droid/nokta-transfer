@@ -231,9 +231,9 @@ ${googleAdsHeadSnippet()}
 
     <footer class="site-footer">
       <div class="wrap visitor-counter" aria-live="polite">
-        <span class="visitor-counter-kicker">Canlı ziyaretçi sayacı</span>
-        <strong><span id="visitorCounterValue">...</span> tekil cihaz</strong>
-        <p id="visitorCounterStatus">Bu sayaç her cihazı yalnızca bir kez sayar.</p>
+        <span class="visitor-counter-kicker">Ziyaretçi sayacı</span>
+        <strong><span id="visitorCounterValue">...</span> toplam giriş</strong>
+        <p id="visitorCounterStatus">Siteye yapılan her giriş sayaca eklenir.</p>
       </div>
     </footer>
 
@@ -276,3 +276,4 @@ ${sitemapUrls
 `;
 
 await writeFile("dist/sitemap.xml", sitemap, "utf8");
+
