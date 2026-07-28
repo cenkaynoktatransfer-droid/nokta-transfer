@@ -232,8 +232,8 @@ ${googleAdsHeadSnippet()}
     <footer class="site-footer">
       <div class="wrap visitor-counter" aria-live="polite">
         <span class="visitor-counter-kicker">Ziyaretçi sayacı</span>
-        <strong><span id="visitorCounterValue">...</span> toplam giriş</strong>
-        <p id="visitorCounterStatus">Siteye yapılan her giriş sayaca eklenir.</p>
+        <strong><span id="visitorCounterValue">...</span> toplam ziyaretçi</strong>
+        <p id="visitorCounterStatus">Her cihaz yalnızca bir kez sayılır.</p>
       </div>
     </footer>
 
@@ -276,4 +276,5 @@ ${sitemapUrls
 `;
 
 await writeFile("dist/sitemap.xml", sitemap, "utf8");
+
 

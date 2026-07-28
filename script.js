@@ -73,16 +73,51 @@ function buildConversionPageUrl(fileName, message, source) {
   return url.href;
 }
 
+function getOrCreateVisitorDeviceId() {
+  const storageKey = "noktaTransferVisitorDeviceId";
+  const newId = window.crypto?.randomUUID
+    ? window.crypto.randomUUID()
+    : `${Date.now()}-${Math.random().toString(36).slice(2)}`;
+
+  try {
+    const existingId = window.localStorage?.getItem(storageKey);
+    if (existingId) return existingId;
+    window.localStorage?.setItem(storageKey, newId);
+  } catch (error) {
+    return newId;
+  }
+
+  return newId;
+}
+
+function formatVisitorCount(value) {
+  const number = Number(value || 0);
+  if (number >= 1_000_000) {
+    const formatted = (number / 1_000_000).toLocaleString("tr-TR", {
+      maximumFractionDigits: number >= 10_000_000 ? 0 : 1
+    });
+    return `${formatted.replace(/,0$/, "")}M`;
+  }
+  if (number >= 1_000) {
+    const formatted = (number / 1_000).toLocaleString("tr-TR", {
+      maximumFractionDigits: number >= 10_000 ? 0 : 1
+    });
+    return `${formatted.replace(/,0$/, "")}K`;
+  }
+  return number.toLocaleString("tr-TR");
+}
 async function initializeVisitorCounter() {
   if (!visitorCounterValue) return;
 
   try {
+    const deviceId = getOrCreateVisitorDeviceId();
     const response = await fetch("/api/visitor-counter", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
+        deviceId,
         path: window.location.pathname
       })
     });
@@ -90,10 +125,12 @@ async function initializeVisitorCounter() {
     if (!response.ok) throw new Error("Counter request failed");
 
     const data = await response.json();
-    visitorCounterValue.textContent = Number(data.total || 0).toLocaleString("tr-TR");
+    visitorCounterValue.textContent = formatVisitorCount(data.total);
 
     if (visitorCounterStatus) {
-      visitorCounterStatus.textContent = "Bu giriş toplam ziyaret sayısına eklendi.";
+      visitorCounterStatus.textContent = data.isNewDevice
+        ? "Bu cihaz ilk kez sayıldı. Aynı cihaz tekrar sayılmaz."
+        : "Bu cihaz daha önce sayıldığı için toplam sayı aynı kaldı.";
     }
   } catch (error) {
     visitorCounterValue.textContent = "-";
@@ -1045,5 +1082,6 @@ districtButtons.forEach((button) => {
 if (districtButtons.length) {
   updateDistrictDetail("konak");
 }
+
 
 

@@ -2,9 +2,10 @@
 
 Sayaç mantığı:
 
-- Siteye yapılan her giriş sayaç toplamını artırır.
-- Aynı cihazdan tekrar girilirse de yeni ziyaret olarak sayılır.
-- En altta görünen sayı toplam giriş sayısıdır.
+- Tarayıcı her cihaz için `localStorage` içinde tekil bir cihaz kimliği üretir.
+- Sunucu bu kimliği hashler ve aynı cihazı ikinci kez saymaz.
+- PC ilk kez girerse 1, telefon ilk kez girerse 2, başka cihazlar 3, 4, 5 diye devam eder.
+- 1000 ve üzeri sayılar sitede kısaltılır: 1000 = 1K, 1500 = 1,5K, 1000000 = 1M.
 
 Kalıcı çalışması için Vercel'de Redis/KV bağlantısı gerekir. Desteklenen environment variable isimleri:
 
