@@ -122,9 +122,17 @@ async function initializeVisitorCounter() {
       })
     });
 
-    if (!response.ok) throw new Error("Counter request failed");
-
     const data = await response.json();
+    if (!response.ok) {
+      if (data?.setupRequired) {
+        visitorCounterValue.textContent = "-";
+        if (visitorCounterStatus) {
+          visitorCounterStatus.textContent = "Kalıcı sayaç için Vercel Redis bağlantısı bekleniyor.";
+        }
+        return;
+      }
+      throw new Error("Counter request failed");
+    }
     visitorCounterValue.textContent = formatVisitorCount(data.total);
 
     if (visitorCounterStatus) {
@@ -1082,6 +1090,7 @@ districtButtons.forEach((button) => {
 if (districtButtons.length) {
   updateDistrictDetail("konak");
 }
+
 
 
 

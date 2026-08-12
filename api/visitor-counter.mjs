@@ -4,20 +4,27 @@ const redisUrl =
   process.env.KV_REST_API_URL ||
   process.env.UPSTASH_REDIS_REST_URL ||
   process.env.REDIS_REST_API_URL ||
+  process.env.REDIS_REST_URL ||
   "";
 const redisToken =
   process.env.KV_REST_API_TOKEN ||
   process.env.UPSTASH_REDIS_REST_TOKEN ||
   process.env.REDIS_REST_API_TOKEN ||
+  process.env.REDIS_REST_TOKEN ||
   "";
 
 const keyPrefix = process.env.VISITOR_COUNTER_KEY_PREFIX || "nokta-transfer";
 const totalKey = `${keyPrefix}:visitor-total`;
-const deviceKeyPrefix = `${keyPrefix}:visitor-device`;
+const devicesSetKey = `${keyPrefix}:visitor-devices`;
 const baseline = Number(process.env.VISITOR_COUNTER_BASELINE || 0);
+const baselineOffset = Number.isFinite(baseline) && baseline > 0 ? baseline : 0;
+const isVercelRuntime = Boolean(process.env.VERCEL || process.env.VERCEL_ENV);
+const allowMemoryFallback =
+  process.env.VISITOR_COUNTER_ALLOW_MEMORY === "1" ||
+  (!isVercelRuntime && process.env.NODE_ENV !== "production");
 
 const memoryStore = globalThis.__noktaVisitorCounter || {
-  total: Number.isFinite(baseline) ? baseline : 0,
+  total: baselineOffset,
   devices: new Set()
 };
 globalThis.__noktaVisitorCounter = memoryStore;
@@ -50,6 +57,10 @@ function hashDeviceId(deviceId) {
     .digest("hex");
 }
 
+function hasPersistentRedis() {
+  return Boolean(redisUrl && redisToken && /^https?:\/\//i.test(redisUrl));
+}
+
 async function redisCommand(command) {
   const response = await fetch(`${redisUrl.replace(/\/$/, "")}/pipeline`, {
     method: "POST",
@@ -69,19 +80,35 @@ async function redisCommand(command) {
   return result?.result;
 }
 
+async function getRedisTotal() {
+  const storedTotal = Number((await redisCommand(["GET", totalKey])) || 0);
+  const uniqueDeviceTotal = baselineOffset + Number((await redisCommand(["SCARD", devicesSetKey])) || 0);
+  return Math.max(storedTotal, uniqueDeviceTotal, baselineOffset);
+}
+
 async function countWithRedis(deviceHash) {
-  if (Number.isFinite(baseline) && baseline > 0) {
-    await redisCommand(["SET", totalKey, String(baseline), "NX"]);
+  if (baselineOffset > 0) {
+    await redisCommand(["SET", totalKey, String(baselineOffset), "NX"]);
   }
 
-  const setResult = await redisCommand(["SET", `${deviceKeyPrefix}:${deviceHash}`, "1", "NX"]);
-  const isNewDevice = setResult === "OK";
-  const total = isNewDevice
-    ? await redisCommand(["INCR", totalKey])
-    : await redisCommand(["GET", totalKey]);
+  const added = Number(await redisCommand(["SADD", devicesSetKey, deviceHash]));
+  const isNewDevice = added === 1;
+
+  if (isNewDevice) {
+    const nextTotal = Number(await redisCommand(["INCR", totalKey]));
+    const safeTotal = Math.max(nextTotal, await getRedisTotal());
+    if (safeTotal !== nextTotal) {
+      await redisCommand(["SET", totalKey, String(safeTotal)]);
+    }
+    return {
+      total: safeTotal,
+      isNewDevice,
+      persistent: true
+    };
+  }
 
   return {
-    total: Number(total || 0),
+    total: await getRedisTotal(),
     isNewDevice,
     persistent: true
   };
@@ -101,6 +128,17 @@ function countWithMemory(deviceHash) {
   };
 }
 
+function missingPersistentStore(res) {
+  json(res, 503, {
+    error: "Kalıcı ziyaretçi sayacı için Redis/KV bağlantısı gerekiyor.",
+    setupRequired: true,
+    total: null,
+    isNewDevice: false,
+    persistent: false,
+    countedBy: "none"
+  });
+}
+
 export default async function handler(req, res) {
   if (req.method === "OPTIONS") {
     res.statusCode = 204;
@@ -114,14 +152,15 @@ export default async function handler(req, res) {
   }
 
   try {
-    const hasRedis = Boolean(redisUrl && redisToken);
+    const hasRedis = hasPersistentRedis();
+
+    if (!hasRedis && !allowMemoryFallback) {
+      missingPersistentStore(res);
+      return;
+    }
 
     if (req.method === "GET") {
-      if (hasRedis && Number.isFinite(baseline) && baseline > 0) {
-        await redisCommand(["SET", totalKey, String(baseline), "NX"]);
-      }
-
-      const total = hasRedis ? Number((await redisCommand(["GET", totalKey])) || 0) : memoryStore.total;
+      const total = hasRedis ? await getRedisTotal() : memoryStore.total;
       json(res, 200, {
         total,
         isNewDevice: false,
