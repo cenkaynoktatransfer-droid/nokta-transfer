@@ -18,10 +18,8 @@ const totalKey = `${keyPrefix}:visitor-total`;
 const ipSetKey = `${keyPrefix}:visitor-ips`;
 const baseline = Number(process.env.VISITOR_COUNTER_BASELINE || 0);
 const baselineOffset = Number.isFinite(baseline) && baseline > 0 ? baseline : 0;
-const isVercelRuntime = Boolean(process.env.VERCEL || process.env.VERCEL_ENV);
-const allowMemoryFallback =
-  process.env.VISITOR_COUNTER_ALLOW_MEMORY === "1" ||
-  (!isVercelRuntime && process.env.NODE_ENV !== "production");
+const requirePersistentRedis = process.env.VISITOR_COUNTER_REQUIRE_REDIS === "1";
+const allowMemoryFallback = !requirePersistentRedis && process.env.VISITOR_COUNTER_ALLOW_MEMORY !== "0";
 
 const memoryStore = globalThis.__noktaVisitorCounter || {
   total: baselineOffset,

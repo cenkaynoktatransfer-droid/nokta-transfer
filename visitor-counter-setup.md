@@ -7,7 +7,7 @@ Sayaç mantığı:
 - Yeni IP ilk kez girerse sayaç 1 artar; aynı IP tekrar girerse toplam sayı aynı kalır.
 - 1000 ve üzeri sayılar sitede kısaltılır: 1000 = 1K, 1500 = 1,5K, 1000000 = 1M.
 
-Kalıcı çalışması için Vercel'de Upstash Redis bağlantısı gerekir. Canlı Vercel ortamında Redis yoksa sayaç geçici hafızaya düşmez; sıfırlanmış sayı göstermemek için kurulum uyarısı döner.
+Kalıcı çalışması için Vercel'de Upstash Redis bağlantısı gerekir. Redis yoksa sayaç boş kalmaz; sunucu hafızasındaki geçici yedek sayaç devreye girer. Gerçekten sıfırlanmayan tekil IP sayımı için Redis/KV bağlantısı kurulmalıdır.
 
 Desteklenen environment variable isimleri:
 
@@ -42,6 +42,12 @@ Yerel geliştirmede geçici hafızayı açmak için:
 
 ```text
 VISITOR_COUNTER_ALLOW_MEMORY=1
+```
+
+Geçici yedek sayacı kapatıp Redis yokken kurulum hatası döndürmek için:
+
+```text
+VISITOR_COUNTER_REQUIRE_REDIS=1
 ```
 
 Vercel kurulum adımı:

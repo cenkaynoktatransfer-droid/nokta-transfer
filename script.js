@@ -325,6 +325,20 @@ function formatVisitorCount(value) {
   }
   return number.toLocaleString("tr-TR");
 }
+
+function updateVisitorCounterStatus(data) {
+  if (!visitorCounterStatus) return;
+
+  if (data?.persistent === false) {
+    visitorCounterStatus.textContent = "Her ziyaretçi tekil olarak sayılır.";
+    return;
+  }
+
+  visitorCounterStatus.textContent = data?.isNewIp
+    ? "Bu IP ilk kez sayıldı. Aynı IP tekrar sayılmaz."
+    : "Bu IP daha önce sayıldığı için toplam sayı aynı kaldı.";
+}
+
 async function initializeVisitorCounter() {
   if (!visitorCounterValue) return;
 
@@ -342,25 +356,19 @@ async function initializeVisitorCounter() {
     const data = await response.json();
     if (!response.ok) {
       if (data?.setupRequired) {
-        visitorCounterValue.textContent = "-";
-        if (visitorCounterStatus) {
-          visitorCounterStatus.textContent = "Kalıcı sayaç için Vercel Redis bağlantısı bekleniyor.";
-        }
+        visitorCounterValue.textContent = formatVisitorCount(data.total);
+        updateVisitorCounterStatus(data);
         return;
       }
       throw new Error("Counter request failed");
     }
     visitorCounterValue.textContent = formatVisitorCount(data.total);
 
-    if (visitorCounterStatus) {
-      visitorCounterStatus.textContent = data.isNewIp
-        ? "Bu IP ilk kez sayıldı. Aynı IP tekrar sayılmaz."
-        : "Bu IP daha önce sayıldığı için toplam sayı aynı kaldı.";
-    }
+    updateVisitorCounterStatus(data);
   } catch (error) {
-    visitorCounterValue.textContent = "-";
+    visitorCounterValue.textContent = formatVisitorCount(0);
     if (visitorCounterStatus) {
-      visitorCounterStatus.textContent = "Sayaç şu anda güncellenemiyor.";
+      visitorCounterStatus.textContent = "Sayaç bağlantısı yenileniyor.";
     }
   }
 }
