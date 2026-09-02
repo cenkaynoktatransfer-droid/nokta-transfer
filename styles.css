@@ -919,12 +919,27 @@ h1 {
 }
 
 .btn.whatsapp-main {
+  position: relative;
+  isolation: isolate;
   color: #fff;
   background: linear-gradient(135deg, #31e678, #10b553);
   border-color: rgba(255, 255, 255, 0.1);
   box-shadow:
     0 0 28px rgba(37, 211, 102, 0.48),
     0 0 58px rgba(37, 211, 102, 0.2);
+  animation: whatsappAmbient 2.35s ease-in-out infinite;
+}
+
+.btn.whatsapp-main::before {
+  content: "";
+  position: absolute;
+  inset: -8px;
+  z-index: -1;
+  border-radius: inherit;
+  background: radial-gradient(circle, rgba(37, 211, 102, 0.32), transparent 67%);
+  opacity: 0.2;
+  transform: scale(0.92);
+  animation: whatsappHalo 2.35s ease-in-out infinite;
 }
 
 .btn.whatsapp-main:hover {
@@ -989,6 +1004,53 @@ button[data-install-app].is-ready {
   mask:
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M16.04 2.67A13.22 13.22 0 0 0 4.65 22.6L3.1 29.33l6.85-1.58A13.33 13.33 0 1 0 16.04 2.67Zm0 2.5a10.83 10.83 0 0 1 9.16 16.62 10.75 10.75 0 0 1-13.1 3.3l-.44-.22-4.97 1.15 1.12-4.87-.25-.46A10.77 10.77 0 0 1 16.04 5.17Zm-4.28 5.67c-.24 0-.62.09-.95.44-.33.36-1.25 1.22-1.25 2.97s1.28 3.45 1.46 3.69c.18.24 2.47 3.96 6.1 5.39 3.02 1.2 3.64.96 4.29.9.66-.06 2.12-.87 2.42-1.7.3-.84.3-1.55.21-1.7-.09-.15-.33-.24-.69-.42-.36-.18-2.12-1.05-2.45-1.17-.33-.12-.57-.18-.81.18-.24.36-.93 1.17-1.14 1.41-.21.24-.42.27-.78.09-.36-.18-1.52-.56-2.9-1.79-1.07-.95-1.8-2.13-2.01-2.49-.21-.36-.02-.55.16-.73.16-.16.36-.42.54-.63.18-.21.24-.36.36-.6.12-.24.06-.45-.03-.63-.09-.18-.81-1.95-1.11-2.67-.29-.7-.59-.6-.81-.61h-.62Z'/%3E%3C/svg%3E")
     center / contain no-repeat;
+}
+
+.whatsapp-main .wa-icon,
+.float-whatsapp .wa-icon {
+  animation: whatsappIconBlink 1.45s ease-in-out infinite;
+  filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.45));
+}
+
+@keyframes whatsappAmbient {
+  0%,
+  100% {
+    box-shadow:
+      0 0 24px rgba(37, 211, 102, 0.38),
+      0 0 48px rgba(37, 211, 102, 0.14);
+  }
+
+  50% {
+    box-shadow:
+      0 0 38px rgba(37, 211, 102, 0.74),
+      0 0 82px rgba(37, 211, 102, 0.32);
+  }
+}
+
+@keyframes whatsappHalo {
+  0%,
+  100% {
+    opacity: 0.18;
+    transform: scale(0.94);
+  }
+
+  50% {
+    opacity: 0.62;
+    transform: scale(1.12);
+  }
+}
+
+@keyframes whatsappIconBlink {
+  0%,
+  100% {
+    opacity: 0.86;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.12);
+  }
 }
 
 .checks {
@@ -2924,6 +2986,8 @@ button[data-install-app].is-ready {
 }
 
 .floating-contact a {
+  position: relative;
+  isolation: isolate;
   width: 56px;
   height: 56px;
   display: grid;
@@ -2944,11 +3008,46 @@ button[data-install-app].is-ready {
 .float-whatsapp {
   background: var(--green);
   box-shadow: 0 0 28px rgba(37, 211, 102, 0.45);
+  animation: whatsappAmbient 2.35s ease-in-out infinite;
+}
+
+.float-whatsapp::before,
+.float-whatsapp::after {
+  content: "";
+  position: absolute;
+  inset: -8px;
+  z-index: -1;
+  border-radius: 50%;
+  border: 1px solid rgba(37, 211, 102, 0.38);
+  opacity: 0;
+  transform: scale(0.82);
+  animation: whatsappRing 2.4s ease-out infinite;
+}
+
+.float-whatsapp::after {
+  animation-delay: 1.2s;
 }
 
 .float-whatsapp .wa-icon {
   width: 30px;
   height: 30px;
+}
+
+@keyframes whatsappRing {
+  0% {
+    opacity: 0.7;
+    transform: scale(0.82);
+  }
+
+  72% {
+    opacity: 0;
+    transform: scale(1.34);
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(1.34);
+  }
 }
 
 .reveal {
