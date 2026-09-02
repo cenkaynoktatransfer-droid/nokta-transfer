@@ -909,8 +909,14 @@ h1 {
 .hero-buttons {
   display: flex;
   justify-content: flex-start;
+  align-items: center;
+  flex-wrap: wrap;
   gap: 18px;
   margin-top: 30px;
+}
+
+.hero-buttons .btn {
+  min-width: 246px;
 }
 
 .btn {
@@ -947,6 +953,21 @@ h1 {
 .btn.cyan {
   color: #fff;
   background: linear-gradient(135deg, #31e678, #12b957);
+}
+
+.btn.whatsapp-main {
+  color: #fff;
+  background: linear-gradient(135deg, #31e678, #10b553);
+  border-color: rgba(255, 255, 255, 0.1);
+  box-shadow:
+    0 0 28px rgba(37, 211, 102, 0.48),
+    0 0 58px rgba(37, 211, 102, 0.2);
+}
+
+.btn.whatsapp-main:hover {
+  box-shadow:
+    0 0 34px rgba(37, 211, 102, 0.68),
+    0 0 78px rgba(37, 211, 102, 0.3);
 }
 
 .wa-icon {
