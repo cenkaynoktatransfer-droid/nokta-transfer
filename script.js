@@ -84,10 +84,16 @@ function getInstallPlatform() {
   const userAgent = navigator.userAgent || "";
   const platform = navigator.platform || "";
   const isTouchMac = platform === "MacIntel" && Number(navigator.maxTouchPoints || 0) > 1;
+  const isIos = /iphone|ipad|ipod/i.test(userAgent) || isTouchMac;
+  const isIosSafari =
+    isIos &&
+    /safari/i.test(userAgent) &&
+    !/crios|fxios|edgios|opios|duckduckgo|mercury/i.test(userAgent);
 
   return {
     isAndroid: /android/i.test(userAgent),
-    isIos: /iphone|ipad|ipod/i.test(userAgent) || isTouchMac,
+    isIos,
+    isIosSafari,
     isSamsungBrowser: /SamsungBrowser/i.test(userAgent),
     isFirefox: /Firefox/i.test(userAgent),
     isEdge: /EdgA|EdgiOS|Edg\//i.test(userAgent)
@@ -129,10 +135,20 @@ function getInstallGuide() {
   }
 
   if (platform.isIos) {
+    if (!platform.isIosSafari) {
+      return {
+        title: "iPhone'da Safari ile ekle",
+        text: "iPhone ana ekranına ekleme işlemi Safari paylaş menüsünden yapılır. Linki kopyalayıp Safari'de açtıktan sonra birkaç dokunuşla ekleyebilirsiniz.",
+        steps: ["Linki kopyalayın.", "Safari'yi açıp adres çubuğuna yapıştırın.", "Paylaş butonuna dokunup Ana Ekrana Ekle seçeneğini seçin.", "Open as Web App açıkken Ekle deyin."],
+        primary: "Linki Kopyala",
+        action: "copy-url"
+      };
+    }
+
     return {
       title: "iPhone ana ekranına ekle",
-      text: "iPhone otomatik kurulum penceresine izin vermiyor. Safari üzerinden birkaç saniyede ana ekrana ekleyebilirsiniz.",
-      steps: ["Safari'de paylaş butonuna dokunun.", "Ana Ekrana Ekle seçeneğini açın.", "Ekle diyerek Nokta Transfer ikonunu ana ekrana alın."],
+      text: "iPhone otomatik kurulum penceresine izin vermiyor. Safari paylaş menüsünden Nokta Transfer'i uygulama gibi ana ekrana ekleyebilirsiniz.",
+      steps: ["Safari'de paylaş butonuna dokunun.", "Ana Ekrana Ekle seçeneğini açın.", "Open as Web App açık kalsın.", "Ekle diyerek Nokta Transfer ikonunu ana ekrana alın."],
       primary: "Anladım"
     };
   }
@@ -172,6 +188,7 @@ function getInstallSheet() {
         <h2 id="pwaInstallTitle"></h2>
         <p id="pwaInstallText"></p>
         <ol id="pwaInstallSteps"></ol>
+        <p class="pwa-install-note" id="pwaInstallNote" aria-live="polite"></p>
         <div class="pwa-install-actions">
           <button class="pwa-install-primary" type="button" data-install-primary></button>
           <button class="pwa-install-secondary" type="button" data-install-close>Kapat</button>
@@ -191,7 +208,17 @@ function getInstallSheet() {
     if (event.key === "Escape") hideInstallGuide();
   });
 
-  sheet.querySelector("[data-install-primary]")?.addEventListener("click", () => {
+  sheet.querySelector("[data-install-primary]")?.addEventListener("click", async () => {
+    if (sheet.dataset.primaryAction === "copy-url") {
+      const note = sheet.querySelector("#pwaInstallNote");
+      try {
+        await navigator.clipboard.writeText(window.location.href);
+        if (note) note.textContent = "Link kopyalandı. Safari'de adres çubuğuna yapıştırıp açın.";
+      } catch (error) {
+        if (note) note.textContent = "Kopyalama engellendi. Adres çubuğundaki linki elle kopyalayıp Safari'de açın.";
+      }
+      return;
+    }
     hideInstallGuide();
   });
 
@@ -205,6 +232,8 @@ function showInstallGuide() {
   sheet.querySelector("#pwaInstallText").textContent = guide.text;
   sheet.querySelector("#pwaInstallSteps").innerHTML = guide.steps.map((step) => `<li>${step}</li>`).join("");
   sheet.querySelector("[data-install-primary]").textContent = guide.primary;
+  sheet.querySelector("#pwaInstallNote").textContent = "";
+  sheet.dataset.primaryAction = guide.action || "close";
   sheet.hidden = false;
 }
 

@@ -2170,6 +2170,14 @@ button[data-install-app].is-ready {
   font-weight: 950;
 }
 
+.pwa-install-note {
+  min-height: 22px;
+  margin: -4px 0 18px !important;
+  color: var(--yellow) !important;
+  font-size: 13px;
+  font-weight: 900 !important;
+}
+
 .pwa-install-actions {
   display: flex;
   flex-wrap: wrap;
