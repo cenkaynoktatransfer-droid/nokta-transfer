@@ -189,7 +189,7 @@ ${googleAdsHeadSnippet()}
           <div class="seo-cta">
             <a href="../telefon-donusum.html">Telefonla Ara</a>
             <a href="../whatsapp-donusum.html?text=${whatsappText}" target="_blank" rel="noopener">WhatsApp ile Bilgi Al</a>
-            <button type="button" data-install-app>Uygulama İndir</button>
+            <button type="button" data-install-app><span data-install-text>Uygulama İndir</span></button>
           </div>
         </div>
       </section>

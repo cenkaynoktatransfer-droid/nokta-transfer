@@ -1,4 +1,4 @@
-const CACHE_NAME = "nokta-transfer-pwa-v1";
+const CACHE_NAME = "nokta-transfer-pwa-v2";
 const CORE_ASSETS = [
   "/",
   "/index.html",
@@ -41,21 +41,14 @@ self.addEventListener("fetch", (event) => {
   if (url.origin !== self.location.origin || url.pathname.startsWith("/api/")) return;
 
   event.respondWith(
-    caches.match(request).then((cached) => {
-      if (cached) return cached;
-
-      return fetch(request)
-        .then((response) => {
-          if (response.ok) {
-            const copy = response.clone();
-            caches.open(CACHE_NAME).then((cache) => cache.put(request, copy));
-          }
-          return response;
-        })
-        .catch(() => {
-          if (request.mode === "navigate") return caches.match("/index.html");
-          return undefined;
-        });
-    })
+    fetch(request)
+      .then((response) => {
+        if (response.ok) {
+          const copy = response.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(request, copy));
+        }
+        return response;
+      })
+      .catch(() => caches.match(request).then((cached) => cached || (request.mode === "navigate" ? caches.match("/index.html") : undefined)))
   );
 });

@@ -80,10 +80,44 @@ function isPwaInstalled() {
   return window.matchMedia?.("(display-mode: standalone)")?.matches || window.navigator.standalone === true;
 }
 
-function getInstallGuide() {
+function getInstallPlatform() {
   const userAgent = navigator.userAgent || "";
-  const isIos = /iphone|ipad|ipod/i.test(userAgent);
-  const isAndroid = /android/i.test(userAgent);
+  const platform = navigator.platform || "";
+  const isTouchMac = platform === "MacIntel" && Number(navigator.maxTouchPoints || 0) > 1;
+
+  return {
+    isAndroid: /android/i.test(userAgent),
+    isIos: /iphone|ipad|ipod/i.test(userAgent) || isTouchMac,
+    isSamsungBrowser: /SamsungBrowser/i.test(userAgent),
+    isFirefox: /Firefox/i.test(userAgent),
+    isEdge: /EdgA|EdgiOS|Edg\//i.test(userAgent)
+  };
+}
+
+function getInstallButtonLabel() {
+  const platform = getInstallPlatform();
+
+  if (isPwaInstalled()) return "Yüklendi";
+  if (platform.isAndroid) return deferredInstallPrompt ? "Android'e Yükle" : "Android'e Ekle";
+  if (platform.isIos) return "iPhone'a Ekle";
+  return "Uygulama İndir";
+}
+
+function updateInstallButtonLabels() {
+  const label = getInstallButtonLabel();
+  pwaInstallButtons.forEach((button) => {
+    const labelElement = button.querySelector("[data-install-text]");
+    if (labelElement) {
+      labelElement.textContent = label;
+    } else {
+      button.textContent = label;
+    }
+    button.setAttribute("aria-label", label);
+  });
+}
+
+function getInstallGuide() {
+  const platform = getInstallPlatform();
 
   if (isPwaInstalled()) {
     return {
@@ -94,7 +128,7 @@ function getInstallGuide() {
     };
   }
 
-  if (isIos) {
+  if (platform.isIos) {
     return {
       title: "iPhone ana ekranına ekle",
       text: "iPhone otomatik kurulum penceresine izin vermiyor. Safari üzerinden birkaç saniyede ana ekrana ekleyebilirsiniz.",
@@ -103,11 +137,16 @@ function getInstallGuide() {
     };
   }
 
-  if (isAndroid) {
+  if (platform.isAndroid) {
+    const browserName = platform.isSamsungBrowser ? "Samsung Internet" : platform.isEdge ? "Edge" : platform.isFirefox ? "Firefox" : "Chrome";
+    const menuStep = platform.isSamsungBrowser
+      ? "Alttaki veya üstteki menü butonuna dokunun."
+      : "Sağ üstteki üç nokta menüsüne dokunun.";
+
     return {
-      title: "Android ana ekranına ekle",
-      text: "Telefonunuz kurulum penceresini otomatik göstermediyse Chrome menüsünden kısayolu ekleyebilirsiniz.",
-      steps: ["Chrome'da sağ üstteki üç noktaya dokunun.", "Uygulamayı yükle veya Ana ekrana ekle seçeneğini seçin.", "Onay verdiğinizde Nokta Transfer telefonunuzda uygulama gibi açılır."],
+      title: "Android'e uygulama olarak yükle",
+      text: `${browserName} otomatik kurulum penceresini göstermediyse Android menüsünden ana ekrana ekleyebilirsiniz.`,
+      steps: [menuStep, "Uygulamayı yükle veya Ana ekrana ekle seçeneğini seçin.", "Onay verdiğinizde Nokta Transfer telefonunuzda uygulama gibi açılır."],
       primary: "Anladım"
     };
   }
@@ -201,6 +240,8 @@ async function handleAppInstallClick(event) {
       if (choice?.outcome !== "accepted") showInstallGuide();
     } catch (error) {
       showInstallGuide();
+    } finally {
+      updateInstallButtonLabels();
     }
     return;
   }
@@ -209,10 +250,13 @@ async function handleAppInstallClick(event) {
 }
 
 function initializePwaInstall() {
+  updateInstallButtonLabels();
+
   window.addEventListener("beforeinstallprompt", (event) => {
     event.preventDefault();
     deferredInstallPrompt = event;
     pwaInstallButtons.forEach((button) => button.classList.add("is-ready"));
+    updateInstallButtonLabels();
   });
 
   window.addEventListener("appinstalled", () => {
@@ -221,6 +265,7 @@ function initializePwaInstall() {
       button.classList.add("is-installed");
       button.setAttribute("aria-label", "Nokta Transfer ana ekrana eklendi");
     });
+    updateInstallButtonLabels();
   });
 
   pwaInstallButtons.forEach((button) => {
