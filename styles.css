@@ -6,7 +6,7 @@
   --muted: #9c9ca3;
   --line: #222227;
   --yellow: #ffc400;
-  --cyan: #26d9ee;
+  --cyan: #ffc400;
   --green: #25d366;
   --radius: 16px;
 }
@@ -907,10 +907,10 @@ h1 {
 }
 
 .btn.outline {
-  color: var(--cyan);
-  border-color: var(--cyan);
-  background: rgba(38, 217, 238, 0.02);
-  box-shadow: 0 0 22px rgba(38, 217, 238, 0.14);
+  color: var(--yellow);
+  border-color: var(--yellow);
+  background: rgba(255, 196, 0, 0.04);
+  box-shadow: 0 0 22px rgba(255, 196, 0, 0.14);
 }
 
 .btn.cyan {
@@ -1009,9 +1009,10 @@ h1 {
 }
 
 .mini-grid strong {
-  color: var(--cyan);
+  color: var(--yellow);
   font-size: 34px;
   line-height: 1;
+  text-shadow: 0 0 24px rgba(255, 196, 0, 0.28);
 }
 
 .mini-grid span {
@@ -1491,7 +1492,7 @@ h1 {
 }
 
 .narrow h2 span {
-  color: var(--cyan);
+  color: var(--yellow);
 }
 
 #bolgeler .narrow h2 span,
