@@ -933,6 +933,33 @@ h1 {
     0 0 78px rgba(37, 211, 102, 0.3);
 }
 
+.btn.install-app {
+  color: #111;
+  background:
+    radial-gradient(circle at 18% 20%, rgba(255, 255, 255, 0.54), transparent 0 18%),
+    linear-gradient(135deg, #ffe572, #ffc400 46%, #ff9f12);
+  box-shadow:
+    0 0 30px rgba(255, 196, 0, 0.42),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.btn.install-app:hover {
+  box-shadow:
+    0 0 38px rgba(255, 196, 0, 0.58),
+    0 0 72px rgba(255, 196, 0, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.35);
+}
+
+.install-icon {
+  width: 22px;
+  height: 22px;
+  display: inline-block;
+  background: currentColor;
+  mask:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M8 2h8a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Zm0 2v16h8V4H8Zm3 13h2v2h-2v-2Zm1-11 4 4h-3v5h-2v-5H8l4-4Z'/%3E%3C/svg%3E")
+    center / contain no-repeat;
+}
+
 .wa-icon {
   width: 22px;
   height: 22px;
@@ -1802,18 +1829,22 @@ h1 {
   margin-top: 30px;
 }
 
-.district-page-actions a {
+.district-page-actions a,
+.district-page-actions button {
   min-height: 48px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   padding: 0 20px;
   border-radius: 999px;
+  border: 0;
   color: #111;
   background: linear-gradient(135deg, #ffe066, #ffc400);
   box-shadow: 0 0 26px rgba(255, 196, 0, 0.22);
+  font: inherit;
   font-size: 13px;
   font-weight: 950;
+  cursor: pointer;
 }
 
 .district-page-actions a:first-child {
@@ -2028,25 +2059,138 @@ h1 {
   margin-top: 30px;
 }
 
-.seo-cta a {
+.seo-cta a,
+.seo-cta button {
   min-height: 50px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   padding: 0 22px;
   border-radius: 999px;
+  border: 0;
   color: #111;
   background: linear-gradient(135deg, #ffe066, #ffc400 56%, #ffad16);
   box-shadow: 0 0 30px rgba(255, 196, 0, 0.24);
+  font: inherit;
   font-size: 14px;
   font-weight: 950;
+  cursor: pointer;
 }
 
-.seo-cta a:last-child {
+.seo-cta a:last-of-type {
   color: #f4f4f6;
   background: rgba(255, 255, 255, 0.08);
   border: 1px solid rgba(255, 255, 255, 0.11);
   box-shadow: none;
+}
+
+.pwa-install-sheet[hidden] {
+  display: none;
+}
+
+.pwa-install-sheet {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.72);
+  backdrop-filter: blur(12px);
+}
+
+.pwa-install-card {
+  position: relative;
+  width: min(430px, 100%);
+  padding: 30px;
+  border-radius: 24px;
+  color: #f8f8f8;
+  background:
+    radial-gradient(circle at 18% 0%, rgba(255, 196, 0, 0.2), transparent 0 34%),
+    linear-gradient(180deg, rgba(24, 25, 28, 0.98), rgba(9, 9, 11, 0.98));
+  border: 1px solid rgba(255, 196, 0, 0.28);
+  box-shadow: 0 30px 120px rgba(0, 0, 0, 0.55), 0 0 42px rgba(255, 196, 0, 0.14);
+}
+
+.pwa-install-card img {
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 0 24px rgba(255, 196, 0, 0.34);
+}
+
+.pwa-install-card h2 {
+  margin: 18px 0 10px;
+  color: #fff;
+  font-size: 28px;
+  line-height: 1.05;
+  font-weight: 950;
+}
+
+.pwa-install-card p {
+  margin: 0 0 18px;
+  color: #c7c7cf;
+  line-height: 1.55;
+  font-weight: 700;
+}
+
+.pwa-install-card ol {
+  display: grid;
+  gap: 10px;
+  margin: 0 0 22px;
+  padding-left: 22px;
+  color: #e9e9ed;
+  font-weight: 800;
+}
+
+.pwa-install-card li::marker {
+  color: var(--yellow);
+  font-weight: 950;
+}
+
+.pwa-install-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.pwa-install-actions button {
+  min-height: 46px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 18px;
+  border-radius: 999px;
+  border: 0;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 950;
+  cursor: pointer;
+}
+
+.pwa-install-primary {
+  color: #111;
+  background: linear-gradient(135deg, #ffe066, #ffc400);
+  box-shadow: 0 0 24px rgba(255, 196, 0, 0.25);
+}
+
+.pwa-install-secondary,
+.pwa-install-close {
+  color: #f8f8f8;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+}
+
+.pwa-install-close {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  width: 38px;
+  height: 38px;
+  padding: 0 !important;
+  font-size: 22px !important;
+  line-height: 1;
 }
 
 .seo-content {

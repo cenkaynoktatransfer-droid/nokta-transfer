@@ -50,6 +50,7 @@ const fareTollInput = document.querySelector("#fareTollInput");
 const bookingForm = document.querySelector("#bookingForm");
 const visitorCounterValue = document.querySelector("#visitorCounterValue");
 const visitorCounterStatus = document.querySelector("#visitorCounterStatus");
+const pwaInstallButtons = document.querySelectorAll("[data-install-app]");
 
 const routePhone = "905060436591";
 const minimumFareDistanceKm = 6;
@@ -71,6 +72,167 @@ function buildConversionPageUrl(fileName, message, source) {
   if (message) url.searchParams.set("text", message);
   if (source) url.searchParams.set("source", source);
   return url.href;
+}
+
+let deferredInstallPrompt = null;
+
+function isPwaInstalled() {
+  return window.matchMedia?.("(display-mode: standalone)")?.matches || window.navigator.standalone === true;
+}
+
+function getInstallGuide() {
+  const userAgent = navigator.userAgent || "";
+  const isIos = /iphone|ipad|ipod/i.test(userAgent);
+  const isAndroid = /android/i.test(userAgent);
+
+  if (isPwaInstalled()) {
+    return {
+      title: "Nokta Transfer ana ekranda hazır",
+      text: "Site zaten uygulama gibi açılıyor. Ana ekrandaki Nokta Transfer ikonundan hızlıca giriş yapabilirsiniz.",
+      steps: ["Ana ekrana dönün.", "Nokta Transfer ikonuna dokunun.", "Telefon, WhatsApp ve rota panelini uygulama gibi kullanın."],
+      primary: "Tamam"
+    };
+  }
+
+  if (isIos) {
+    return {
+      title: "iPhone ana ekranına ekle",
+      text: "iPhone otomatik kurulum penceresine izin vermiyor. Safari üzerinden birkaç saniyede ana ekrana ekleyebilirsiniz.",
+      steps: ["Safari'de paylaş butonuna dokunun.", "Ana Ekrana Ekle seçeneğini açın.", "Ekle diyerek Nokta Transfer ikonunu ana ekrana alın."],
+      primary: "Anladım"
+    };
+  }
+
+  if (isAndroid) {
+    return {
+      title: "Android ana ekranına ekle",
+      text: "Telefonunuz kurulum penceresini otomatik göstermediyse Chrome menüsünden kısayolu ekleyebilirsiniz.",
+      steps: ["Chrome'da sağ üstteki üç noktaya dokunun.", "Uygulamayı yükle veya Ana ekrana ekle seçeneğini seçin.", "Onay verdiğinizde Nokta Transfer telefonunuzda uygulama gibi açılır."],
+      primary: "Anladım"
+    };
+  }
+
+  return {
+    title: "Nokta Transfer'i uygulama gibi kullan",
+    text: "Tarayıcınız destekliyorsa adres çubuğu veya menü üzerinden siteyi uygulama olarak yükleyebilirsiniz.",
+    steps: ["Tarayıcı menüsünü açın.", "Uygulamayı yükle veya Kısayol oluştur seçeneğini seçin.", "Nokta Transfer'i masaüstünden ya da ana ekrandan açın."],
+    primary: "Tamam"
+  };
+}
+
+function getInstallSheet() {
+  let sheet = document.querySelector("#pwaInstallSheet");
+  if (sheet) return sheet;
+
+  document.body.insertAdjacentHTML(
+    "beforeend",
+    `<div class="pwa-install-sheet" id="pwaInstallSheet" hidden>
+      <section class="pwa-install-card" role="dialog" aria-modal="true" aria-labelledby="pwaInstallTitle">
+        <button class="pwa-install-close" type="button" data-install-close aria-label="Kapat">x</button>
+        <img src="${getRootRelativeUrl("assets/pwa-icon-192.png")}" alt="" />
+        <h2 id="pwaInstallTitle"></h2>
+        <p id="pwaInstallText"></p>
+        <ol id="pwaInstallSteps"></ol>
+        <div class="pwa-install-actions">
+          <button class="pwa-install-primary" type="button" data-install-primary></button>
+          <button class="pwa-install-secondary" type="button" data-install-close>Kapat</button>
+        </div>
+      </section>
+    </div>`
+  );
+
+  sheet = document.querySelector("#pwaInstallSheet");
+  sheet.addEventListener("click", (event) => {
+    if (event.target === sheet || event.target.closest("[data-install-close]")) {
+      hideInstallGuide();
+    }
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") hideInstallGuide();
+  });
+
+  sheet.querySelector("[data-install-primary]")?.addEventListener("click", () => {
+    hideInstallGuide();
+  });
+
+  return sheet;
+}
+
+function showInstallGuide() {
+  const guide = getInstallGuide();
+  const sheet = getInstallSheet();
+  sheet.querySelector("#pwaInstallTitle").textContent = guide.title;
+  sheet.querySelector("#pwaInstallText").textContent = guide.text;
+  sheet.querySelector("#pwaInstallSteps").innerHTML = guide.steps.map((step) => `<li>${step}</li>`).join("");
+  sheet.querySelector("[data-install-primary]").textContent = guide.primary;
+  sheet.hidden = false;
+}
+
+function hideInstallGuide() {
+  const sheet = document.querySelector("#pwaInstallSheet");
+  if (sheet) sheet.hidden = true;
+}
+
+function trackAppInstallClick() {
+  if (!window.gtag) return;
+  window.gtag("event", "app_install_click", {
+    event_category: "engagement",
+    event_label: "Uygulama indir butonu",
+    transport_type: "beacon"
+  });
+}
+
+async function handleAppInstallClick(event) {
+  event.preventDefault();
+  trackAppInstallClick();
+
+  if (isPwaInstalled()) {
+    showInstallGuide();
+    return;
+  }
+
+  if (deferredInstallPrompt) {
+    const installPrompt = deferredInstallPrompt;
+    deferredInstallPrompt = null;
+    installPrompt.prompt();
+    try {
+      const choice = await installPrompt.userChoice;
+      if (choice?.outcome !== "accepted") showInstallGuide();
+    } catch (error) {
+      showInstallGuide();
+    }
+    return;
+  }
+
+  showInstallGuide();
+}
+
+function initializePwaInstall() {
+  window.addEventListener("beforeinstallprompt", (event) => {
+    event.preventDefault();
+    deferredInstallPrompt = event;
+    pwaInstallButtons.forEach((button) => button.classList.add("is-ready"));
+  });
+
+  window.addEventListener("appinstalled", () => {
+    deferredInstallPrompt = null;
+    pwaInstallButtons.forEach((button) => {
+      button.classList.add("is-installed");
+      button.setAttribute("aria-label", "Nokta Transfer ana ekrana eklendi");
+    });
+  });
+
+  pwaInstallButtons.forEach((button) => {
+    button.addEventListener("click", handleAppInstallClick);
+  });
+
+  const isLocalhost = ["localhost", "127.0.0.1"].includes(window.location.hostname);
+  if ("serviceWorker" in navigator && (window.location.protocol === "https:" || isLocalhost)) {
+    window.addEventListener("load", () => {
+      navigator.serviceWorker.register("/sw.js").catch(() => undefined);
+    });
+  }
 }
 
 function formatVisitorCount(value) {
@@ -939,6 +1101,7 @@ document.querySelectorAll('a[href*="wa.me"], a[href*="whatsapp-donusum"]').forEa
 });
 
 initializeGoogleAdsTag();
+initializePwaInstall();
 initializeVisitorCounter();
 initializeRouteMap();
 updateRouteDisplay();

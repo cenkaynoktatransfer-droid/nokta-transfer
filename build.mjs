@@ -9,6 +9,8 @@ const files = [
   "telefon-donusum.html",
   "whatsapp-donusum.html",
   "rezervasyon-donusum.html",
+  "site.webmanifest",
+  "sw.js",
   "robots.txt",
   "sitemap.xml",
   "assets"
@@ -96,7 +98,11 @@ function pageTemplate(page) {
     <link rel="canonical" href="${siteUrl}/${page.slug}/" />
     <link rel="preload" as="image" href="../assets/izmir-saat-kulesi-hero.webp" type="image/webp" />
     <link rel="icon" href="../assets/nokta-transfer-logo.jpeg" type="image/jpeg" />
-    <link rel="apple-touch-icon" href="../assets/nokta-transfer-logo.jpeg" />
+    <link rel="apple-touch-icon" href="../assets/pwa-icon-192.png" />
+    <link rel="manifest" href="../site.webmanifest" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="Nokta Transfer" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="${escapeHtml(title)}" />
     <meta property="og:description" content="${escapeHtml(description)}" />
@@ -183,6 +189,7 @@ ${googleAdsHeadSnippet()}
           <div class="seo-cta">
             <a href="../telefon-donusum.html">Telefonla Ara</a>
             <a href="../whatsapp-donusum.html?text=${whatsappText}" target="_blank" rel="noopener">WhatsApp ile Bilgi Al</a>
+            <button type="button" data-install-app>Uygulama İndir</button>
           </div>
         </div>
       </section>
@@ -233,7 +240,7 @@ ${googleAdsHeadSnippet()}
       <div class="wrap visitor-counter" aria-live="polite">
         <span class="visitor-counter-kicker">Ziyaretçi sayacı</span>
         <strong><span id="visitorCounterValue">...</span> toplam ziyaretçi</strong>
-        <p id="visitorCounterStatus">Her cihaz yalnızca bir kez sayılır.</p>
+        <p id="visitorCounterStatus">Her IP yalnızca bir kez sayılır.</p>
       </div>
     </footer>
 

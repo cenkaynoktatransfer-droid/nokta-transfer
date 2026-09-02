@@ -1,0 +1,61 @@
+{
+  "id": "/",
+  "name": "Nokta Transfer",
+  "short_name": "Nokta Transfer",
+  "description": "İzmir transfer, havalimanı ulaşım ve şehirlerarası özel araç hizmeti.",
+  "lang": "tr",
+  "dir": "ltr",
+  "start_url": "/?utm_source=pwa",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#050505",
+  "theme_color": "#ffc400",
+  "categories": ["travel", "navigation", "business"],
+  "icons": [
+    {
+      "src": "/assets/pwa-icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/assets/pwa-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/assets/pwa-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Hemen Ara",
+      "short_name": "Ara",
+      "description": "Nokta Transfer telefon hattını aç.",
+      "url": "/telefon-donusum.html",
+      "icons": [
+        {
+          "src": "/assets/pwa-icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "WhatsApp",
+      "short_name": "WhatsApp",
+      "description": "Nokta Transfer WhatsApp görüşmesini aç.",
+      "url": "/whatsapp-donusum.html",
+      "icons": [
+        {
+          "src": "/assets/pwa-icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    }
+  ]
+}
