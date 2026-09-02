@@ -15,7 +15,7 @@ const redisToken =
 
 const keyPrefix = process.env.VISITOR_COUNTER_KEY_PREFIX || "nokta-transfer";
 const totalKey = `${keyPrefix}:visitor-total`;
-const devicesSetKey = `${keyPrefix}:visitor-devices`;
+const ipSetKey = `${keyPrefix}:visitor-ips`;
 const baseline = Number(process.env.VISITOR_COUNTER_BASELINE || 0);
 const baselineOffset = Number.isFinite(baseline) && baseline > 0 ? baseline : 0;
 const isVercelRuntime = Boolean(process.env.VERCEL || process.env.VERCEL_ENV);
@@ -25,8 +25,10 @@ const allowMemoryFallback =
 
 const memoryStore = globalThis.__noktaVisitorCounter || {
   total: baselineOffset,
-  devices: new Set()
+  ips: new Set()
 };
+if (!memoryStore.ips) memoryStore.ips = new Set();
+if (!Number.isFinite(memoryStore.total)) memoryStore.total = baselineOffset;
 globalThis.__noktaVisitorCounter = memoryStore;
 
 function json(res, status, payload) {
@@ -51,9 +53,52 @@ function readBody(req) {
   });
 }
 
-function hashDeviceId(deviceId) {
+function readHeaderValue(value) {
+  return Array.isArray(value) ? value[0] : value;
+}
+
+function normalizeIp(value) {
+  if (!value) return "";
+
+  let ip = String(value).split(",")[0].trim();
+  const forwardedMatch = ip.match(/for="?([^";,\s]+)"?/i);
+  if (forwardedMatch) ip = forwardedMatch[1];
+
+  ip = ip.replace(/^::ffff:/i, "").replace(/^"|"$/g, "");
+  if (ip.startsWith("[") && ip.includes("]")) {
+    ip = ip.slice(1, ip.indexOf("]"));
+  } else if (/^\d{1,3}(?:\.\d{1,3}){3}:\d+$/.test(ip)) {
+    ip = ip.slice(0, ip.lastIndexOf(":"));
+  }
+
+  return ip.toLowerCase();
+}
+
+function getClientIp(req) {
+  const headers = req.headers || {};
+  const candidates = [
+    headers["x-forwarded-for"],
+    headers["x-vercel-forwarded-for"],
+    headers["x-real-ip"],
+    headers["cf-connecting-ip"],
+    headers["true-client-ip"],
+    headers["x-client-ip"],
+    headers.forwarded,
+    req.socket?.remoteAddress,
+    req.connection?.remoteAddress
+  ];
+
+  for (const candidate of candidates) {
+    const ip = normalizeIp(readHeaderValue(candidate));
+    if (ip) return ip;
+  }
+
+  return "unknown-ip";
+}
+
+function hashClientIp(ip) {
   return createHash("sha256")
-    .update(String(deviceId || "").slice(0, 256))
+    .update(`ip:${String(ip || "unknown-ip").slice(0, 256)}`)
     .digest("hex");
 }
 
@@ -82,19 +127,19 @@ async function redisCommand(command) {
 
 async function getRedisTotal() {
   const storedTotal = Number((await redisCommand(["GET", totalKey])) || 0);
-  const uniqueDeviceTotal = baselineOffset + Number((await redisCommand(["SCARD", devicesSetKey])) || 0);
-  return Math.max(storedTotal, uniqueDeviceTotal, baselineOffset);
+  const uniqueIpTotal = baselineOffset + Number((await redisCommand(["SCARD", ipSetKey])) || 0);
+  return Math.max(storedTotal, uniqueIpTotal, baselineOffset);
 }
 
-async function countWithRedis(deviceHash) {
+async function countWithRedis(ipHash) {
   if (baselineOffset > 0) {
     await redisCommand(["SET", totalKey, String(baselineOffset), "NX"]);
   }
 
-  const added = Number(await redisCommand(["SADD", devicesSetKey, deviceHash]));
-  const isNewDevice = added === 1;
+  const added = Number(await redisCommand(["SADD", ipSetKey, ipHash]));
+  const isNewIp = added === 1;
 
-  if (isNewDevice) {
+  if (isNewIp) {
     const nextTotal = Number(await redisCommand(["INCR", totalKey]));
     const safeTotal = Math.max(nextTotal, await getRedisTotal());
     if (safeTotal !== nextTotal) {
@@ -102,28 +147,28 @@ async function countWithRedis(deviceHash) {
     }
     return {
       total: safeTotal,
-      isNewDevice,
+      isNewIp,
       persistent: true
     };
   }
 
   return {
     total: await getRedisTotal(),
-    isNewDevice,
+    isNewIp,
     persistent: true
   };
 }
 
-function countWithMemory(deviceHash) {
-  const isNewDevice = !memoryStore.devices.has(deviceHash);
-  if (isNewDevice) {
-    memoryStore.devices.add(deviceHash);
+function countWithMemory(ipHash) {
+  const isNewIp = !memoryStore.ips.has(ipHash);
+  if (isNewIp) {
+    memoryStore.ips.add(ipHash);
     memoryStore.total += 1;
   }
 
   return {
     total: memoryStore.total,
-    isNewDevice,
+    isNewIp,
     persistent: false
   };
 }
@@ -133,7 +178,7 @@ function missingPersistentStore(res) {
     error: "Kalıcı ziyaretçi sayacı için Redis/KV bağlantısı gerekiyor.",
     setupRequired: true,
     total: null,
-    isNewDevice: false,
+    isNewIp: false,
     persistent: false,
     countedBy: "none"
   });
@@ -163,21 +208,20 @@ export default async function handler(req, res) {
       const total = hasRedis ? await getRedisTotal() : memoryStore.total;
       json(res, 200, {
         total,
-        isNewDevice: false,
+        isNewIp: false,
         persistent: hasRedis,
         countedBy: hasRedis ? "redis" : "memory"
       });
       return;
     }
 
-    const body = await readBody(req);
-    const payload = body ? JSON.parse(body) : {};
-    const deviceHash = hashDeviceId(payload.deviceId || req.headers["user-agent"] || "anonymous");
-    const result = hasRedis ? await countWithRedis(deviceHash) : countWithMemory(deviceHash);
+    await readBody(req);
+    const ipHash = hashClientIp(getClientIp(req));
+    const result = hasRedis ? await countWithRedis(ipHash) : countWithMemory(ipHash);
 
     json(res, 200, {
       total: result.total,
-      isNewDevice: result.isNewDevice,
+      isNewIp: result.isNewIp,
       persistent: result.persistent,
       countedBy: hasRedis ? "redis" : "memory"
     });

@@ -2,9 +2,9 @@
 
 Sayaç mantığı:
 
-- Tarayıcı her cihaz için `localStorage` içinde tekil bir cihaz kimliği üretir.
-- Sunucu bu kimliği hashler ve aynı cihazı ikinci kez saymaz.
-- PC ilk kez girerse 1, telefon ilk kez girerse 2, başka cihazlar 3, 4, 5 diye devam eder.
+- Sunucu ziyaretçinin IP adresini güvenli şekilde hashler.
+- Aynı IP adresi ikinci kez sayılmaz.
+- Yeni IP ilk kez girerse sayaç 1 artar; aynı IP tekrar girerse toplam sayı aynı kalır.
 - 1000 ve üzeri sayılar sitede kısaltılır: 1000 = 1K, 1500 = 1,5K, 1000000 = 1M.
 
 Kalıcı çalışması için Vercel'de Upstash Redis bağlantısı gerekir. Canlı Vercel ortamında Redis yoksa sayaç geçici hafızaya düşmez; sıfırlanmış sayı göstermemek için kurulum uyarısı döner.
