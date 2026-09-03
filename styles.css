@@ -1082,6 +1082,10 @@ h1 {
     inset 0 1px 0 rgba(255, 255, 255, 0.3);
 }
 
+[data-install-app][hidden] {
+  display: none !important;
+}
+
 .btn.install-app:hover {
   box-shadow:
     0 0 38px rgba(255, 196, 0, 0.58),

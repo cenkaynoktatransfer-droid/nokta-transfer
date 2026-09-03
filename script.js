@@ -75,9 +75,14 @@ function buildConversionPageUrl(fileName, message, source) {
 }
 
 let deferredInstallPrompt = null;
+let appInstalledInCurrentSession = false;
 
 function isPwaInstalled() {
-  return window.matchMedia?.("(display-mode: standalone)")?.matches || window.navigator.standalone === true;
+  return (
+    appInstalledInCurrentSession ||
+    window.matchMedia?.("(display-mode: standalone)")?.matches ||
+    window.navigator.standalone === true
+  );
 }
 
 function getInstallPlatform() {
@@ -103,7 +108,6 @@ function getInstallPlatform() {
 function getInstallButtonLabel() {
   const platform = getInstallPlatform();
 
-  if (isPwaInstalled()) return "Yüklendi";
   if (platform.isAndroid) return deferredInstallPrompt ? "Android'e Yükle" : "Android'e Ekle";
   if (platform.isIos) return "iPhone'a Ekle";
   return "Uygulama İndir";
@@ -111,7 +115,17 @@ function getInstallButtonLabel() {
 
 function updateInstallButtonLabels() {
   const label = getInstallButtonLabel();
+  const shouldHideButtons = isPwaInstalled();
+
   pwaInstallButtons.forEach((button) => {
+    button.hidden = shouldHideButtons;
+    button.classList.toggle("is-installed", shouldHideButtons);
+    button.setAttribute("aria-hidden", shouldHideButtons ? "true" : "false");
+    if (shouldHideButtons) {
+      button.setAttribute("aria-label", "Nokta Transfer uygulaması yüklü");
+      return;
+    }
+
     const labelElement = button.querySelector("[data-install-text]");
     if (labelElement) {
       labelElement.textContent = label;
@@ -253,12 +267,10 @@ function trackAppInstallClick() {
 
 async function handleAppInstallClick(event) {
   event.preventDefault();
-  trackAppInstallClick();
 
-  if (isPwaInstalled()) {
-    showInstallGuide();
-    return;
-  }
+  if (isPwaInstalled()) return;
+
+  trackAppInstallClick();
 
   if (deferredInstallPrompt) {
     const installPrompt = deferredInstallPrompt;
@@ -283,19 +295,20 @@ function initializePwaInstall() {
 
   window.addEventListener("beforeinstallprompt", (event) => {
     event.preventDefault();
+    appInstalledInCurrentSession = false;
     deferredInstallPrompt = event;
     pwaInstallButtons.forEach((button) => button.classList.add("is-ready"));
     updateInstallButtonLabels();
   });
 
   window.addEventListener("appinstalled", () => {
+    appInstalledInCurrentSession = true;
     deferredInstallPrompt = null;
-    pwaInstallButtons.forEach((button) => {
-      button.classList.add("is-installed");
-      button.setAttribute("aria-label", "Nokta Transfer ana ekrana eklendi");
-    });
+    hideInstallGuide();
     updateInstallButtonLabels();
   });
+
+  window.matchMedia?.("(display-mode: standalone)")?.addEventListener?.("change", updateInstallButtonLabels);
 
   pwaInstallButtons.forEach((button) => {
     button.addEventListener("click", handleAppInstallClick);
