@@ -237,10 +237,34 @@ ${googleAdsHeadSnippet()}
     </main>
 
     <footer class="site-footer">
-      <div class="wrap visitor-counter" aria-live="polite">
-        <span class="visitor-counter-kicker">Ziyaretçi sayacı</span>
-        <strong><span id="visitorCounterValue">...</span> toplam ziyaretçi</strong>
-        <p id="visitorCounterStatus">Her IP yalnızca bir kez sayılır.</p>
+      <div class="wrap footer-grid">
+        <div class="footer-brand">
+          <a class="footer-logo" href="../index.html#anasayfa" aria-label="Nokta Transfer anasayfa">
+            <img src="../assets/nokta-transfer-logo.jpeg" alt="" />
+            <span><b>NOKTA</b> TRANSFER</span>
+          </a>
+          <p>İzmir merkezli 7/24 özel transfer, şehir içi ulaşım, havalimanı transferi ve VIP araç hizmeti.</p>
+        </div>
+
+        <nav class="footer-links" aria-label="Alt menü">
+          <h2>Hızlı Erişim</h2>
+          <a href="../index.html#anasayfa">Anasayfa</a>
+          <a href="../ilceler.html">Hizmet Bölgeleri</a>
+          <a href="../index.html#fiyat">Fiyatlandırma</a>
+          <a href="../index.html#sss">S.S.S.</a>
+        </nav>
+
+        <div class="footer-contact">
+          <h2>İletişim</h2>
+          <a href="../telefon-donusum.html">0506 043 65 91</a>
+          <a href="../whatsapp-donusum.html">WhatsApp ile yaz</a>
+          <span>7/24 aktif - hızlı dönüş</span>
+        </div>
+      </div>
+
+      <div class="wrap footer-bottom">
+        <p>© 2026 Nokta Transfer. Tüm hakları saklıdır.</p>
+        <a href="https://www.asiluzunoglu.com/" target="_blank" rel="noopener">Site tasarımcımız Asil Uzunoglu</a>
       </div>
     </footer>
 
