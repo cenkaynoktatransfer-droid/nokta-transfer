@@ -1,6 +1,6 @@
 export const siteUrl = "https://www.noktatransfer.com.tr";
 
-export const sitemapLastmod = "2026-09-03";
+export const sitemapLastmod = "2026-09-05";
 
 export const districtPages = [
   { name: "Konak", slug: "konak-transfer", zone: "Merkez", note: "Saat Kulesi, Alsancak, Kordon", route: "Konak - Adnan Menderes Havalimanı" },
@@ -38,7 +38,7 @@ export const districtPages = [
   { name: "Gümüldür", slug: "gumuldur-transfer", zone: "Sahil", note: "Menderes sahili ve yazlık bölgeler", route: "Gümüldür - Adnan Menderes Havalimanı" }
 ];
 
-export const servicePages = [
+const coreServicePages = [
   {
     name: "İzmir Havalimanı Transfer",
     slug: "izmir-havalimani-transfer",
@@ -288,6 +288,140 @@ export const servicePages = [
     ]
   }
 ];
+
+const longDistanceRoutes = [
+  {
+    name: "İzmir Çeşme Transfer",
+    slug: "izmir-cesme-transfer",
+    zone: "Sahil",
+    destination: "Çeşme",
+    route: "İzmir merkez - Çeşme / Alaçatı",
+    keywords: "otel, marina, Ilıca, Alaçatı ve yazlık bölgeleri",
+    highlights: ["Çeşme merkez ve Alaçatı hattı", "Otel, marina ve yazlık transferi", "Sahil yolculuklarına uygun araç", "Yolculuk öncesi fiyat bilgisi"]
+  },
+  {
+    name: "İzmir Alaçatı Transfer",
+    slug: "izmir-alacati-transfer",
+    zone: "Sahil",
+    destination: "Alaçatı",
+    route: "İzmir merkez - Alaçatı",
+    keywords: "butik otel, taş ev bölgesi, marina ve etkinlik noktaları",
+    highlights: ["Alaçatı butik otel transferi", "Gece ve gündüz araç planı", "Bagajlı yolculuğa uygun araç", "Konumla hızlı rota teyidi"]
+  },
+  {
+    name: "İzmir Urla Transfer",
+    slug: "izmir-urla-transfer",
+    zone: "Sahil",
+    destination: "Urla",
+    route: "İzmir merkez - Urla İskele / bağ yolu",
+    keywords: "Urla İskele, bağ yolu, restoran, otel ve sahil noktaları",
+    highlights: ["Urla İskele ve bağ yolu", "Restoran ve otel transferi", "Merkezden sahile hızlı ulaşım", "Net fiyatlı özel araç"]
+  },
+  {
+    name: "İzmir Foça Transfer",
+    slug: "izmir-foca-transfer",
+    zone: "Kuzey Sahil",
+    destination: "Foça",
+    route: "İzmir merkez - Eski Foça / Yeni Foça",
+    keywords: "Eski Foça, Yeni Foça, sahil, yazlık ve otel bölgeleri",
+    highlights: ["Eski Foça ve Yeni Foça", "Kuzey sahil hattı", "Yazlık ve otel transferi", "Uzun yol konforu"]
+  },
+  {
+    name: "İzmir Kuşadası Transfer",
+    slug: "izmir-kusadasi-transfer",
+    zone: "Şehir Dışı",
+    destination: "Kuşadası",
+    route: "İzmir - Kuşadası",
+    keywords: "Kuşadası otelleri, liman, marina, Davutlar ve Güzelçamlı rotaları",
+    highlights: ["Kuşadası otel transferi", "Liman ve marina ulaşımı", "Aile ve grup yolculuğu", "Şehir dışı özel araç"]
+  },
+  {
+    name: "İzmir Aydın Transfer",
+    slug: "izmir-aydin-transfer",
+    zone: "Şehir Dışı",
+    destination: "Aydın",
+    route: "İzmir - Aydın",
+    keywords: "Aydın merkez, Söke, Nazilli ve çevre ilçe bağlantıları",
+    highlights: ["Aydın şehirlerarası transfer", "Otoban tercihli rota", "Uzun yol sedan ve VIP seçenekleri", "Önceden ücret bilgisi"]
+  },
+  {
+    name: "İzmir Manisa Transfer",
+    slug: "izmir-manisa-transfer",
+    zone: "Yakın Şehir",
+    destination: "Manisa",
+    route: "İzmir - Manisa",
+    keywords: "Manisa merkez, OSB, hastane, otel ve iş seyahati rotaları",
+    highlights: ["Manisa özel araç transferi", "İş ve sanayi bölgesi ulaşımı", "Hastane ve otel rotaları", "Kısa şehir dışı rota"]
+  },
+  {
+    name: "İzmir Bursa Transfer",
+    slug: "izmir-bursa-transfer",
+    zone: "Uzun Yol",
+    destination: "Bursa",
+    route: "İzmir - Bursa",
+    keywords: "Bursa şehir merkezi, otel, terminal, iş ve aile yolculukları",
+    highlights: ["İzmir Bursa özel transfer", "Uzun yol konforlu araç", "Otoban tercihi ve ücret kalemi", "VIP sedan veya van seçeneği"]
+  },
+  {
+    name: "İzmir İstanbul Transfer",
+    slug: "izmir-istanbul-transfer",
+    zone: "Uzun Yol",
+    destination: "İstanbul",
+    route: "İzmir - İstanbul",
+    keywords: "İstanbul havalimanı, otel, iş seyahati ve şehirlerarası özel araç",
+    highlights: ["İzmir İstanbul özel araç", "Uzun mesafe VIP transfer", "Otoban ve rota planı", "Kapıdan kapıya ulaşım"]
+  },
+  {
+    name: "İzmir Otogar Transfer",
+    slug: "izmir-otogar-transfer",
+    zone: "Terminal",
+    destination: "İzmir Otogarı",
+    route: "İzmir ilçeleri - İzmir Otogarı",
+    keywords: "İzmir Otogarı, Bornova terminal, şehir içi ve ilçe bağlantıları",
+    highlights: ["Otogar karşılama ve bırakma", "Bornova terminal bağlantısı", "Valizli yolculuğa uygun araç", "Şehir içi hızlı rota"]
+  },
+  {
+    name: "İzmir Fuar Transfer",
+    slug: "izmir-fuar-transfer",
+    zone: "Fuar",
+    destination: "Fuar İzmir",
+    route: "Adnan Menderes / İzmir merkez - Fuar İzmir",
+    keywords: "Fuar İzmir, Gaziemir, otel, stant ekibi ve kurumsal misafir transferi",
+    highlights: ["Fuar İzmir ulaşımı", "Kurumsal misafir karşılama", "Otel ve havalimanı bağlantısı", "Saatli araç planı"]
+  },
+  {
+    name: "İzmir Kurumsal Transfer",
+    slug: "izmir-kurumsal-transfer",
+    zone: "Kurumsal",
+    destination: "İzmir iş rotaları",
+    route: "İzmir otel, fuar, toplantı ve havalimanı rotaları",
+    keywords: "toplantı, otel, fuar, şirket misafiri ve VIP karşılama",
+    highlights: ["Şirket misafiri transferi", "Toplantı ve otel rotaları", "Fatura ve planlı ulaşım desteği", "Premium araç seçeneği"]
+  }
+];
+
+const routeServicePages = longDistanceRoutes.map((route) => ({
+  name: route.name,
+  slug: route.slug,
+  zone: route.zone,
+  kicker: `${route.zone.toLocaleUpperCase("tr-TR")} TRANSFER`,
+  route: route.route,
+  title: `${route.name} | Net Fiyatlı Özel Araç | Nokta Transfer`,
+  description: `${route.name} hizmeti. ${route.keywords} için 7/24 net fiyatlı, konforlu ve güvenli özel transfer.`,
+  lead: `${route.destination} yönüne planlı, konforlu ve net fiyatlı özel transfer hizmeti alın.`,
+  highlights: route.highlights,
+  paragraphs: [
+    `${route.name} arayan yolcular için rota öncesi net bilgi, temiz araç ve zamanında ulaşım önemlidir. Nokta Transfer; ${route.keywords} için özel araç planı yapar ve yolculuk başlamadan önce ücret bilgisini sade şekilde paylaşır.`,
+    `${route.route} hattında yolcu sayısı, bagaj durumu, alınacak saat ve yol tercihi birlikte değerlendirilir. Kısa şehir içi bağlantılarda hızlı dönüş, uzun mesafe rotalarda ise konfor ve mola planı öne alınır.`
+  ],
+  faq: [
+    [`${route.destination} transfer fiyatı nasıl hesaplanır?`, "Mesafe, araç tipi ve varsa otoban tercihi değerlendirilir. Rota netleştiğinde ücret bilgisi yolculuk öncesi paylaşılır."],
+    [`${route.destination} için gece transfer var mı?`, "Uygun araç durumuna göre gece ve gündüz transfer planı yapılır. Yoğun saatler için önceden iletişim daha hızlı sonuç verir."],
+    ["WhatsApp ile konum göndersem yeterli mi?", "Evet. Alınacak yer ve gidilecek konum paylaşıldığında rota, süre ve araç bilgisi hızlıca netleştirilir."]
+  ]
+}));
+
+export const servicePages = [...coreServicePages, ...routeServicePages];
 
 export const languagePages = [
   {

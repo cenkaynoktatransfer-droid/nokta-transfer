@@ -12,6 +12,7 @@ const files = [
   "site.webmanifest",
   "sw.js",
   "robots.txt",
+  "llms.txt",
   "sitemap.xml",
   "assets"
 ];
@@ -110,6 +111,7 @@ function siteFooter(prefix, text = "İzmir merkezli 7/24 özel transfer, şehir 
       areas: "Hizmet Bölgeleri",
       pricing: "Fiyatlandırma",
       faq: "S.S.S.",
+      servicesLabel: "Transfer Hizmetleri",
       contact: "İletişim",
       whatsapp: "WhatsApp ile yaz",
       status: "7/24 aktif - hızlı dönüş",
@@ -122,6 +124,7 @@ function siteFooter(prefix, text = "İzmir merkezli 7/24 özel transfer, şehir 
       areas: "Services",
       pricing: "Pricing",
       faq: "FAQ",
+      servicesLabel: "Transfer Services",
       contact: "Contact",
       whatsapp: "Message on WhatsApp",
       status: "24/7 active - fast response",
@@ -134,6 +137,7 @@ function siteFooter(prefix, text = "İzmir merkezli 7/24 özel transfer, şehir 
       areas: "Leistungen",
       pricing: "Preise",
       faq: "FAQ",
+      servicesLabel: "Transferleistungen",
       contact: "Kontakt",
       whatsapp: "WhatsApp schreiben",
       status: "24/7 erreichbar - schnelle Antwort",
@@ -158,6 +162,11 @@ function siteFooter(prefix, text = "İzmir merkezli 7/24 özel transfer, şehir 
           <a href="${lang === "tr" ? `${prefix}ilceler.html` : "#services"}">${copy.areas}</a>
           <a href="${prefix}index.html#fiyat">${copy.pricing}</a>
           <a href="${lang === "tr" ? `${prefix}index.html#sss` : "#language-faq"}">${copy.faq}</a>
+        </nav>
+
+        <nav class="footer-links footer-service-links" aria-label="Transfer hizmetleri">
+          <h2>${copy.servicesLabel}</h2>
+          ${getPrimaryServiceLinks(prefix, 8)}
         </nav>
 
         <div class="footer-contact">
@@ -238,6 +247,13 @@ function floatingContact(prefix) {
     </div>`;
 }
 
+function getPrimaryServiceLinks(prefix, count = 10) {
+  return servicePages
+    .slice(0, count)
+    .map((page) => `<a href="${prefix}${page.slug}/">${escapeHtml(page.name)}</a>`)
+    .join("");
+}
+
 function baseHead({ title, description, canonical, prefix = "../", ogLocale = "tr_TR", alternates = "" }) {
   return `<meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -255,6 +271,7 @@ ${alternates}
     <meta name="apple-mobile-web-app-title" content="Nokta Transfer" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Nokta Transfer" />
     <meta property="og:title" content="${escapeHtml(title)}" />
     <meta property="og:description" content="${escapeHtml(description)}" />
     <meta property="og:image" content="${siteUrl}/assets/nokta-transfer-logo.jpeg" />
@@ -273,6 +290,11 @@ function districtPageTemplate(page) {
   const title = `${page.name} Transfer | ${page.name} Havalimanı ve VIP Ulaşım | Nokta Transfer`;
   const description = `Nokta Transfer ile ${page.name} transfer, ${page.name} havalimanı transfer, şehir içi ve şehir dışı VIP ulaşım hizmeti. 7/24 net fiyat ve konforlu araç.`;
   const whatsappText = encodeURIComponent(`Merhaba Nokta Transfer, ${page.name} transfer hizmeti için bilgi almak istiyorum.`);
+  const districtFaq = [
+    [`${page.name} transfer hizmeti hangi rotalarda verilir?`, `${page.name} çıkışlı İzmir merkez, Adnan Menderes Havalimanı, otel, terminal, fuar ve şehir dışı rota talepleri için özel transfer planı yapılır.`],
+    [`${page.name} havalimanı transfer fiyatı önceden belli olur mu?`, "Evet. Alınacak yer, varış noktası ve yol tercihi netleştiğinde yolculuk öncesi tahmini ücret bilgisi paylaşılır."],
+    [`${page.name} için gece araç çağırabilir miyim?`, "Uygun araç durumuna göre 7/24 destek verilir. Gece yolculukları, uçuş saatleri ve erken saat transferleri için hızlı iletişim sağlanır."]
+  ];
   const relatedPages = districtPages
     .filter((item) => item.slug !== page.slug && item.zone === page.zone)
     .slice(0, 6)
@@ -295,6 +317,19 @@ function districtPageTemplate(page) {
     description
   };
 
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: districtFaq.map(([question, answer]) => ({
+      "@type": "Question",
+      name: question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: answer
+      }
+    }))
+  };
+
   const breadcrumbSchema = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
@@ -310,6 +345,7 @@ function districtPageTemplate(page) {
   <head>
     ${baseHead({ title, description, canonical: `${siteUrl}/${page.slug}/` })}
     <script type="application/ld+json">${jsonLd(serviceSchema)}</script>
+    <script type="application/ld+json">${jsonLd(faqSchema)}</script>
     <script type="application/ld+json">${jsonLd(breadcrumbSchema)}</script>
   </head>
   <body class="seo-page">
@@ -361,9 +397,19 @@ function districtPageTemplate(page) {
           </article>
 
           <article class="seo-card">
+            <h2>${escapeHtml(page.name)} Transfer S.S.S.</h2>
+            <div class="seo-faq-mini">
+              ${districtFaq
+                .map(([question, answer]) => `<details><summary>${escapeHtml(question)}</summary><p>${escapeHtml(answer)}</p></details>`)
+                .join("\n              ")}
+            </div>
+          </article>
+
+          <article class="seo-card">
             <h2>Yakın Bölge Sayfaları</h2>
             <div class="seo-links">
               ${relatedPages}
+              ${getPrimaryServiceLinks("../", 4)}
               <a href="../ilceler.html">Tüm İzmir İlçeleri</a>
             </div>
           </article>
@@ -511,6 +557,11 @@ function languagePageTemplate(page) {
     name: "Nokta Transfer",
     image: `${siteUrl}/assets/nokta-transfer-logo.jpeg`,
     telephone: "+905060436591",
+    geo: {
+      "@type": "GeoCoordinates",
+      latitude: 38.4237,
+      longitude: 27.1428
+    },
     areaServed: {
       "@type": "City",
       name: "Izmir"
@@ -523,6 +574,13 @@ function languagePageTemplate(page) {
     url: canonical,
     priceRange: "₺₺",
     openingHours: "Mo-Su 00:00-23:59",
+    contactPoint: {
+      "@type": "ContactPoint",
+      telephone: "+905060436591",
+      contactType: "customer service",
+      areaServed: "TR",
+      availableLanguage: ["Turkish", "English", "German"]
+    },
     description: page.description
   };
 
