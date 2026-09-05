@@ -85,12 +85,16 @@ function languageSwitcher(prefix, currentLang = "tr") {
   const label = {
     tr: "Dil seçimi",
     en: "Language selection",
-    de: "Sprachauswahl"
+    de: "Sprachauswahl",
+    ru: "Выбор языка",
+    uk: "Вибір мови"
   }[currentLang] || "Dil seçimi";
   const options = [
     { lang: "tr", label: "TR", href: `${prefix}index.html` },
     { lang: "en", label: "EN", href: `${prefix}en/` },
-    { lang: "de", label: "DE", href: `${prefix}de/` }
+    { lang: "de", label: "DE", href: `${prefix}de/` },
+    { lang: "ru", label: "RU", href: `${prefix}ru/` },
+    { lang: "uk", label: "UK", href: `${prefix}uk/` }
   ];
 
   return `<div class="language-switcher" aria-label="${label}">
@@ -143,6 +147,32 @@ function siteFooter(prefix, text = "İzmir merkezli 7/24 özel transfer, şehir 
       status: "24/7 erreichbar - schnelle Antwort",
       rights: "© 2026 Nokta Transfer. Alle Rechte vorbehalten.",
       designer: "Seitendesigner Asil Uzunoglu"
+    },
+    ru: {
+      quick: "Быстрые ссылки",
+      home: "Главная",
+      areas: "Районы",
+      pricing: "Цены",
+      faq: "FAQ",
+      servicesLabel: "Услуги трансфера",
+      contact: "Контакты",
+      whatsapp: "Написать в WhatsApp",
+      status: "24/7 на связи - быстрый ответ",
+      rights: "© 2026 Nokta Transfer. Все права защищены.",
+      designer: "Дизайн сайта Asil Uzunoglu"
+    },
+    uk: {
+      quick: "Швидкі посилання",
+      home: "Головна",
+      areas: "Райони",
+      pricing: "Ціни",
+      faq: "FAQ",
+      servicesLabel: "Послуги трансферу",
+      contact: "Контакти",
+      whatsapp: "Написати в WhatsApp",
+      status: "24/7 на зв'язку - швидка відповідь",
+      rights: "© 2026 Nokta Transfer. Усі права захищені.",
+      designer: "Дизайн сайту Asil Uzunoglu"
     }
   }[lang] || {};
 
@@ -159,7 +189,7 @@ function siteFooter(prefix, text = "İzmir merkezli 7/24 özel transfer, şehir 
         <nav class="footer-links" aria-label="Alt menü">
           <h2>${copy.quick}</h2>
           <a href="${lang === "tr" ? `${prefix}index.html#anasayfa` : `${prefix}${lang}/`}">${copy.home}</a>
-          <a href="${lang === "tr" ? `${prefix}ilceler.html` : "#services"}">${copy.areas}</a>
+          <a href="${lang === "tr" ? `${prefix}ilceler.html` : getDistrictGuideHref(prefix, lang)}">${copy.areas}</a>
           <a href="${prefix}index.html#fiyat">${copy.pricing}</a>
           <a href="${lang === "tr" ? `${prefix}index.html#sss` : "#language-faq"}">${copy.faq}</a>
         </nav>
@@ -209,6 +239,22 @@ function headerTemplate(prefix, current = "home", currentLang = "tr") {
       pricing: "Preise",
       faq: "FAQ",
       call: "Anrufen"
+    },
+    ru: {
+      home: "Главная",
+      areas: "Услуги",
+      guide: "Гид по трансферам Измира",
+      pricing: "Цены",
+      faq: "FAQ",
+      call: "Позвонить"
+    },
+    uk: {
+      home: "Головна",
+      areas: "Послуги",
+      guide: "Гід трансферів Ізміра",
+      pricing: "Ціни",
+      faq: "FAQ",
+      call: "Подзвонити"
     }
   }[currentLang] || {};
   const homeHref = currentLang === "tr" ? `${prefix}index.html#anasayfa` : `${prefix}${currentLang}/`;
@@ -224,7 +270,7 @@ function headerTemplate(prefix, current = "home", currentLang = "tr") {
         <nav class="menu" aria-label="Ana menü">
           <a${current === "home" ? ' class="active"' : ""} href="${homeHref}">${copy.home}</a>
           <a${current === "areas" ? ' class="active"' : ""} href="${areasHref}">${copy.areas}</a>
-          <a class="menu-taxi${current === "guide" ? " is-current" : ""}" href="${prefix}ilceler.html" aria-label="${copy.guide}">
+          <a class="menu-taxi${current === "guide" ? " is-current" : ""}" href="${prefix}transfer-rehberi/" aria-label="${copy.guide}">
             <img src="${prefix}assets/taxi-menu-icon.png" alt="" draggable="false" />
           </a>
           <a${current === "pricing" ? ' class="active"' : ""} href="${prefix}index.html#fiyat">${copy.pricing}</a>
@@ -252,6 +298,207 @@ function getPrimaryServiceLinks(prefix, count = 10) {
     .slice(0, count)
     .map((page) => `<a href="${prefix}${page.slug}/">${escapeHtml(page.name)}</a>`)
     .join("");
+}
+
+const districtGuideLocales = {
+  tr: {
+    lang: "tr",
+    code: "TR",
+    flag: "🇹🇷",
+    label: "Türkçe",
+    path: "ilceler.html",
+    prefix: "./",
+    pagePrefix: "./",
+    districtPrefix: "./",
+    canonical: `${siteUrl}/ilceler.html`,
+    ogLocale: "tr_TR",
+    title: "İzmir İlçe Transfer Rehberi | Nokta Transfer Bölgeleri",
+    description: "Konak, Bornova, Karşıyaka, Çeşme, Foça, Urla ve tüm İzmir ilçeleri için transfer ve havalimanı ulaşım rehberi.",
+    kicker: "İZMİR İLÇE TRANSFER REHBERİ",
+    h1: "Nokta Transfer Nerelerde?",
+    lead: "İzmir'in merkez, sahil ve uzak ilçe hatlarını tek rehberde topladık. İlçenizi seçin, bölgeye özel transfer bilgisini açın.",
+    featured: "Öne Çıkan Hatlar",
+    popular: "En Çok Bakılan Bölgeler",
+    metro: "Merkez İlçeler",
+    coast: "Sahil ve Kuzey Hattı",
+    south: "İç ve Güney Hatlar",
+    cardCta: "Transfer sayfasını aç",
+    back: "Ana Sayfaya Dön",
+    call: "Telefonla Ara",
+    districtTitle: (name) => `${name} Transfer`,
+    districtLead: (name, route) => `${name} bölgesinden İzmir merkez, Adnan Menderes Havalimanı, otel, terminal ve şehir dışı rotalara özel transfer. Öne çıkan rota: ${route}.`
+  },
+  en: {
+    lang: "en",
+    code: "EN",
+    flag: "🇬🇧",
+    label: "English",
+    path: "en/districts/",
+    prefix: "../../",
+    pagePrefix: "../",
+    districtPrefix: "../",
+    canonical: `${siteUrl}/en/districts/`,
+    ogLocale: "en_US",
+    title: "Izmir District Transfer Guide | Nokta Transfer Service Areas",
+    description: "Izmir district transfer guide in English. Airport pickup, hotel transfer and private transportation for Konak, Bornova, Karsiyaka, Cesme, Urla and all districts.",
+    kicker: "IZMIR DISTRICT TRANSFER GUIDE",
+    h1: "Where Nokta Transfer Serves",
+    lead: "Find private transfer information for Izmir city districts, coastal towns and airport routes in English.",
+    featured: "Featured Routes",
+    popular: "Most Requested Areas",
+    metro: "Central Districts",
+    coast: "Coastal and Northern Line",
+    south: "Inner and Southern Routes",
+    cardCta: "Open transfer page",
+    back: "Back to Home",
+    call: "Call Now",
+    districtTitle: (name) => `${name} Transfer in Izmir`,
+    districtLead: (name, route) => `Private transfer from ${name} to Izmir city center, Adnan Menderes Airport, hotels, terminals and long-distance routes. Popular route: ${route}.`
+  },
+  de: {
+    lang: "de",
+    code: "DE",
+    flag: "🇩🇪",
+    label: "Deutsch",
+    path: "de/bezirke/",
+    prefix: "../../",
+    pagePrefix: "../",
+    districtPrefix: "../",
+    canonical: `${siteUrl}/de/bezirke/`,
+    ogLocale: "de_DE",
+    title: "Izmir Bezirke Transfer Guide | Nokta Transfer Servicegebiete",
+    description: "Deutschsprachiger Transfer Guide für Izmir Bezirke. Flughafen Transfer, Hotel Transfer und privater Fahrservice für Konak, Bornova, Karsiyaka, Cesme, Urla und alle Bezirke.",
+    kicker: "IZMIR BEZIRKE TRANSFER GUIDE",
+    h1: "Wo Nokta Transfer fährt",
+    lead: "Finden Sie private Transferinformationen für zentrale Bezirke, Küstenorte und Flughafenrouten in Izmir auf Deutsch.",
+    featured: "Wichtige Routen",
+    popular: "Häufig gesuchte Gebiete",
+    metro: "Zentrale Bezirke",
+    coast: "Küsten- und Nordlinie",
+    south: "Innere und südliche Routen",
+    cardCta: "Transferseite öffnen",
+    back: "Zur Startseite",
+    call: "Jetzt anrufen",
+    districtTitle: (name) => `${name} Transfer in Izmir`,
+    districtLead: (name, route) => `Privater Transfer von ${name} ins Zentrum von Izmir, zum Flughafen Adnan Menderes, zu Hotels, Terminals und Langstrecken. Beliebte Route: ${route}.`
+  },
+  ru: {
+    lang: "ru",
+    code: "RU",
+    flag: "🇷🇺",
+    label: "Русский",
+    path: "ru/rajony/",
+    prefix: "../../",
+    pagePrefix: "../",
+    districtPrefix: "../",
+    canonical: `${siteUrl}/ru/rajony/`,
+    ogLocale: "ru_RU",
+    title: "Районы Измира | Гид по трансферу Nokta Transfer",
+    description: "Гид по районам Измира на русском языке. Трансфер из аэропорта, поездки в отель и частный водитель для Konak, Bornova, Karsiyaka, Cesme, Urla и всех районов.",
+    kicker: "ГИД ПО РАЙОНАМ ИЗМИРА",
+    h1: "Где работает Nokta Transfer",
+    lead: "Выберите район Измира и откройте страницу с информацией о частном трансфере, аэропорте, отеле и дальних маршрутах на русском языке.",
+    featured: "Популярные маршруты",
+    popular: "Часто выбираемые районы",
+    metro: "Центральные районы",
+    coast: "Побережье и север",
+    south: "Юг и внутренние районы",
+    cardCta: "Открыть страницу",
+    back: "На главную",
+    call: "Позвонить",
+    districtTitle: (name) => `Трансфер ${name} в Измире`,
+    districtLead: (name, route) => `Частный трансфер из ${name} в центр Измира, аэропорт Adnan Menderes, отели, терминалы и междугородние направления. Популярный маршрут: ${route}.`
+  },
+  uk: {
+    lang: "uk",
+    code: "UK",
+    flag: "🇺🇦",
+    label: "Українська",
+    path: "uk/raiony/",
+    prefix: "../../",
+    pagePrefix: "../",
+    districtPrefix: "../",
+    canonical: `${siteUrl}/uk/raiony/`,
+    ogLocale: "uk_UA",
+    title: "Райони Ізміра | Гід трансферів Nokta Transfer",
+    description: "Гід районами Ізміра українською мовою. Трансфер з аеропорту, поїздки до готелю та приватний водій для Konak, Bornova, Karsiyaka, Cesme, Urla і всіх районів.",
+    kicker: "ГІД РАЙОНАМИ ІЗМІРА",
+    h1: "Де працює Nokta Transfer",
+    lead: "Оберіть район Ізміра та відкрийте сторінку з інформацією про приватний трансфер, аеропорт, готель і далекі маршрути українською мовою.",
+    featured: "Популярні маршрути",
+    popular: "Найчастіше обирають",
+    metro: "Центральні райони",
+    coast: "Узбережжя та північ",
+    south: "Південь і внутрішні райони",
+    cardCta: "Відкрити сторінку",
+    back: "На головну",
+    call: "Подзвонити",
+    districtTitle: (name) => `Трансфер ${name} в Ізмірі`,
+    districtLead: (name, route) => `Приватний трансфер з ${name} до центру Ізміра, аеропорту Adnan Menderes, готелів, терміналів і міжміських напрямків. Популярний маршрут: ${route}.`
+  }
+};
+
+const guideLanguageCards = Object.values(districtGuideLocales);
+
+function getDistrictGuideHref(prefix, lang = "tr") {
+  const guide = districtGuideLocales[lang] || districtGuideLocales.tr;
+  return lang === "tr" ? `${prefix}ilceler.html` : `${prefix}${guide.path}`;
+}
+
+function getLocalizedDistrictHref(guide, page) {
+  return guide.lang === "tr" ? `${guide.districtPrefix}${page.slug}/` : `${guide.districtPrefix}${page.slug}/`;
+}
+
+function localizedDetailIntro(guide, name) {
+  return {
+    en: `${name} area service includes airport pickup, hotel transfer, city center rides, terminal routes and long-distance private transportation with Nokta Transfer.`,
+    de: `Der Service in ${name} umfasst Flughafenabholung, Hoteltransfer, Fahrten ins Zentrum, Terminalrouten und private Langstreckenfahrten mit Nokta Transfer.`,
+    ru: `Услуга в районе ${name} включает встречу в аэропорту, трансфер в отель, поездки в центр, терминалы и междугородние частные маршруты с Nokta Transfer.`,
+    uk: `Послуга в районі ${name} включає зустріч в аеропорту, трансфер до готелю, поїздки в центр, термінали та міжміські приватні маршрути з Nokta Transfer.`
+  }[guide.lang] || `${name} transfer service is available with Nokta Transfer.`;
+}
+
+function localizedDetailLabels(guide) {
+  return {
+    en: {
+      popular: "Popular transfer needs",
+      related: "Related district pages",
+      airport: "Adnan Menderes Airport",
+      hotel: "Hotel and marina transfer",
+      vehicle: "Private sedan / VIP vehicle"
+    },
+    de: {
+      popular: "Beliebte Transferwünsche",
+      related: "Verwandte Bezirksseiten",
+      airport: "Flughafen Adnan Menderes",
+      hotel: "Hotel- und Marina-Transfer",
+      vehicle: "Private Limousine / VIP Fahrzeug"
+    },
+    ru: {
+      popular: "Популярные запросы",
+      related: "Похожие страницы районов",
+      airport: "Аэропорт Adnan Menderes",
+      hotel: "Трансфер в отель и марину",
+      vehicle: "Private sedan / VIP автомобиль"
+    },
+    uk: {
+      popular: "Популярні запити",
+      related: "Схожі сторінки районів",
+      airport: "Аеропорт Adnan Menderes",
+      hotel: "Трансфер до готелю та марини",
+      vehicle: "Private sedan / VIP автомобіль"
+    }
+  }[guide.lang] || {};
+}
+
+function guideAlternates(pagePath = "") {
+  const suffix = pagePath ? `${pagePath}/` : "";
+  return `    <link rel="alternate" hreflang="tr" href="${siteUrl}${pagePath ? `/${pagePath}/` : "/ilceler.html"}" />
+    <link rel="alternate" hreflang="en" href="${siteUrl}/en/${suffix || "districts/"}" />
+    <link rel="alternate" hreflang="de" href="${siteUrl}/de/${suffix || "bezirke/"}" />
+    <link rel="alternate" hreflang="ru" href="${siteUrl}/ru/${suffix || "rajony/"}" />
+    <link rel="alternate" hreflang="uk" href="${siteUrl}/uk/${suffix || "raiony/"}" />
+    <link rel="alternate" hreflang="x-default" href="${siteUrl}/transfer-rehberi/" />`;
 }
 
 function baseHead({ title, description, canonical, prefix = "../", ogLocale = "tr_TR", alternates = "" }) {
@@ -543,11 +790,24 @@ function servicePageTemplate(page) {
 
 function languagePageTemplate(page) {
   const canonical = `${siteUrl}/${page.lang}/`;
-  const langName = page.lang === "en" ? "English" : "Deutsch";
-  const whatsappText = encodeURIComponent(`${page.lang === "en" ? "Hello" : "Hallo"} Nokta Transfer, I would like information about Izmir transfer service.`);
+  const langName = {
+    en: "English",
+    de: "Deutsch",
+    ru: "Русский",
+    uk: "Українська"
+  }[page.lang] || "English";
+  const greeting = {
+    en: "Hello",
+    de: "Hallo",
+    ru: "Здравствуйте",
+    uk: "Вітаю"
+  }[page.lang] || "Hello";
+  const whatsappText = encodeURIComponent(`${greeting} Nokta Transfer, I would like information about Izmir transfer service.`);
   const alternates = `    <link rel="alternate" hreflang="tr" href="${siteUrl}/" />
     <link rel="alternate" hreflang="en" href="${siteUrl}/en/" />
     <link rel="alternate" hreflang="de" href="${siteUrl}/de/" />
+    <link rel="alternate" hreflang="ru" href="${siteUrl}/ru/" />
+    <link rel="alternate" hreflang="uk" href="${siteUrl}/uk/" />
     <link rel="alternate" hreflang="x-default" href="${siteUrl}/" />`;
 
   const localBusinessSchema = {
@@ -579,7 +839,7 @@ function languagePageTemplate(page) {
       telephone: "+905060436591",
       contactType: "customer service",
       areaServed: "TR",
-      availableLanguage: ["Turkish", "English", "German"]
+      availableLanguage: ["Turkish", "English", "German", "Russian", "Ukrainian"]
     },
     description: page.description
   };
@@ -605,7 +865,11 @@ function languagePageTemplate(page) {
       description: page.description,
       canonical,
       prefix: "../",
-      ogLocale: page.lang === "de" ? "de_DE" : "en_US",
+      ogLocale: {
+        de: "de_DE",
+        ru: "ru_RU",
+        uk: "uk_UA"
+      }[page.lang] || "en_US",
       alternates
     })}
     <script type="application/ld+json">${jsonLd(localBusinessSchema)}</script>
@@ -632,6 +896,9 @@ function languagePageTemplate(page) {
           <span class="section-kicker">${escapeHtml(langName)} Service Page</span>
           <h2>${escapeHtml(page.servicesTitle)}</h2>
           <p>${escapeHtml(page.servicesLead)}</p>
+          <div class="language-guide-link">
+            <a href="${getDistrictGuideHref("../", page.lang)}">${escapeHtml(page.routesTitle)}</a>
+          </div>
         </div>
 
         <div class="wrap language-grid">
@@ -673,11 +940,309 @@ function languagePageTemplate(page) {
 </html>`;
 }
 
+function guideGatewayTemplate() {
+  const title = "Nokta Transfer Rehberi | Çok Dilli İzmir Transfer Bölgeleri";
+  const description = "Nokta Transfer İzmir ilçe ve rota rehberi. Türkçe, İngilizce, Almanca, Rusça ve Ukraynaca transfer bölge sayfaları.";
+  const collectionSchema = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: "Nokta Transfer Çok Dilli Rehber",
+    url: `${siteUrl}/transfer-rehberi/`,
+    inLanguage: ["tr-TR", "en-US", "de-DE", "ru-RU", "uk-UA"],
+    about: "İzmir transfer bölgeleri ve çok dilli ilçe rehberleri",
+    provider: {
+      "@id": `${siteUrl}/#business`
+    }
+  };
+
+  return `<!doctype html>
+<html lang="tr">
+  <head>
+    ${baseHead({
+      title,
+      description,
+      canonical: `${siteUrl}/transfer-rehberi/`,
+      prefix: "../",
+      alternates: `    <link rel="alternate" hreflang="tr" href="${siteUrl}/transfer-rehberi/" />
+    <link rel="alternate" hreflang="en" href="${siteUrl}/en/districts/" />
+    <link rel="alternate" hreflang="de" href="${siteUrl}/de/bezirke/" />
+    <link rel="alternate" hreflang="ru" href="${siteUrl}/ru/rajony/" />
+    <link rel="alternate" hreflang="uk" href="${siteUrl}/uk/raiony/" />
+    <link rel="alternate" hreflang="x-default" href="${siteUrl}/transfer-rehberi/" />`
+    })}
+    <script type="application/ld+json">${jsonLd(collectionSchema)}</script>
+  </head>
+  <body class="district-page guide-gateway-page">
+    ${headerTemplate("../", "guide")}
+
+    <main>
+      <section class="district-page-hero guide-gateway-hero">
+        <div class="wrap guide-gateway-shell">
+          <div class="district-page-copy reveal">
+            <span class="section-kicker">ÇOK DİLLİ TRANSFER REHBERİ</span>
+            <h1>İzmir Transfer <span>Dilini Seç</span></h1>
+            <p>
+              İzmir ilçeleri, havalimanı transferi, sahil hattı ve şehir dışı rotalar için hazırlanan rehberi kendi dilinizde açın.
+            </p>
+          </div>
+
+          <div class="guide-language-grid reveal delay-1" aria-label="Rehber dili seçimi">
+            ${guideLanguageCards
+              .map(
+                (item) => `<a class="guide-language-card" href="../${item.path}" lang="${item.lang}">
+              <span>${item.flag}</span>
+              <strong>${escapeHtml(item.label)}</strong>
+              <small>${escapeHtml(item.kicker)}</small>
+            </a>`
+              )
+              .join("\n            ")}
+          </div>
+        </div>
+      </section>
+    </main>
+
+    ${siteFooter("../")}
+    ${floatingContact("../")}
+    <script src="../script.js"></script>
+  </body>
+</html>`;
+}
+
+function districtCards(pages, guide) {
+  return pages
+    .map(
+      (page) => `<a class="localized-district-card" href="${getLocalizedDistrictHref(guide, page)}">
+                <span>${escapeHtml(page.zone)}</span>
+                <strong>${escapeHtml(guide.districtTitle(page.name))}</strong>
+                <small>${escapeHtml(guide.districtLead(page.name, page.route))}</small>
+                <b>${escapeHtml(guide.cardCta)}</b>
+              </a>`
+    )
+    .join("\n              ");
+}
+
+function localizedDistrictGuideTemplate(guide) {
+  const featured = ["konak-transfer", "cesme-transfer", "bornova-transfer", "karsiyaka-transfer", "buca-transfer", "gaziemir-transfer", "mordogan-transfer", "gumuldur-transfer"];
+  const featuredPages = featured.map((slug) => districtPages.find((page) => page.slug === slug)).filter(Boolean);
+  const metroPages = districtPages.filter((page) => ["Merkez"].includes(page.zone));
+  const coastPages = districtPages.filter((page) => ["Sahil", "Kuzey"].includes(page.zone));
+  const southPages = districtPages.filter((page) => ["Güney"].includes(page.zone));
+  const collectionSchema = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: guide.title,
+    url: guide.canonical,
+    inLanguage: guide.lang,
+    about: guide.description,
+    provider: {
+      "@id": `${siteUrl}/#business`
+    },
+    mainEntity: {
+      "@type": "ItemList",
+      itemListElement: districtPages.map((page, index) => ({
+        "@type": "ListItem",
+        position: index + 1,
+        name: guide.districtTitle(page.name),
+        url: `${siteUrl}/${guide.lang}/${page.slug}/`
+      }))
+    }
+  };
+
+  return `<!doctype html>
+<html lang="${guide.lang}">
+  <head>
+    ${baseHead({
+      title: guide.title,
+      description: guide.description,
+      canonical: guide.canonical,
+      prefix: guide.prefix,
+      ogLocale: guide.ogLocale,
+      alternates: guideAlternates()
+    })}
+    <script type="application/ld+json">${jsonLd(collectionSchema)}</script>
+  </head>
+  <body class="district-page localized-district-page">
+    ${headerTemplate(guide.prefix, "guide", guide.lang)}
+
+    <main>
+      <section class="district-page-hero">
+        <div class="wrap district-page-shell">
+          <div class="district-page-copy reveal">
+            <span class="section-kicker">${escapeHtml(guide.kicker)}</span>
+            <h1>${escapeHtml(guide.h1)}</h1>
+            <p>${escapeHtml(guide.lead)}</p>
+            <div class="district-page-actions" aria-label="Quick actions">
+              <a href="${guide.prefix}${guide.lang}/">${escapeHtml(guide.back)}</a>
+              <a href="${guide.prefix}telefon-donusum.html">${escapeHtml(guide.call)}</a>
+            </div>
+          </div>
+
+          <aside class="district-detail-card guide-language-panel reveal delay-1">
+            <span class="district-label">LANGUAGE</span>
+            <h2>${guide.flag} ${escapeHtml(guide.label)}</h2>
+            <p>${escapeHtml(guide.description)}</p>
+            <div class="guide-mini-languages">
+              ${guideLanguageCards
+                .map((item) => `<a href="${guide.prefix}${item.path}" lang="${item.lang}"${item.lang === guide.lang ? ' class="is-active" aria-current="page"' : ""}>${item.flag} ${escapeHtml(item.label)}</a>`)
+                .join("\n              ")}
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <section class="section district-guide district-guide-page">
+        <div class="wrap localized-district-directory">
+          <article class="district-panel district-feature reveal">
+            <span class="district-label">${escapeHtml(guide.featured)}</span>
+            <h3>${escapeHtml(guide.popular)}</h3>
+            <div class="localized-district-grid">
+              ${districtCards(featuredPages, guide)}
+            </div>
+          </article>
+
+          <article class="district-panel reveal delay-1">
+            <span class="district-label">METRO</span>
+            <h3>${escapeHtml(guide.metro)}</h3>
+            <div class="localized-district-grid">
+              ${districtCards(metroPages, guide)}
+            </div>
+          </article>
+
+          <article class="district-panel reveal delay-2">
+            <span class="district-label">COAST</span>
+            <h3>${escapeHtml(guide.coast)}</h3>
+            <div class="localized-district-grid">
+              ${districtCards(coastPages, guide)}
+            </div>
+          </article>
+
+          <article class="district-panel reveal">
+            <span class="district-label">SOUTH</span>
+            <h3>${escapeHtml(guide.south)}</h3>
+            <div class="localized-district-grid">
+              ${districtCards(southPages, guide)}
+            </div>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    ${siteFooter(guide.prefix, undefined, guide.lang)}
+    ${floatingContact(guide.prefix)}
+    <script src="${guide.prefix}script.js"></script>
+  </body>
+</html>`;
+}
+
+function localizedDistrictPageTemplate(page, guide) {
+  const pageTitle = guide.districtTitle(page.name);
+  const description = guide.districtLead(page.name, page.route);
+  const whatsappText = encodeURIComponent(`${pageTitle} - ${page.route}`);
+  const detailLabels = localizedDetailLabels(guide);
+  const serviceSchema = {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    name: pageTitle,
+    serviceType: pageTitle,
+    areaServed: {
+      "@type": "Place",
+      name: `${page.name}, Izmir`
+    },
+    provider: {
+      "@id": `${siteUrl}/#business`
+    },
+    url: `${siteUrl}/${guide.lang}/${page.slug}/`,
+    description
+  };
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Nokta Transfer", item: `${siteUrl}/${guide.lang}/` },
+      { "@type": "ListItem", position: 2, name: guide.h1, item: guide.canonical },
+      { "@type": "ListItem", position: 3, name: pageTitle, item: `${siteUrl}/${guide.lang}/${page.slug}/` }
+    ]
+  };
+
+  return `<!doctype html>
+<html lang="${guide.lang}">
+  <head>
+    ${baseHead({
+      title: `${pageTitle} | Nokta Transfer`,
+      description,
+      canonical: `${siteUrl}/${guide.lang}/${page.slug}/`,
+      prefix: "../../",
+      ogLocale: guide.ogLocale,
+      alternates: guideAlternates(page.slug)
+    })}
+    <script type="application/ld+json">${jsonLd(serviceSchema)}</script>
+    <script type="application/ld+json">${jsonLd(breadcrumbSchema)}</script>
+  </head>
+  <body class="seo-page localized-district-detail-page">
+    ${headerTemplate("../../", "guide", guide.lang)}
+
+    <main>
+      <section class="seo-hero">
+        <div class="wrap seo-hero-inner">
+          <span class="section-kicker">${escapeHtml(page.zone)} / ${escapeHtml(guide.label)}</span>
+          <h1>${escapeHtml(pageTitle)}</h1>
+          <p>${escapeHtml(description)}</p>
+          <div class="seo-cta">
+            <a href="../../telefon-donusum.html">${escapeHtml(guide.call)}</a>
+            <a href="../../whatsapp-donusum.html?text=${whatsappText}" target="_blank" rel="noopener">WhatsApp</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="section seo-content">
+        <div class="wrap seo-grid">
+          <article class="seo-card seo-main-card">
+            <span class="district-label">${escapeHtml(page.note)}</span>
+            <h2>${escapeHtml(pageTitle)}</h2>
+            <p>${escapeHtml(description)}</p>
+            <p>${escapeHtml(localizedDetailIntro(guide, page.name))}</p>
+          </article>
+
+          <aside class="seo-card">
+            <h2>${escapeHtml(detailLabels.popular)}</h2>
+            <ul class="seo-list">
+              <li>${escapeHtml(page.route)}</li>
+              <li>${escapeHtml(detailLabels.airport)}</li>
+              <li>${escapeHtml(detailLabels.hotel)}</li>
+              <li>${escapeHtml(detailLabels.vehicle)}</li>
+            </ul>
+          </aside>
+
+          <article class="seo-card">
+            <h2>${escapeHtml(detailLabels.related)}</h2>
+            <div class="seo-links">
+              <a href="${getDistrictGuideHref("../../", guide.lang)}">${escapeHtml(guide.h1)}</a>
+              ${districtPages
+                .filter((item) => item.slug !== page.slug && item.zone === page.zone)
+                .slice(0, 6)
+                .map((item) => `<a href="../${item.slug}/">${escapeHtml(guide.districtTitle(item.name))}</a>`)
+                .join("\n              ")}
+            </div>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    ${siteFooter("../../", undefined, guide.lang)}
+    ${floatingContact("../../")}
+    <script src="../../script.js"></script>
+  </body>
+</html>`;
+}
+
 for (const page of districtPages) {
   const dir = `dist/${page.slug}`;
   await mkdir(dir, { recursive: true });
   await writeFile(`${dir}/index.html`, districtPageTemplate(page), "utf8");
 }
+
+await mkdir("dist/transfer-rehberi", { recursive: true });
+await writeFile("dist/transfer-rehberi/index.html", guideGatewayTemplate(), "utf8");
 
 for (const page of servicePages) {
   const dir = `dist/${page.slug}`;
@@ -691,13 +1256,30 @@ for (const page of languagePages) {
   await writeFile(`${dir}/index.html`, languagePageTemplate(page), "utf8");
 }
 
+for (const guide of guideLanguageCards.filter((item) => item.lang !== "tr")) {
+  await mkdir(`dist/${guide.path}`, { recursive: true });
+  await writeFile(`dist/${guide.path}index.html`, localizedDistrictGuideTemplate(guide), "utf8");
+
+  for (const page of districtPages) {
+    const dir = `dist/${guide.lang}/${page.slug}`;
+    await mkdir(dir, { recursive: true });
+    await writeFile(`${dir}/index.html`, localizedDistrictPageTemplate(page, guide), "utf8");
+  }
+}
+
 const sitemapUrls = [
   { loc: `${siteUrl}/`, priority: "1.0" },
-  { loc: `${siteUrl}/en/`, priority: "0.9" },
-  { loc: `${siteUrl}/de/`, priority: "0.9" },
+  ...languagePages.map((page) => ({ loc: `${siteUrl}/${page.lang}/`, priority: "0.9" })),
+  { loc: `${siteUrl}/transfer-rehberi/`, priority: "0.84" },
   { loc: `${siteUrl}/ilceler.html`, priority: "0.82" },
+  ...guideLanguageCards
+    .filter((guide) => guide.lang !== "tr")
+    .map((guide) => ({ loc: `${siteUrl}/${guide.path}`, priority: "0.82" })),
   ...servicePages.map((page) => ({ loc: `${siteUrl}/${page.slug}/`, priority: "0.86" })),
-  ...districtPages.map((page) => ({ loc: `${siteUrl}/${page.slug}/`, priority: "0.72" }))
+  ...districtPages.map((page) => ({ loc: `${siteUrl}/${page.slug}/`, priority: "0.72" })),
+  ...guideLanguageCards
+    .filter((guide) => guide.lang !== "tr")
+    .flatMap((guide) => districtPages.map((page) => ({ loc: `${siteUrl}/${guide.lang}/${page.slug}/`, priority: "0.7" })))
 ];
 
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>

@@ -1,10 +1,17 @@
-const CACHE_NAME = "nokta-transfer-pwa-v5";
+const CACHE_NAME = "nokta-transfer-pwa-v6";
 const CORE_ASSETS = [
   "/",
   "/index.html",
   "/en/",
   "/de/",
+  "/ru/",
+  "/uk/",
+  "/transfer-rehberi/",
   "/ilceler.html",
+  "/en/districts/",
+  "/de/bezirke/",
+  "/ru/rajony/",
+  "/uk/raiony/",
   "/izmir-havalimani-transfer/",
   "/izmir-vip-transfer/",
   "/izmir-sehir-ici-transfer/",
