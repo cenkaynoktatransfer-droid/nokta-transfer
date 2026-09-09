@@ -3,12 +3,12 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Nokta Transfer | İzmir Transfer ve Havalimanı Ulaşım</title>
+    <title>Nokta Transfer | İzmir Taksi, Transfer ve Havalimanı Ulaşım</title>
     <meta
       name="description"
-      content="Nokta Transfer ile İzmir transfer, Adnan Menderes havalimanı transfer, şehir içi ve şehir dışı VIP ulaşım hizmeti. 7/24 net fiyat ve konforlu araç."
+      content="Nokta Transfer ile İzmir taksi, özel transfer, Adnan Menderes havalimanı ulaşımı, şehir içi ve şehir dışı VIP araç. 7/24 net fiyat."
     />
-    <meta name="keywords" content="Nokta Transfer, İzmir transfer, İzmir havalimanı transfer, Adnan Menderes transfer, İzmir VIP transfer, şehir içi transfer" />
+    <meta name="keywords" content="Nokta Transfer, İzmir transfer, İzmir taksi, İzmir özel taksi, İzmir korsan taksi, İzmir havalimanı transfer, Adnan Menderes transfer, İzmir VIP transfer, şehir içi transfer" />
     <meta name="robots" content="index, follow" />
     <meta name="google-site-verification" content="8JhMSGWUzM4-ZQO4eWGDDoP2H8L8Ni2cGRH_Tad32oI" />
     <link rel="canonical" href="https://www.noktatransfer.com.tr/" />
@@ -27,14 +27,14 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Nokta Transfer" />
-    <meta property="og:title" content="Nokta Transfer | İzmir Transfer ve Havalimanı Ulaşım" />
-    <meta property="og:description" content="İzmir'de 7/24 net fiyatlı, konforlu ve güvenilir transfer hizmeti." />
+    <meta property="og:title" content="Nokta Transfer | İzmir Taksi, Transfer ve Havalimanı Ulaşım" />
+    <meta property="og:description" content="İzmir'de 7/24 net fiyatlı taksi, özel transfer ve havalimanı ulaşım hizmeti." />
     <meta property="og:image" content="https://www.noktatransfer.com.tr/assets/nokta-transfer-logo.jpeg" />
     <meta property="og:url" content="https://www.noktatransfer.com.tr/" />
     <meta property="og:locale" content="tr_TR" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Nokta Transfer" />
-    <meta name="twitter:description" content="İzmir 7/24 transfer ve havalimanı ulaşım hizmeti." />
+    <meta name="twitter:title" content="Nokta Transfer | İzmir Taksi ve Transfer" />
+    <meta name="twitter:description" content="İzmir 7/24 taksi, özel transfer ve havalimanı ulaşım hizmeti." />
     <meta name="twitter:image" content="https://www.noktatransfer.com.tr/assets/nokta-transfer-logo.jpeg" />
     <meta name="theme-color" content="#050505" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
@@ -68,10 +68,20 @@
           "latitude": 38.4237,
           "longitude": 27.1428
         },
-        "areaServed": {
-          "@type": "City",
-          "name": "İzmir"
-        },
+        "areaServed": [
+          { "@type": "City", "name": "İzmir" },
+          { "@type": "Place", "name": "Konak" },
+          { "@type": "Place", "name": "Bornova" },
+          { "@type": "Place", "name": "Karşıyaka" },
+          { "@type": "Place", "name": "Buca" },
+          { "@type": "Place", "name": "Bayraklı" },
+          { "@type": "Place", "name": "Gaziemir" },
+          { "@type": "Place", "name": "Çeşme" },
+          { "@type": "Place", "name": "Urla" },
+          { "@type": "Place", "name": "Foça" },
+          { "@type": "Place", "name": "Selçuk" },
+          { "@type": "Place", "name": "Menderes" }
+        ],
         "address": {
           "@type": "PostalAddress",
           "addressLocality": "İzmir",
@@ -110,6 +120,20 @@
               "@type": "Offer",
               "itemOffered": {
                 "@type": "Service",
+                "name": "İzmir Taksi ve Özel Transfer"
+              }
+            },
+            {
+              "@type": "Offer",
+              "itemOffered": {
+                "@type": "Service",
+                "name": "İzmir Korsan Taksi Arayanlara Özel Transfer Alternatifi"
+              }
+            },
+            {
+              "@type": "Offer",
+              "itemOffered": {
+                "@type": "Service",
                 "name": "VIP Transfer"
               }
             },
@@ -137,7 +161,7 @@
         "@type": "WebSite",
         "@id": "https://www.noktatransfer.com.tr/#website",
         "name": "Nokta Transfer",
-        "alternateName": ["İzmir Transfer", "İzmir Havalimanı Transfer", "Nokta Transfer İzmir"],
+        "alternateName": ["İzmir Transfer", "İzmir Taksi", "İzmir Özel Taksi", "İzmir Havalimanı Transfer", "Nokta Transfer İzmir"],
         "url": "https://www.noktatransfer.com.tr/",
         "inLanguage": "tr-TR",
         "publisher": {
@@ -156,6 +180,38 @@
             "acceptedAnswer": {
               "@type": "Answer",
               "text": "Konuma göre değişmekle birlikte İzmir merkez ilçelerde ortalama 5-15 dakika içinde araç yönlendirilir."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "İzmir korsan taksi arayanlar Nokta Transfer'den nasıl hizmet alır?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Telefon veya WhatsApp üzerinden alınacak yer ve varış noktası paylaşılır; rota, araç tipi ve tahmini ücret yolculuk öncesi netleştirilir."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "İzmir özel taksi ve şehir içi transfer aynı hizmette alınabilir mi?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Evet. Konak, Bornova, Karşıyaka, Buca, Bayraklı, Gaziemir ve diğer ilçelerde şehir içi özel transfer talepleri değerlendirilir."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Bornova, Buca, Karşıyaka ve Konak korsan taksi aramalarında hangi sayfaları kullanabilirim?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "İlçe bazlı bilgi için Bornova, Buca, Karşıyaka, Konak, Bayraklı, Gaziemir, Çeşme ve Urla sayfaları kullanılabilir; her sayfada o bölgeye özel rota ve transfer bilgisi bulunur."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "İzmir İstanbul, Ankara veya Bodrum için şehirlerarası özel araç alabilir miyim?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Evet. İzmir çıkışlı İstanbul, Ankara ve Bodrum rotalarında yolcu sayısı, bagaj, yol tercihi ve varış adresine göre şehirlerarası özel transfer planı yapılabilir."
             }
           },
           {
@@ -202,24 +258,90 @@
           {
             "@type": "ListItem",
             "position": 1,
+            "name": "İzmir Korsan Taksi Arayanlara Özel Transfer",
+            "url": "https://www.noktatransfer.com.tr/izmir-korsan-taksi/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "İzmir Havalimanı Korsan Taksi Arayanlara Transfer",
+            "url": "https://www.noktatransfer.com.tr/izmir-havalimani-korsan-taksi/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": "İzmir Taksi ve Transfer",
+            "url": "https://www.noktatransfer.com.tr/izmir-taksi/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 4,
+            "name": "Bornova Korsan Taksi Arayanlara Transfer",
+            "url": "https://www.noktatransfer.com.tr/izmir/bornova-korsan-taksi/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 5,
+            "name": "Karşıyaka Korsan Taksi Arayanlara Transfer",
+            "url": "https://www.noktatransfer.com.tr/izmir/karsiyaka-korsan-taksi/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 6,
+            "name": "Buca Korsan Taksi Arayanlara Transfer",
+            "url": "https://www.noktatransfer.com.tr/izmir/buca-korsan-taksi/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 7,
+            "name": "Konak Korsan Taksi Arayanlara Transfer",
+            "url": "https://www.noktatransfer.com.tr/izmir/konak-korsan-taksi/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 8,
+            "name": "Çeşme Korsan Taksi Arayanlara Transfer",
+            "url": "https://www.noktatransfer.com.tr/izmir/cesme-korsan-taksi/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 9,
+            "name": "İzmir İstanbul Korsan Taksi Arayanlara Transfer",
+            "url": "https://www.noktatransfer.com.tr/izmir-istanbul-korsan-taksi/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 10,
+            "name": "İzmir Ankara Korsan Taksi Arayanlara Transfer",
+            "url": "https://www.noktatransfer.com.tr/izmir-ankara-korsan-taksi/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 11,
+            "name": "İzmir Bodrum Korsan Taksi Arayanlara Transfer",
+            "url": "https://www.noktatransfer.com.tr/izmir-bodrum-korsan-taksi/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 12,
             "name": "İzmir Havalimanı Transfer",
             "url": "https://www.noktatransfer.com.tr/izmir-havalimani-transfer/"
           },
           {
             "@type": "ListItem",
-            "position": 2,
+            "position": 13,
             "name": "Adnan Menderes Çeşme Transfer",
             "url": "https://www.noktatransfer.com.tr/adnan-menderes-cesme-transfer/"
           },
           {
             "@type": "ListItem",
-            "position": 3,
+            "position": 14,
             "name": "İzmir VIP Transfer",
             "url": "https://www.noktatransfer.com.tr/izmir-vip-transfer/"
           },
           {
             "@type": "ListItem",
-            "position": 4,
+            "position": 15,
             "name": "İzmir Şehirlerarası Transfer",
             "url": "https://www.noktatransfer.com.tr/izmir-sehirlerarasi-transfer/"
           }
@@ -262,12 +384,12 @@
         <div class="wrap hero-inner reveal">
           <div class="hero-copy">
             <div class="pill">7/24 aktif - 5 dakika içinde araç</div>
-            <h1>NOKTA TRANSFER</h1>
+            <h1>Nokta Transfer İzmir Taksi ve Özel Transfer</h1>
             <p>
-              Nokta Transfer hizmetimiz, şehrin karmaşık trafiğinde en zorlu
-              saatlerde bile hayatınızı kolaylaştırmak için tasarlanmış profesyonel
-              bir ulaşım ağıdır. Lüks, konforlu ve ekonomik seyahatin tek adresi
-              olarak daima yanınızdayız.
+              İzmir taksi, özel transfer ve havalimanı ulaşımı arayan yolcular için
+              rota öncesi net fiyat, hızlı araç yönlendirme ve konforlu yolculuk
+              deneyimi sunuyoruz. Korsan taksi araması yapan kullanıcıların beklediği
+              hız ve fiyat netliğini Nokta Transfer standardıyla karşılıyoruz.
             </p>
             <div class="hero-buttons">
               <a class="btn yellow" href="./telefon-donusum.html">
@@ -594,6 +716,62 @@
         </div>
       </section>
 
+      <section class="section search-intent" aria-labelledby="intentTitle">
+        <div class="wrap intent-layout reveal">
+          <div class="intent-copy">
+            <span class="section-kicker">İZMİR TAKSİ ARAMA REHBERİ</span>
+            <h2 id="intentTitle">Korsan taksi arayan yolcunun istediği şey net: hızlı araç, sabit fiyat, kolay iletişim</h2>
+            <p>
+              İzmir'de "korsan taksi", "özel taksi", "İzmir taksi" ya da
+              "havalimanı korsan taksi" araması yapan kullanıcıların ortak ihtiyacı
+              beklemeden araç bulmak ve ücreti yola çıkmadan öğrenmek. Nokta Transfer
+              bu talebi şehir içi, havalimanı, otogar, sahil ve şehirlerarası özel
+              transfer sayfalarıyla karşılar.
+            </p>
+          </div>
+          <div class="intent-grid" aria-label="İzmir taksi ve transfer arama sayfaları">
+            <a href="./izmir-korsan-taksi/">
+              <span>01</span>
+              <strong>İzmir Korsan Taksi Arayanlara Özel Transfer</strong>
+              <small>Konak, Bornova, Karşıyaka, Buca ve tüm ilçeler</small>
+            </a>
+            <a href="./izmir-havalimani-korsan-taksi/">
+              <span>02</span>
+              <strong>İzmir Havalimanı Korsan Taksi Arayanlara Transfer</strong>
+              <small>Adnan Menderes geliş, gidiş ve uçuş takipli karşılama</small>
+            </a>
+            <a href="./izmir-ozel-taksi/">
+              <span>03</span>
+              <strong>İzmir Özel Taksi ve Şoförlü Araç</strong>
+              <small>Şehir içi, otel, fuar, marina ve VIP yolculuklar</small>
+            </a>
+            <a href="./cesme-korsan-taksi/">
+              <span>04</span>
+              <strong>Çeşme Korsan Taksi Arayanlara Transfer</strong>
+              <small>Alaçatı, Ilıca, marina, otel ve havalimanı hattı</small>
+            </a>
+            <a href="./izmir-taksi/">
+              <span>05</span>
+              <strong>İzmir Taksi ve Transfer</strong>
+              <small>7/24 net fiyatlı özel araç ve hızlı rota teyidi</small>
+            </a>
+          </div>
+          <div class="intent-districts" aria-label="İlçe bazlı İzmir korsan taksi aramaları">
+            <span>İlçe aramaları</span>
+            <div>
+              <a href="./izmir/bornova-korsan-taksi/">Bornova Korsan Taksi</a>
+              <a href="./izmir/karsiyaka-korsan-taksi/">Karşıyaka Korsan Taksi</a>
+              <a href="./izmir/buca-korsan-taksi/">Buca Korsan Taksi</a>
+              <a href="./izmir/konak-korsan-taksi/">Konak Korsan Taksi</a>
+              <a href="./izmir/bayrakli-korsan-taksi/">Bayraklı Korsan Taksi</a>
+              <a href="./izmir/gaziemir-korsan-taksi/">Gaziemir Korsan Taksi</a>
+              <a href="./izmir/cesme-korsan-taksi/">Çeşme Korsan Taksi</a>
+              <a href="./izmir/urla-korsan-taksi/">Urla Korsan Taksi</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section class="section popular-lines">
         <div class="wrap narrow reveal">
           <span class="section-kicker">POPÜLER TRANSFER HATLARI</span>
@@ -640,6 +818,12 @@
             <strong>İzmir transfer aramalarında öne çıkan rotalar</strong>
           </div>
           <div class="route-bank-list" aria-label="Popüler transfer rota listesi">
+            <a href="./izmir-korsan-taksi/"><span>İzmir Korsan Taksi Araması</span><b>Özel transfer alternatifi</b></a>
+            <a href="./izmir-taksi/"><span>İzmir Taksi ve Transfer</span><b>Şehir içi ve uzun yol</b></a>
+            <a href="./izmir-ozel-taksi/"><span>İzmir Özel Taksi</span><b>Şoförlü araç planı</b></a>
+            <a href="./izmir-istanbul-korsan-taksi/"><span>İzmir İstanbul Korsan Taksi</span><b>Şehirlerarası özel araç</b></a>
+            <a href="./izmir-ankara-korsan-taksi/"><span>İzmir Ankara Korsan Taksi</span><b>Uzun yol transfer</b></a>
+            <a href="./izmir-bodrum-korsan-taksi/"><span>İzmir Bodrum Korsan Taksi</span><b>Ege hattı özel transfer</b></a>
             <a href="./izmir-havalimani-transfer/"><span>İzmir Havalimanı Transfer</span><b>Adnan Menderes karşılama</b></a>
             <a href="./adnan-menderes-cesme-transfer/"><span>ADB - Çeşme / Alaçatı</span><b>Otel, marina, yazlık</b></a>
             <a href="./adnan-menderes-urla-transfer/"><span>ADB - Urla</span><b>İskele, bağ yolu, sahil</b></a>
@@ -662,6 +846,22 @@
             </p>
           </div>
           <div class="seo-hub-links" aria-label="Transfer rehberi linkleri">
+            <a href="./izmir-korsan-taksi/">İzmir Korsan Taksi Arayanlara Transfer</a>
+            <a href="./izmir-havalimani-korsan-taksi/">İzmir Havalimanı Korsan Taksi</a>
+            <a href="./izmir-ozel-taksi/">İzmir Özel Taksi</a>
+            <a href="./cesme-korsan-taksi/">Çeşme Korsan Taksi Arayanlara Transfer</a>
+            <a href="./izmir-taksi/">İzmir Taksi ve Transfer</a>
+            <a href="./izmir/bornova-korsan-taksi/">Bornova Korsan Taksi</a>
+            <a href="./izmir/karsiyaka-korsan-taksi/">Karşıyaka Korsan Taksi</a>
+            <a href="./izmir/buca-korsan-taksi/">Buca Korsan Taksi</a>
+            <a href="./izmir/konak-korsan-taksi/">Konak Korsan Taksi</a>
+            <a href="./izmir/bayrakli-korsan-taksi/">Bayraklı Korsan Taksi</a>
+            <a href="./izmir/gaziemir-korsan-taksi/">Gaziemir Korsan Taksi</a>
+            <a href="./izmir/cesme-korsan-taksi/">Çeşme Korsan Taksi İlçe Sayfası</a>
+            <a href="./izmir/urla-korsan-taksi/">Urla Korsan Taksi</a>
+            <a href="./izmir-istanbul-korsan-taksi/">İzmir İstanbul Korsan Taksi</a>
+            <a href="./izmir-ankara-korsan-taksi/">İzmir Ankara Korsan Taksi</a>
+            <a href="./izmir-bodrum-korsan-taksi/">İzmir Bodrum Korsan Taksi</a>
             <a href="./izmir-havalimani-transfer/">İzmir Havalimanı Transfer</a>
             <a href="./adnan-menderes-cesme-transfer/">Adnan Menderes Çeşme Transfer</a>
             <a href="./adnan-menderes-alacati-transfer/">Adnan Menderes Alaçatı Transfer</a>
@@ -864,6 +1064,22 @@
         </div>
         <div class="wrap faq-list reveal">
           <details>
+            <summary>İzmir korsan taksi arayanlar Nokta Transfer'den nasıl hizmet alır?</summary>
+            <p>Telefon veya WhatsApp üzerinden alınacak yer ve varış noktasını paylaşın; rota, araç tipi ve tahmini ücret yolculuk öncesi netleştirilir.</p>
+          </details>
+          <details>
+            <summary>İzmir özel taksi ve şehir içi transfer aynı hizmette alınabilir mi?</summary>
+            <p>Evet. Konak, Bornova, Karşıyaka, Buca, Bayraklı, Gaziemir ve diğer ilçelerde şehir içi özel transfer talepleri değerlendirilir.</p>
+          </details>
+          <details>
+            <summary>Bornova, Buca, Karşıyaka ve Konak korsan taksi aramalarında hangi sayfaları kullanabilirim?</summary>
+            <p>İlçe bazlı bilgi için Bornova, Buca, Karşıyaka, Konak, Bayraklı, Gaziemir, Çeşme ve Urla sayfalarını açabilirsiniz; her sayfada o bölgeye özel rota ve transfer bilgisi bulunur.</p>
+          </details>
+          <details>
+            <summary>İzmir İstanbul, Ankara veya Bodrum için şehirlerarası özel araç alabilir miyim?</summary>
+            <p>Evet. İzmir çıkışlı İstanbul, Ankara ve Bodrum rotalarında yolcu sayısı, bagaj, yol tercihi ve varış adresine göre şehirlerarası özel transfer planı yapılabilir.</p>
+          </details>
+          <details>
             <summary>İzmir transfer çağırdığımda ne kadar sürede gelir?</summary>
             <p>Konumunuza göre değişmekle birlikte merkez ilçelerde ortalama 5-15 dakika içinde araç yönlendirilir.</p>
           </details>
@@ -906,15 +1122,26 @@
         </nav>
 
         <nav class="footer-links footer-service-links" aria-label="Transfer hizmetleri">
-          <h2>Transfer Hizmetleri</h2>
-          <a href="./izmir-havalimani-transfer/">İzmir Havalimanı Transfer</a>
-          <a href="./adnan-menderes-cesme-transfer/">Adnan Menderes Çeşme Transfer</a>
-          <a href="./adnan-menderes-alacati-transfer/">Adnan Menderes Alaçatı Transfer</a>
-          <a href="./izmir-vip-transfer/">İzmir VIP Transfer</a>
-          <a href="./izmir-sehir-ici-transfer/">İzmir Şehir İçi Transfer</a>
-          <a href="./izmir-sehirlerarasi-transfer/">İzmir Şehirlerarası Transfer</a>
-          <a href="./izmir-otogar-transfer/">İzmir Otogar Transfer</a>
-          <a href="./izmir-fuar-transfer/">İzmir Fuar Transfer</a>
+          <details class="footer-service-dropdown">
+            <summary>Transfer Hizmetleri</summary>
+            <div class="footer-service-panel">
+              <a href="./izmir-korsan-taksi/">İzmir Korsan Taksi Arayanlara Transfer</a>
+              <a href="./izmir-havalimani-korsan-taksi/">İzmir Havalimanı Korsan Taksi</a>
+              <a href="./izmir-ozel-taksi/">İzmir Özel Taksi</a>
+              <a href="./izmir/bornova-korsan-taksi/">Bornova Korsan Taksi</a>
+              <a href="./izmir/karsiyaka-korsan-taksi/">Karşıyaka Korsan Taksi</a>
+              <a href="./izmir/buca-korsan-taksi/">Buca Korsan Taksi</a>
+              <a href="./izmir/konak-korsan-taksi/">Konak Korsan Taksi</a>
+              <a href="./izmir-istanbul-korsan-taksi/">İzmir İstanbul Korsan Taksi</a>
+              <a href="./izmir-ankara-korsan-taksi/">İzmir Ankara Korsan Taksi</a>
+              <a href="./izmir-bodrum-korsan-taksi/">İzmir Bodrum Korsan Taksi</a>
+              <a href="./izmir-havalimani-transfer/">İzmir Havalimanı Transfer</a>
+              <a href="./adnan-menderes-cesme-transfer/">Adnan Menderes Çeşme Transfer</a>
+              <a href="./adnan-menderes-alacati-transfer/">Adnan Menderes Alaçatı Transfer</a>
+              <a href="./cesme-korsan-taksi/">Çeşme Korsan Taksi Arayanlara Transfer</a>
+              <a href="./izmir-taksi/">İzmir Taksi ve Transfer</a>
+            </div>
+          </details>
         </nav>
 
         <div class="footer-contact">

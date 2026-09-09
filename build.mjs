@@ -1,5 +1,5 @@
 import { cp, mkdir, readFile, rm, writeFile } from "node:fs/promises";
-import { districtPages, languagePages, servicePages, siteUrl, sitemapLastmod } from "./seo-data.mjs";
+import { districtPages, korsanDistrictPages, languagePages, servicePages, siteUrl, sitemapLastmod } from "./seo-data.mjs";
 
 const files = [
   "index.html",
@@ -195,8 +195,13 @@ function siteFooter(prefix, text = "İzmir merkezli 7/24 özel transfer, şehir 
         </nav>
 
         <nav class="footer-links footer-service-links" aria-label="Transfer hizmetleri">
-          <h2>${copy.servicesLabel}</h2>
-          ${getPrimaryServiceLinks(prefix, 8)}
+          <details class="footer-service-dropdown">
+            <summary>${copy.servicesLabel}</summary>
+            <div class="footer-service-panel">
+              ${getPrimaryServiceLinks(prefix, 8)}
+              ${lang === "tr" ? getPriorityKorsanDistrictLinks(prefix, 4) : ""}
+            </div>
+          </details>
         </nav>
 
         <div class="footer-contact">
@@ -297,6 +302,13 @@ function getPrimaryServiceLinks(prefix, count = 10) {
   return servicePages
     .slice(0, count)
     .map((page) => `<a href="${prefix}${page.slug}/">${escapeHtml(page.name)}</a>`)
+    .join("");
+}
+
+function getPriorityKorsanDistrictLinks(prefix, count = 8) {
+  return korsanDistrictPages
+    .slice(0, count)
+    .map((page) => `<a href="${prefix}izmir/${page.slug}/">${escapeHtml(page.name)} Korsan Taksi</a>`)
     .join("");
 }
 
@@ -534,13 +546,14 @@ ${googleAdsHeadSnippet()}`;
 }
 
 function districtPageTemplate(page) {
-  const title = `${page.name} Transfer | ${page.name} Havalimanı ve VIP Ulaşım | Nokta Transfer`;
-  const description = `Nokta Transfer ile ${page.name} transfer, ${page.name} havalimanı transfer, şehir içi ve şehir dışı VIP ulaşım hizmeti. 7/24 net fiyat ve konforlu araç.`;
-  const whatsappText = encodeURIComponent(`Merhaba Nokta Transfer, ${page.name} transfer hizmeti için bilgi almak istiyorum.`);
+  const title = `${page.name} Transfer ve Özel Taksi | ${page.name} Havalimanı | Nokta Transfer`;
+  const description = `Nokta Transfer ile ${page.name} transfer ve özel taksi alternatifi. Havalimanı, şehir içi, VIP ve şehir dışı rotalarda 7/24 net fiyatlı araç.`;
+  const whatsappText = encodeURIComponent(`Merhaba Nokta Transfer, ${page.name} transfer ve özel taksi hizmeti için bilgi almak istiyorum.`);
   const districtFaq = [
     [`${page.name} transfer hizmeti hangi rotalarda verilir?`, `${page.name} çıkışlı İzmir merkez, Adnan Menderes Havalimanı, otel, terminal, fuar ve şehir dışı rota talepleri için özel transfer planı yapılır.`],
     [`${page.name} havalimanı transfer fiyatı önceden belli olur mu?`, "Evet. Alınacak yer, varış noktası ve yol tercihi netleştiğinde yolculuk öncesi tahmini ücret bilgisi paylaşılır."],
-    [`${page.name} için gece araç çağırabilir miyim?`, "Uygun araç durumuna göre 7/24 destek verilir. Gece yolculukları, uçuş saatleri ve erken saat transferleri için hızlı iletişim sağlanır."]
+    [`${page.name} için gece araç çağırabilir miyim?`, "Uygun araç durumuna göre 7/24 destek verilir. Gece yolculukları, uçuş saatleri ve erken saat transferleri için hızlı iletişim sağlanır."],
+    [`${page.name} korsan taksi arayanlar için özel transfer var mı?`, `${page.name} korsan taksi ya da özel taksi arayan yolcular için rota öncesi fiyat bilgisiyle özel transfer alternatifi sunulur.`]
   ];
   const relatedPages = districtPages
     .filter((item) => item.slug !== page.slug && item.zone === page.zone)
@@ -551,8 +564,8 @@ function districtPageTemplate(page) {
   const serviceSchema = {
     "@context": "https://schema.org",
     "@type": "Service",
-    name: `${page.name} Transfer`,
-    serviceType: `${page.name} havalimanı transfer ve şehir içi ulaşım`,
+    name: `${page.name} Transfer ve Özel Taksi`,
+    serviceType: `${page.name} transfer, özel taksi ve havalimanı ulaşım`,
     areaServed: {
       "@type": "Place",
       name: `${page.name}, İzmir`
@@ -602,8 +615,8 @@ function districtPageTemplate(page) {
       <section class="seo-hero">
         <div class="wrap seo-hero-inner">
           <span class="section-kicker">${escapeHtml(page.zone.toUpperCase())} TRANSFER HATTI</span>
-          <h1>${escapeHtml(page.name)} Transfer</h1>
-          <p>${escapeHtml(page.name)} bölgesinden İzmir merkez, Adnan Menderes Havalimanı, otel, terminal ve şehir dışı rotalara 7/24 özel transfer hizmeti.</p>
+          <h1>${escapeHtml(page.name)} Transfer ve Özel Taksi</h1>
+          <p>${escapeHtml(page.name)} bölgesinde taksi, korsan taksi ya da özel transfer arayan yolcular için İzmir merkez, Adnan Menderes Havalimanı, otel, terminal ve şehir dışı rotalara 7/24 ulaşım desteği.</p>
           <div class="seo-cta">
             <a href="../telefon-donusum.html">Telefonla Ara</a>
             <a href="../whatsapp-donusum.html?text=${whatsappText}" target="_blank" rel="noopener">WhatsApp ile Bilgi Al</a>
@@ -616,12 +629,12 @@ function districtPageTemplate(page) {
         <div class="wrap seo-grid">
           <article class="seo-card seo-main-card">
             <span class="district-label">${escapeHtml(page.note)}</span>
-            <h2>${escapeHtml(page.name)} Havalimanı Transfer</h2>
+            <h2>${escapeHtml(page.name)} Transfer, Taksi ve Havalimanı Ulaşımı</h2>
             <p>
-              ${escapeHtml(page.name)} transfer hizmetinde amaç yolculuğu baştan netleştirmek, konforlu aracı doğru noktaya yönlendirmek ve sürpriz ücret yaşamadan ulaşım sağlamaktır. Nokta Transfer; ${escapeHtml(page.name)} havalimanı transfer, şehir içi transfer, VIP araç ve uzun mesafe transfer taleplerinde 7/24 destek verir.
+              ${escapeHtml(page.name)} transfer hizmetinde amaç yolculuğu baştan netleştirmek, konforlu aracı doğru noktaya yönlendirmek ve sürpriz ücret yaşamadan ulaşım sağlamaktır. Nokta Transfer; ${escapeHtml(page.name)} havalimanı transfer, şehir içi transfer, özel taksi, VIP araç ve uzun mesafe transfer taleplerinde 7/24 destek verir.
             </p>
             <p>
-              En çok kullanılan rota: <strong>${escapeHtml(page.route)}</strong>. Araç talebinde alınacak yer, gidilecek yer ve saat bilgisi netleştirilir; uygun araç seçeneği ve tahmini ücret yolculuk öncesi paylaşılır.
+              En çok kullanılan rota: <strong>${escapeHtml(page.route)}</strong>. ${escapeHtml(page.name)} korsan taksi veya özel taksi araması yapan yolcular için alınacak yer, gidilecek yer ve saat bilgisi netleştirilir; uygun araç seçeneği ve tahmini ücret yolculuk öncesi paylaşılır.
             </p>
           </article>
 
@@ -630,6 +643,7 @@ function districtPageTemplate(page) {
             <ul class="seo-list">
               <li>${escapeHtml(page.name)} şehir içi transfer</li>
               <li>${escapeHtml(page.name)} Adnan Menderes Havalimanı transfer</li>
+              <li>${escapeHtml(page.name)} özel taksi ve korsan taksi aramasına transfer alternatifi</li>
               <li>${escapeHtml(page.name)} VIP transfer</li>
               <li>${escapeHtml(page.name)} otel ve terminal transferi</li>
               <li>Net fiyat, konforlu araç, 7/24 iletişim</li>
@@ -667,6 +681,144 @@ function districtPageTemplate(page) {
     ${siteFooter("../")}
     ${floatingContact("../")}
     <script src="../script.js"></script>
+  </body>
+</html>`;
+}
+
+function districtIntentPageTemplate(page) {
+  const canonical = `${siteUrl}/izmir/${page.slug}/`;
+  const whatsappText = encodeURIComponent(`Merhaba Nokta Transfer, ${page.name} korsan taksi araması için özel transfer fiyatı almak istiyorum. Rota: ${page.route}`);
+  const relatedDistricts = korsanDistrictPages
+    .filter((item) => item.slug !== page.slug && item.zone === page.zone)
+    .slice(0, 6)
+    .map((item) => `<a href="../${item.slug}/">${escapeHtml(item.name)} Korsan Taksi</a>`)
+    .join("");
+  const fallbackDistricts = korsanDistrictPages
+    .filter((item) => item.slug !== page.slug)
+    .slice(0, 6)
+    .map((item) => `<a href="../${item.slug}/">${escapeHtml(item.name)} Korsan Taksi</a>`)
+    .join("");
+  const serviceSchema = {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    name: `${page.name} Korsan Taksi Arayanlara Özel Transfer`,
+    serviceType: `${page.name} korsan taksi araması, özel taksi ve transfer`,
+    areaServed: {
+      "@type": "Place",
+      name: `${page.name}, İzmir`
+    },
+    provider: {
+      "@id": `${siteUrl}/#business`
+    },
+    url: canonical,
+    description: page.description,
+    offers: {
+      "@type": "Offer",
+      priceCurrency: "TRY",
+      availability: "https://schema.org/InStock",
+      url: canonical
+    }
+  };
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: page.faq.map(([question, answer]) => ({
+      "@type": "Question",
+      name: question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: answer
+      }
+    }))
+  };
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Nokta Transfer", item: `${siteUrl}/` },
+      { "@type": "ListItem", position: 2, name: "İzmir Taksi Aramaları", item: `${siteUrl}/izmir-korsan-taksi/` },
+      { "@type": "ListItem", position: 3, name: `${page.name} Korsan Taksi`, item: canonical }
+    ]
+  };
+  const relatedSchema = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    name: `${page.name} ile ilgili taksi ve transfer sayfaları`,
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: `${page.name} Transfer`, url: `${siteUrl}/${page.transferSlug}/` },
+      { "@type": "ListItem", position: 2, name: "İzmir Havalimanı Korsan Taksi", url: `${siteUrl}/izmir-havalimani-korsan-taksi/` },
+      { "@type": "ListItem", position: 3, name: "İzmir Özel Taksi", url: `${siteUrl}/izmir-ozel-taksi/` },
+      { "@type": "ListItem", position: 4, name: "İzmir Taksi ve Transfer", url: `${siteUrl}/izmir-taksi/` }
+    ]
+  };
+
+  return `<!doctype html>
+<html lang="tr">
+  <head>
+    ${baseHead({ title: page.title, description: page.description, canonical, prefix: "../../" })}
+    <script type="application/ld+json">${jsonLd(serviceSchema)}</script>
+    <script type="application/ld+json">${jsonLd(faqSchema)}</script>
+    <script type="application/ld+json">${jsonLd(breadcrumbSchema)}</script>
+    <script type="application/ld+json">${jsonLd(relatedSchema)}</script>
+  </head>
+  <body class="seo-page district-intent-page">
+    ${headerTemplate("../../", "guide")}
+
+    <main>
+      <section class="seo-hero service-seo-hero">
+        <div class="wrap seo-hero-inner">
+          <span class="section-kicker">${escapeHtml(page.zone.toLocaleUpperCase("tr-TR"))} KORSAN TAKSİ ARAMASI</span>
+          <h1>${escapeHtml(page.name)} Korsan Taksi Arayanlara Transfer</h1>
+          <p>${escapeHtml(page.lead)}</p>
+          <div class="seo-cta">
+            <a href="../../telefon-donusum.html">Telefonla Ara</a>
+            <a href="../../whatsapp-donusum.html?text=${whatsappText}" target="_blank" rel="noopener">WhatsApp ile Fiyat Al</a>
+            <button type="button" data-install-app><span data-install-text>Uygulama İndir</span></button>
+          </div>
+        </div>
+      </section>
+
+      <section class="section seo-content">
+        <div class="wrap seo-grid">
+          <article class="seo-card seo-main-card">
+            <span class="district-label">${escapeHtml(page.note)}</span>
+            <h2>${escapeHtml(page.name)} Taksi, Özel Transfer ve Havalimanı Ulaşımı</h2>
+            ${page.paragraphs.map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`).join("\n            ")}
+          </article>
+
+          <aside class="seo-card">
+            <h2>Öne Çıkanlar</h2>
+            <ul class="seo-list">
+              ${page.highlights.map((item) => `<li>${escapeHtml(item)}</li>`).join("\n              ")}
+            </ul>
+          </aside>
+
+          <article class="seo-card">
+            <h2>${escapeHtml(page.name)} S.S.S.</h2>
+            <div class="seo-faq-mini">
+              ${page.faq
+                .map(([question, answer]) => `<details><summary>${escapeHtml(question)}</summary><p>${escapeHtml(answer)}</p></details>`)
+                .join("\n              ")}
+            </div>
+          </article>
+
+          <article class="seo-card">
+            <h2>İlgili Sayfalar</h2>
+            <div class="seo-links">
+              <a href="../../${page.transferSlug}/">${escapeHtml(page.name)} Transfer ve Özel Taksi</a>
+              <a href="../../izmir-korsan-taksi/">İzmir Korsan Taksi Arayanlara Transfer</a>
+              <a href="../../izmir-havalimani-korsan-taksi/">İzmir Havalimanı Korsan Taksi</a>
+              <a href="../../izmir-ozel-taksi/">İzmir Özel Taksi</a>
+              ${relatedDistricts || fallbackDistricts}
+            </div>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    ${siteFooter("../../")}
+    ${floatingContact("../../")}
+    <script src="../../script.js"></script>
   </body>
 </html>`;
 }
@@ -1241,6 +1393,12 @@ for (const page of districtPages) {
   await writeFile(`${dir}/index.html`, districtPageTemplate(page), "utf8");
 }
 
+for (const page of korsanDistrictPages) {
+  const dir = `dist/izmir/${page.slug}`;
+  await mkdir(dir, { recursive: true });
+  await writeFile(`${dir}/index.html`, districtIntentPageTemplate(page), "utf8");
+}
+
 await mkdir("dist/transfer-rehberi", { recursive: true });
 await writeFile("dist/transfer-rehberi/index.html", guideGatewayTemplate(), "utf8");
 
@@ -1276,6 +1434,7 @@ const sitemapUrls = [
     .filter((guide) => guide.lang !== "tr")
     .map((guide) => ({ loc: `${siteUrl}/${guide.path}`, priority: "0.82" })),
   ...servicePages.map((page) => ({ loc: `${siteUrl}/${page.slug}/`, priority: "0.86" })),
+  ...korsanDistrictPages.map((page) => ({ loc: `${siteUrl}/izmir/${page.slug}/`, priority: page.priority })),
   ...districtPages.map((page) => ({ loc: `${siteUrl}/${page.slug}/`, priority: "0.72" })),
   ...guideLanguageCards
     .filter((guide) => guide.lang !== "tr")

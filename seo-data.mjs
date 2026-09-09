@@ -1,6 +1,6 @@
 export const siteUrl = "https://www.noktatransfer.com.tr";
 
-export const sitemapLastmod = "2026-09-05";
+export const sitemapLastmod = "2026-09-09";
 
 export const districtPages = [
   { name: "Konak", slug: "konak-transfer", zone: "Merkez", note: "Saat Kulesi, Alsancak, Kordon", route: "Konak - Adnan Menderes Havalimanı" },
@@ -37,6 +37,39 @@ export const districtPages = [
   { name: "Ürkmez", slug: "urkmez-transfer", zone: "Sahil", note: "Seferihisar hattı, sahil ve yazlıklar", route: "Ürkmez - İzmir Merkez" },
   { name: "Gümüldür", slug: "gumuldur-transfer", zone: "Sahil", note: "Menderes sahili ve yazlık bölgeler", route: "Gümüldür - Adnan Menderes Havalimanı" }
 ];
+
+const priorityKorsanDistrictNames = ["Bornova", "Karşıyaka", "Buca", "Konak", "Bayraklı", "Gaziemir", "Çeşme", "Urla"];
+
+const orderedKorsanDistrictPages = [
+  ...priorityKorsanDistrictNames.map((name) => districtPages.find((page) => page.name === name)).filter(Boolean),
+  ...districtPages.filter((page) => !priorityKorsanDistrictNames.includes(page.name))
+];
+
+export const korsanDistrictPages = orderedKorsanDistrictPages.map((page) => ({
+  ...page,
+  slug: page.slug.replace(/-transfer$/, "-korsan-taksi"),
+  transferSlug: page.slug,
+  priority: priorityKorsanDistrictNames.includes(page.name) ? "0.83" : "0.74",
+  title: `${page.name} Korsan Taksi Arayanlara Transfer | ${page.name} Özel Taksi | Nokta Transfer`,
+  description: `${page.name} korsan taksi arayanlara Nokta Transfer özel araç alternatifi. ${page.note} çevresinde 7/24 net fiyatlı transfer.`,
+  lead: `${page.name} bölgesinde korsan taksi, özel taksi ya da hızlı transfer arayan yolcular için rota öncesi fiyat bilgisiyle özel araç desteği.`,
+  highlights: [
+    `${page.name} ve çevre semtlerde hızlı iletişim`,
+    `${page.route} hattı için transfer planı`,
+    "Telefon ve WhatsApp ile rota teyidi",
+    "Havalimanı, şehir içi, otel ve uzun yol bağlantıları"
+  ],
+  paragraphs: [
+    `${page.name} korsan taksi araması yapan yolcular genellikle beklemeden araç bulmak, ücreti yolculuk öncesi öğrenmek ve ${page.note} çevresindeki yoğun trafikte doğru rotayla ilerlemek ister. Nokta Transfer bu ihtiyacı özel transfer mantığıyla karşılar; konum, varış noktası ve saat bilgisi alınır, uygun araç ve tahmini ücret netleştirilir.`,
+    `${page.route} hattı başta olmak üzere ${page.name} çıkışlı Adnan Menderes Havalimanı, otel, terminal, fuar, sahil hattı ve şehir dışı rotalarda araç planı yapılabilir. Böylece ${page.name} taksi, özel taksi ve korsan taksi araması aynı sayfada daha güvenli ve daha net bir transfer seçeneğine bağlanır.`
+  ],
+  faq: [
+    [`${page.name} korsan taksi arayanlar Nokta Transfer'den nasıl hizmet alır?`, `Alınacak konum, gidilecek adres ve saat bilgisi telefon ya da WhatsApp üzerinden paylaşılır. ${page.name} için uygun araç ve tahmini ücret yolculuk öncesi netleştirilir.`],
+    [`${page.name} havalimanı transferi yapılır mı?`, `Evet. ${page.name} çıkışlı veya ${page.name} varışlı Adnan Menderes Havalimanı transfer talepleri araç uygunluğuna göre planlanır.`],
+    [`${page.name} özel taksi fiyatı neye göre belirlenir?`, "Fiyat; mesafe, araç tipi, yol tercihi, saat ve varsa bekleme ihtiyacına göre değerlendirilir. Amaç yolculuk başlamadan önce mümkün olan en net bilgiyi paylaşmaktır."],
+    [`${page.name} gece araç bulunur mu?`, "Uygun araç durumuna göre gece, sabah erken saat ve uçuş bağlantılı transfer talepleri için 7/24 hızlı dönüş sağlanır."]
+  ]
+}));
 
 const coreServicePages = [
   {
@@ -289,6 +322,169 @@ const coreServicePages = [
   }
 ];
 
+const searchIntentServicePages = [
+  {
+    name: "İzmir Korsan Taksi Arayanlara Özel Transfer",
+    slug: "izmir-korsan-taksi",
+    zone: "İzmir Taksi",
+    kicker: "İZMİR KORSAN TAKSİ ARAMASI",
+    route: "İzmir geneli özel transfer ve şoförlü araç",
+    title: "İzmir Korsan Taksi Arayanlara Özel Transfer | Nokta Transfer",
+    description: "İzmir korsan taksi arayanlar için 7/24 özel transfer alternatifi. Net fiyat, konforlu araç, telefon ve WhatsApp ile hızlı rota teyidi.",
+    lead: "İzmir'de taksimetre sürprizi yaşamadan, rota öncesi net fiyat alabileceğiniz özel transfer alternatifi.",
+    highlights: ["İzmir geneli 7/24 hızlı iletişim", "Yolculuk öncesi net fiyat bilgisi", "Konak, Bornova, Karşıyaka, Buca ve tüm ilçeler", "Havalimanı, otogar, şehir içi ve şehir dışı rotalar"],
+    paragraphs: [
+      "İzmir korsan taksi araması yapan yolcular çoğunlukla taksimetre sürprizi yaşamadan, hızlı ulaşılabilen ve ücreti yolculuk öncesi netleşen araç arar. Nokta Transfer bu ihtiyaca özel transfer yaklaşımıyla cevap verir: alınacak yer, varış noktası ve saat bilgisi alınır; uygun araç ve tahmini ücret net şekilde paylaşılır.",
+      "Konak, Bornova, Karşıyaka, Buca, Bayraklı, Gaziemir, Çeşme, Urla ve Foça gibi yoğun bölgelerde amaç sadece araç göndermek değil; yolcunun gece dönüşü, bagaj, havalimanı, otogar veya şehir dışı rota ihtiyacını doğru planlamaktır."
+    ],
+    faq: [
+      ["İzmir korsan taksi yerine nasıl özel transfer alabilirim?", "Telefon veya WhatsApp üzerinden alınacak yer ve varış noktasını paylaşmanız yeterlidir. Rota, araç tipi ve tahmini ücret yolculuk öncesi netleştirilir."],
+      ["Fiyat yolculuğa başlamadan netleşir mi?", "Evet. Nokta Transfer'de ücret bilgisi rota ve araç planına göre önceden paylaşılır; yolcu yola çıkmadan ne bekleyeceğini bilir."],
+      ["Hangi ilçelerde özel transfer var?", "Konak, Bornova, Karşıyaka, Buca, Bayraklı, Gaziemir, Çeşme, Urla, Foça, Selçuk ve İzmir'in tüm ilçeleri için araç uygunluğu kontrol edilir."]
+    ]
+  },
+  {
+    name: "İzmir Havalimanı Korsan Taksi Arayanlara Transfer",
+    slug: "izmir-havalimani-korsan-taksi",
+    zone: "Havalimanı Taksi",
+    kicker: "HAVALİMANI KORSAN TAKSİ ARAMASI",
+    route: "Adnan Menderes Havalimanı - İzmir ilçeleri",
+    title: "İzmir Havalimanı Korsan Taksi Arayanlara Transfer | Nokta Transfer",
+    description: "İzmir havalimanı korsan taksi arayanlara Adnan Menderes özel transfer alternatifi. Uçuş takipli karşılama, net fiyat ve 7/24 destek.",
+    lead: "Adnan Menderes Havalimanı geliş ve gidişlerinde net fiyatlı, uçuş bilgisine göre planlanan özel transfer.",
+    highlights: ["Uçuş saatine göre planlama", "İç hatlar ve dış hatlar karşılama", "Çeşme, Alaçatı, Urla, Karşıyaka ve Bornova hatları", "Gece uçuşları için 7/24 iletişim"],
+    paragraphs: [
+      "İzmir havalimanı korsan taksi arayan yolcuların temel beklentisi uçaktan sonra beklememek, valizle araç aramamak ve fiyatı önceden bilmektir. Nokta Transfer, Adnan Menderes Havalimanı iniş ve kalkışlarında uçuş bilgisi, terminal ve varış adresine göre özel araç planı oluşturur.",
+      "Gaziemir, Konak, Karşıyaka, Bornova, Çeşme, Alaçatı, Urla, Foça ve Selçuk gibi rotalarda yolculuk başlamadan önce süre, araç tipi ve ücret bilgisi sade şekilde paylaşılır. Böylece havalimanı ulaşımı son dakika telaşı olmadan yönetilir."
+    ],
+    faq: [
+      ["Uçak rötar yaparsa transfer planı bozulur mu?", "Uçuş numarası paylaşıldığında iniş saati kontrol edilir ve araç planı bu bilgiye göre güncellenir."],
+      ["Havalimanından Çeşme ve Alaçatı'ya özel transfer var mı?", "Evet. Adnan Menderes çıkışlı Çeşme, Alaçatı, Urla, Foça ve diğer sahil rotaları için özel araç planı yapılır."],
+      ["Gece havalimanı transferi alabilir miyim?", "Uygun araç durumuna göre gece ve sabah erken saatlerde 7/24 transfer desteği sağlanır."]
+    ]
+  },
+  {
+    name: "İzmir Özel Taksi ve Şoförlü Araç",
+    slug: "izmir-ozel-taksi",
+    zone: "Özel Taksi",
+    kicker: "ÖZEL TAKSİ VE ŞOFÖRLÜ ARAÇ",
+    route: "İzmir şehir içi, havalimanı ve şehir dışı",
+    title: "İzmir Özel Taksi ve Şoförlü Araç | Nokta Transfer",
+    description: "İzmir özel taksi ve şoförlü araç hizmeti. Şehir içi, havalimanı, otel, fuar ve şehir dışı rotalarda net fiyatlı transfer.",
+    lead: "İzmir'de telefon veya WhatsApp ile kolayca planlanan, net fiyatlı özel taksi ve şoförlü araç hizmeti.",
+    highlights: ["Şehir içi hızlı ulaşım", "Havalimanı ve otogar bağlantısı", "Otel, fuar, marina ve hastane rotaları", "Sedan, premium sedan ve VIP van seçenekleri"],
+    paragraphs: [
+      "İzmir özel taksi ihtiyacında kullanıcılar genellikle hızlı ulaşılabilir, temiz, konforlu ve fiyatı önceden belli bir araç ister. Nokta Transfer bu beklentiyi şehir içi transfer, havalimanı transferi, otel transferi ve şehirlerarası özel araç seçenekleriyle karşılar.",
+      "Konumunuzu ve varış noktanızı paylaştığınızda rota bilgisi alınır, yolcu ve bagaj durumuna göre araç seçeneği değerlendirilir. İzmir'in merkez ilçelerinde kısa mesafe, sahil hattında otel ve marina ulaşımı, uzun yolda ise konforlu transfer planı öne çıkar."
+    ],
+    faq: [
+      ["İzmir özel taksi fiyatı nasıl belirlenir?", "Mesafe, araç tipi, yol tercihi ve varsa bekleme ihtiyacına göre tahmini ücret yolculuk öncesi paylaşılır."],
+      ["Şoförlü özel araç rezervasyonu yapılır mı?", "Evet. Saat, tarih, rota ve yolcu bilgisi netleştiğinde planlı özel araç rezervasyonu alınabilir."],
+      ["Kısa mesafe şehir içi transfer olur mu?", "Uygun araç durumuna göre Konak, Bornova, Karşıyaka, Buca, Bayraklı ve merkez ilçelerde kısa mesafe transfer desteği verilir."]
+    ]
+  },
+  {
+    name: "Çeşme Korsan Taksi Arayanlara Transfer",
+    slug: "cesme-korsan-taksi",
+    zone: "Çeşme Taksi",
+    kicker: "ÇEŞME KORSAN TAKSİ ARAMASI",
+    route: "Çeşme, Alaçatı, Ilıca, Dalyan ve marina hattı",
+    title: "Çeşme Korsan Taksi Arayanlara Transfer | Nokta Transfer",
+    description: "Çeşme korsan taksi arayanlar için Alaçatı, Ilıca, marina, otel ve Adnan Menderes bağlantılı özel transfer alternatifi.",
+    lead: "Çeşme, Alaçatı ve yarımada hattında otel, marina, plaj ve havalimanı bağlantılı net fiyatlı özel transfer.",
+    highlights: ["Alaçatı, Ilıca ve Çeşme Marina rotaları", "Adnan Menderes Havalimanı bağlantısı", "Gece dönüşü ve sezon yoğunluğu için planlama", "Bagajlı yolculuğa uygun araç seçenekleri"],
+    paragraphs: [
+      "Çeşme korsan taksi arayan kullanıcılar yaz sezonunda özellikle gece dönüşü, otel transferi, marina ulaşımı ve havalimanı bağlantısı için hızlı çözüm arar. Nokta Transfer, Çeşme ve Alaçatı bölgesinde rota öncesi fiyat bilgisiyle özel transfer planı sunar.",
+      "Alaçatı merkez, Ilıca, Dalyan, Çeşme Marina, otel bölgeleri ve Adnan Menderes Havalimanı bağlantılarında yolcu sayısı, bagaj ve saat bilgisi dikkate alınır. Uygun araç seçeneği netleştirilerek WhatsApp üzerinden hızlı dönüş sağlanır."
+    ],
+    faq: [
+      ["Çeşme'den Adnan Menderes Havalimanı'na transfer var mı?", "Evet. Çeşme, Alaçatı ve Ilıca çıkışlı Adnan Menderes Havalimanı transferi için özel araç planı yapılabilir."],
+      ["Alaçatı gece dönüşü için araç bulunur mu?", "Sezon ve araç uygunluğuna göre gece saatlerinde planlama yapılır. Yoğun dönemlerde önceden iletişim daha hızlı sonuç verir."],
+      ["Çeşme transfer fiyatı önceden belli olur mu?", "Evet. Alınacak nokta, gidilecek adres ve araç tipi netleştiğinde tahmini ücret yolculuk öncesi paylaşılır."]
+    ]
+  },
+  {
+    name: "İzmir Taksi ve Transfer",
+    slug: "izmir-taksi",
+    zone: "İzmir Taksi",
+    kicker: "İZMİR TAKSİ VE TRANSFER",
+    route: "İzmir şehir içi, sahil hattı ve şehirlerarası ulaşım",
+    title: "İzmir Taksi ve Transfer | 7/24 Özel Araç | Nokta Transfer",
+    description: "İzmir taksi ve transfer arayanlara 7/24 özel araç desteği. Şehir içi, havalimanı, otogar, otel, VIP ve şehirlerarası rotalar.",
+    lead: "İzmir taksi aramalarında ihtiyaç duyulan hızlı dönüş, net fiyat ve konforlu araç deneyimini özel transferle birleştiriyoruz.",
+    highlights: ["Telefon ve WhatsApp ile hızlı talep", "İzmir'in tüm ilçelerinde rota kontrolü", "Net fiyatlı şehir içi ve uzun yol", "Havalimanı, otogar, otel ve fuar transferi"],
+    paragraphs: [
+      "İzmir taksi arayan yolcular için hız kadar fiyat netliği ve araç kalitesi de önemlidir. Nokta Transfer; şehir içi kısa rotalar, Adnan Menderes Havalimanı, otogar, fuar, otel ve sahil bölgeleri için özel transfer planı yapar.",
+      "Yolculuk başlamadan önce alınacak yer, varış noktası, saat, yolcu sayısı ve bagaj bilgisi değerlendirilir. Böylece Konak, Bornova, Karşıyaka, Buca, Bayraklı, Gaziemir, Çeşme, Urla, Foça ve tüm İzmir ilçelerinde daha öngörülebilir bir ulaşım deneyimi oluşur."
+    ],
+    faq: [
+      ["İzmir taksi yerine özel transfer ne avantaj sağlar?", "Rota ve tahmini fiyat yolculuk öncesi netleşir, araç tipi ihtiyaca göre seçilir ve iletişim telefon ya da WhatsApp üzerinden hızlı ilerler."],
+      ["İzmir'in tüm ilçelerine gidilir mi?", "Araç uygunluğuna göre merkez, sahil ve uzak ilçe rotaları için transfer planı yapılır."],
+      ["Otogar ve fuar transferi de var mı?", "Evet. İzmir Otogarı, Fuar İzmir, otel, marina, hastane ve kurumsal rota talepleri değerlendirilebilir."]
+    ]
+  },
+  {
+    name: "İzmir İstanbul Korsan Taksi Arayanlara Transfer",
+    slug: "izmir-istanbul-korsan-taksi",
+    zone: "Şehirlerarası Taksi",
+    kicker: "İZMİR İSTANBUL KORSAN TAKSİ ARAMASI",
+    route: "İzmir - İstanbul şehirlerarası özel araç",
+    title: "İzmir İstanbul Korsan Taksi Arayanlara Transfer | Nokta Transfer",
+    description: "İzmir İstanbul korsan taksi arayanlara şehirlerarası özel transfer alternatifi. Net fiyat, konforlu araç ve kapıdan kapıya rota planı.",
+    lead: "İzmir'den İstanbul'a uzun yol için rota, araç tipi ve tahmini fiyatı önceden netleşen özel transfer.",
+    highlights: ["Kapıdan kapıya şehirlerarası transfer", "Uzun yol konforuna uygun araç", "Otoban ve mola planı", "Telefon ve WhatsApp ile fiyat teyidi"],
+    paragraphs: [
+      "İzmir İstanbul korsan taksi araması yapan yolcular çoğu zaman otobüs veya uçak aktarmasıyla uğraşmadan, kapıdan kapıya özel araçla gitmek ister. Nokta Transfer bu uzun yol talebinde alınacak adres, İstanbul varış noktası, saat ve araç tipine göre rota planı hazırlar.",
+      "Otoban tercihi, yolcu sayısı, bagaj ve mola ihtiyacı yolculuktan önce konuşulur. Böylece İzmir İstanbul özel transfer süreci fiyat, süre ve araç beklentisi açısından daha öngörülebilir ilerler."
+    ],
+    faq: [
+      ["İzmir İstanbul korsan taksi yerine özel transfer alınır mı?", "Evet. İzmir çıkışlı İstanbul varışlı uzun yol özel transfer talepleri araç uygunluğuna göre planlanır."],
+      ["İstanbul'a transfer fiyatı önceden belli olur mu?", "Rota, araç tipi ve yol tercihi netleştiğinde tahmini ücret bilgisi yolculuk öncesi paylaşılır."],
+      ["İstanbul'da adrese kadar bırakılır mı?", "Evet. Varış adresi paylaşıldığında kapıdan kapıya rota planı yapılabilir."]
+    ]
+  },
+  {
+    name: "İzmir Ankara Korsan Taksi Arayanlara Transfer",
+    slug: "izmir-ankara-korsan-taksi",
+    zone: "Şehirlerarası Taksi",
+    kicker: "İZMİR ANKARA KORSAN TAKSİ ARAMASI",
+    route: "İzmir - Ankara şehirlerarası özel araç",
+    title: "İzmir Ankara Korsan Taksi Arayanlara Transfer | Nokta Transfer",
+    description: "İzmir Ankara korsan taksi arayanlar için şehirlerarası özel araç alternatifi. Net fiyat, konforlu yolculuk ve 7/24 iletişim.",
+    lead: "İzmir-Ankara hattında uzun yol konforu, rota planı ve yolculuk öncesi net ücret bilgisi.",
+    highlights: ["İzmir Ankara kapıdan kapıya rota", "Sedan ve VIP araç seçenekleri", "Uzun yol için mola ve saat planı", "Şehirlerarası transfer fiyat teyidi"],
+    paragraphs: [
+      "İzmir Ankara korsan taksi arayan yolcular için ana ihtiyaç uzun mesafede güvenli, konforlu ve baştan fiyatı konuşulmuş bir araçtır. Nokta Transfer, İzmir çıkışlı Ankara rotalarında kişi sayısı, bagaj ve varış adresine göre özel transfer planı oluşturur.",
+      "İş seyahati, aile yolculuğu, hastane veya kurumsal ziyaret gibi zamanlaması önemli rotalarda araç ve hareket saati önceden netleştirilir. Böylece uzun yol transferinde son dakika belirsizliği azalır."
+    ],
+    faq: [
+      ["İzmir Ankara özel transfer yapılır mı?", "Evet. İzmir'den Ankara'ya şehirlerarası özel transfer talepleri uygun araç durumuna göre değerlendirilir."],
+      ["Ankara transferinde mola planı yapılır mı?", "Uzun yol olduğu için mola, yol tercihi ve varış saati yolculuk öncesi konuşularak planlanabilir."],
+      ["Fiyatı WhatsApp üzerinden öğrenebilir miyim?", "Evet. Alınacak adres, varış noktası, tarih ve yolcu bilgisi paylaşıldığında tahmini fiyat dönüşü yapılır."]
+    ]
+  },
+  {
+    name: "İzmir Bodrum Korsan Taksi Arayanlara Transfer",
+    slug: "izmir-bodrum-korsan-taksi",
+    zone: "Ege Transfer",
+    kicker: "İZMİR BODRUM KORSAN TAKSİ ARAMASI",
+    route: "İzmir - Bodrum / Milas / Yalıkavak hattı",
+    title: "İzmir Bodrum Korsan Taksi Arayanlara Transfer | Nokta Transfer",
+    description: "İzmir Bodrum korsan taksi arayanlara Ege hattında özel transfer. Bodrum, Milas, Yalıkavak ve otel rotaları için net fiyat.",
+    lead: "İzmir'den Bodrum'a tatil, otel, marina ve havalimanı bağlantılı net fiyatlı özel transfer.",
+    highlights: ["Bodrum, Milas ve Yalıkavak bağlantısı", "Tatil ve otel transferi", "Bagajlı yolculuğa uygun araç", "Sezon yoğunluğu için önceden planlama"],
+    paragraphs: [
+      "İzmir Bodrum korsan taksi araması özellikle yaz sezonunda havalimanı, otel, marina ve yazlık rotaları için öne çıkar. Nokta Transfer; İzmir çıkışlı Bodrum, Milas, Yalıkavak, Gümbet ve çevre bölgelere özel araç planı yapar.",
+      "Yolculuk öncesinde kişi sayısı, bagaj, alınacak saat ve varış noktası değerlendirilir. Uzun Ege hattında konforlu araç, net fiyat ve doğru rota bilgisi yolculuğu daha sakin hale getirir."
+    ],
+    faq: [
+      ["İzmir Bodrum özel transfer fiyatı nasıl alınır?", "Alınacak konum, Bodrum varış noktası, tarih, saat ve araç tercihi paylaşıldığında tahmini fiyat bilgisi verilir."],
+      ["Bodrum oteline kadar transfer olur mu?", "Evet. Otel, marina, yazlık veya ilçe merkezi için kapıdan kapıya rota planı yapılabilir."],
+      ["Sezon döneminde önceden rezervasyon gerekir mi?", "Yaz sezonunda araç uygunluğu daha hızlı netleşsin diye önceden iletişime geçmek önerilir."]
+    ]
+  }
+];
+
 const longDistanceRoutes = [
   {
     name: "İzmir Çeşme Transfer",
@@ -421,7 +617,7 @@ const routeServicePages = longDistanceRoutes.map((route) => ({
   ]
 }));
 
-export const servicePages = [...coreServicePages, ...routeServicePages];
+export const servicePages = [...searchIntentServicePages, ...coreServicePages, ...routeServicePages];
 
 export const languagePages = [
   {
